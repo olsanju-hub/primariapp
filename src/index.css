@@ -31,6 +31,10 @@ body,
   min-height: 100%;
 }
 
+html {
+  font-size: 16px;
+}
+
 body {
   margin: 0;
   background:
@@ -184,7 +188,10 @@ h4,
   margin: 0 auto;
 }
 
-.app-workspace > .home-page,
+.app-workspace > .home-page {
+  max-width: none;
+}
+
 .app-workspace > .tools-page {
   max-width: 1560px;
 }
@@ -791,9 +798,13 @@ h4,
 }
 
 @media (min-width: 1081px) {
+  html {
+    font-size: 17.5px;
+  }
+
   .app-shell-sidebar {
-    width: 308px;
-    flex-basis: 308px;
+    width: 492px;
+    flex-basis: 492px;
   }
 
   .sidebar-panel {
@@ -805,7 +816,7 @@ h4,
   .sidebar-brand {
     gap: 0.85rem;
     padding-bottom: 0.75rem;
-    font-size: 1.06rem;
+    font-size: 1.18rem;
   }
 
   .sidebar-brand-mark {
@@ -820,10 +831,10 @@ h4,
 
   .sidebar-quicklink {
     gap: 0.72rem;
-    min-height: 46px;
-    padding: 0.78rem 0.9rem;
+    min-height: 52px;
+    padding: 0.82rem 0.96rem;
     border-radius: 15px;
-    font-size: 0.98rem;
+    font-size: 1.08rem;
   }
 
   .sidebar-quicklink svg {
@@ -858,7 +869,7 @@ h4,
   }
 
   .sidebar-section-title {
-    font-size: 0.98rem;
+    font-size: 1.08rem;
   }
 
   .sidebar-section-count {
@@ -873,21 +884,58 @@ h4,
   }
 
   .sidebar-link {
-    min-height: 42px;
-    padding: 0.68rem 0.8rem;
+    min-height: 46px;
+    padding: 0.74rem 0.86rem;
     border-radius: 13px;
   }
 
   .sidebar-link-name {
-    font-size: 0.98rem;
+    font-size: 1.08rem;
     line-height: 1.26;
+  }
+
+  .topbar-brand {
+    font-size: 1.05rem;
+  }
+
+  .section-label {
+    font-size: 0.82rem;
+  }
+
+  .search-result-name,
+  .frequent-card strong,
+  .specialty-tab span,
+  .tool-row-copy strong,
+  .surface-inline-title h3,
+  .question-card-head h4 {
+    font-size: 1rem;
+  }
+
+  .frequent-card p,
+  .tool-row-copy span,
+  .tool-header-copy,
+  .tool-meta-item dd,
+  .choice-card span,
+  .result-panel-copy,
+  .specialty-focus-head p,
+  .tool-pill--detail span {
+    font-size: 0.94rem;
+  }
+
+  .tools-count,
+  .status-pill,
+  .summary-pill,
+  .tool-meta-label,
+  .search-result-tag,
+  .tool-header-tag {
+    font-size: 0.78rem;
   }
 }
 
 @media (min-width: 1360px) {
   .app-shell-sidebar {
-    width: 320px;
-    flex-basis: 320px;
+    width: 512px;
+    flex-basis: 512px;
   }
 
   .topbar {
@@ -895,16 +943,16 @@ h4,
   }
 
   .app-workspace {
-    padding-inline: 14px;
+    padding-inline: 10px;
   }
 
   .app-workspace > * {
-    max-width: 1600px;
+    max-width: 1700px;
   }
 
   .home-page {
-    grid-template-columns: minmax(0, 2.35fr) minmax(340px, 0.92fr);
-    gap: 1rem;
+    grid-template-columns: minmax(0, 3.15fr) minmax(360px, 0.88fr);
+    gap: 0.95rem;
   }
 
   .surface--compact {
@@ -917,7 +965,7 @@ h4,
   }
 
   .home-search-head h2 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
   }
 
   .summary-pill {
@@ -927,11 +975,11 @@ h4,
   }
 
   .home-searchbar {
-    min-height: 72px;
+    min-height: 76px;
   }
 
   .specialty-focus {
-    min-height: 250px;
+    min-height: 264px;
   }
 
   .home-specialty-tools {
@@ -940,29 +988,37 @@ h4,
   }
 
   .tool-pill--detail {
-    min-height: 96px;
-    padding: 1rem 1.05rem;
+    min-height: 104px;
+    padding: 1.04rem 1.08rem;
   }
 
   .frequent-card {
-    min-height: 108px;
-    padding: 1rem;
+    min-height: 116px;
+    padding: 1.06rem;
   }
 
   .frequent-card strong,
   .tool-pill--detail strong {
-    font-size: 1.02rem;
+    font-size: 1.12rem;
   }
 
   .tools-groups {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .tool-header h2 {
+    font-size: clamp(1.95rem, 2.7vw, 2.6rem);
+  }
+
+  .result-panel-value {
+    font-size: clamp(2.15rem, 3vw, 2.9rem);
+  }
 }
 
 @media (min-width: 1720px) {
   .app-shell-sidebar {
-    width: 332px;
-    flex-basis: 332px;
+    width: 532px;
+    flex-basis: 532px;
   }
 
   .topbar {
@@ -970,20 +1026,20 @@ h4,
   }
 
   .app-workspace {
-    padding-inline: 14px;
+    padding-inline: 8px;
   }
 
   .app-workspace > * {
-    max-width: 1660px;
+    max-width: 1820px;
   }
 
   .home-page {
-    grid-template-columns: minmax(0, 2.65fr) minmax(360px, 0.9fr);
-    gap: 1.05rem;
+    grid-template-columns: minmax(0, 3.55fr) minmax(388px, 0.86fr);
+    gap: 0.95rem;
   }
 
   .home-search-head h2 {
-    font-size: 2.35rem;
+    font-size: 2.75rem;
   }
 
   .home-frequent {
@@ -995,25 +1051,25 @@ h4,
   }
 
   .frequent-card {
-    min-height: 114px;
+    min-height: 124px;
   }
 
   .specialty-tab {
-    min-height: 52px;
-    padding-inline: 0.96rem;
+    min-height: 56px;
+    padding-inline: 1.02rem;
   }
 
   .specialty-tab span {
-    font-size: 0.9rem;
+    font-size: 0.98rem;
   }
 
   .specialty-focus {
     gap: 1rem;
-    min-height: 270px;
+    min-height: 284px;
   }
 
   .specialty-focus-head h3 {
-    font-size: 1.14rem;
+    font-size: 1.24rem;
   }
 
   .home-specialty-tools {
@@ -1022,8 +1078,8 @@ h4,
   }
 
   .tool-pill--detail {
-    min-height: 102px;
-    padding: 1rem 1.05rem;
+    min-height: 114px;
+    padding: 1.08rem 1.12rem;
   }
 }
 
