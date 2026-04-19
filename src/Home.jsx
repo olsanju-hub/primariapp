@@ -1,11 +1,11 @@
 import React, { useDeferredValue, useMemo, useState } from 'react'
 import { ArrowRight, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { quickAccess, specialties, toolIndex } from './appData'
-import { appIconUrl } from './appIcon'
+import { activeSpecialties, availableTools, defaultHomeSpecialty } from './appData'
 
 export default function Home() {
   const [query, setQuery] = useState('')
+  const [specialtyId, setSpecialtyId] = useState(defaultHomeSpecialty)
   const deferredQuery = useDeferredValue(query)
 
   const results = useMemo(() => {
@@ -15,45 +15,24 @@ export default function Home() {
       return []
     }
 
-    return toolIndex.filter(({ name, specialty, blurb }) =>
+    return availableTools.filter(({ name, specialty, blurb }) =>
       `${name} ${specialty} ${blurb}`.toLowerCase().includes(normalized)
     )
   }, [deferredQuery])
 
+  const activeSpecialty = useMemo(
+    () =>
+      activeSpecialties.find((specialty) => specialty.id === specialtyId) ??
+      activeSpecialties[0],
+    [specialtyId]
+  )
+
+  const specialtyTools = activeSpecialty.tools
+
   return (
-    <div className='dashboard'>
-      <section className='home-intro'>
-        <div>
-          <span className='section-kicker'>PrimariAPP</span>
-          <h2>Escalas clínicas a mano, con menos ruido y mejor lectura en consulta.</h2>
-          <p className='section-copy'>
-            Busca, entra y resuelve. La portada queda centrada en acceso rápido, no en
-            paneles repetidos.
-          </p>
-        </div>
-
-        <div className='home-intro-side'>
-          <img className='home-intro-mark' src={appIconUrl} alt='Icono PrimariAPP' />
-          <Link to='/herramientas' className='btn btn-secondary'>
-            Ver todas las herramientas
-            <ArrowRight size={16} />
-          </Link>
-        </div>
-      </section>
-
+    <div className='home-page'>
       <section className='surface surface--search home-search'>
-        <div className='surface-head'>
-          <div>
-            <span className='surface-kicker'>Buscador principal</span>
-            <h3>Encuentra cualquier escala en segundos</h3>
-          </div>
-          <Link to='/herramientas' className='surface-link'>
-            Ver todas
-            <ArrowRight size={16} />
-          </Link>
-        </div>
-
-        <label className='searchbar'>
+        <label className='searchbar searchbar--large'>
           <Search size={18} />
           <input
             type='search'
@@ -65,91 +44,54 @@ export default function Home() {
 
         {results.length > 0 ? (
           <div className='search-results'>
-            {results.slice(0, 6).map((tool) => (
-              tool.path ? (
-                <Link key={tool.name} to={tool.path} className='search-result-card search-result-card--compact'>
-                  <div>
-                    <span className='search-result-tag'>{tool.specialty}</span>
-                    <strong>{tool.name}</strong>
-                  </div>
-                  <ArrowRight size={16} />
-                </Link>
-              ) : (
-                <div key={tool.name} className='search-result-card search-result-card--muted search-result-card--compact'>
-                  <div>
-                    <span className='search-result-tag'>{tool.specialty}</span>
-                    <strong>{tool.name}</strong>
-                  </div>
+            {results.slice(0, 8).map((tool) => (
+              <Link key={tool.name} to={tool.path} className='search-result-card'>
+                <div>
+                  <span className='search-result-tag'>{tool.specialty}</span>
+                  <strong className='search-result-name'>{tool.name}</strong>
                 </div>
-              )
+                <ArrowRight size={16} />
+              </Link>
             ))}
           </div>
+        ) : deferredQuery.trim() ? (
+          <p className='empty-text'>Sin coincidencias.</p>
         ) : null}
       </section>
 
-      <section className='surface surface--compact home-quick'>
-        <div className='surface-head'>
-          <div>
-            <span className='surface-kicker'>Accesos rápidos</span>
-            <h3>Lo más usado en consulta</h3>
-          </div>
-        </div>
+      <section className='surface surface--compact home-specialties'>
+        <div className='home-specialties-toolbar'>
+          <label className='field'>
+            <span>Especialidad</span>
+            <select
+              className='field-select'
+              value={activeSpecialty.id}
+              onChange={(event) => setSpecialtyId(event.target.value)}
+            >
+              {activeSpecialties.map((specialty) => (
+                <option key={specialty.id} value={specialty.id}>
+                  {specialty.name}
+                </option>
+              ))}
+            </select>
+          </label>
 
-        <div className='pill-row'>
-          {quickAccess.map((tool) => (
-            <Link key={tool.path} to={tool.path} className='tool-pill'>
-              {tool.name}
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className='dashboard-specialties'>
-        <div className='section-headline'>
-          <div>
-            <span className='section-kicker'>Especialidades</span>
-            <h3>Explora por área clínica</h3>
-          </div>
-          <Link to='/herramientas' className='surface-link'>
-            Ver todas las herramientas
+          <Link to='/herramientas' className='inline-action'>
+            Todas las herramientas
             <ArrowRight size={16} />
           </Link>
         </div>
 
-        <div className='specialty-grid'>
-          {specialties.map((specialty) => {
-            const Icon = specialty.icon
-            const activeTools = specialty.tools.filter(({ path }) => Boolean(path))
-            const featuredPath = activeTools[0]?.path
-
-            const specialtyCard = (
-              <>
-                <div
-                  className='specialty-icon'
-                  style={{ backgroundColor: specialty.soft, color: specialty.accent }}
-                >
-                  <Icon size={20} />
-                </div>
-                <div className='specialty-copy'>
-                  <strong>{specialty.name}</strong>
-                </div>
-                <div className='specialty-meta'>
-                  <span>{activeTools.length} activas</span>
-                  <ArrowRight size={16} />
-                </div>
-              </>
-            )
-
-            return featuredPath ? (
-              <Link key={specialty.id} to={featuredPath} className='specialty-card'>
-                {specialtyCard}
+        <div className='home-specialty-tools'>
+          {specialtyTools.length > 0 ? (
+            specialtyTools.map((tool) => (
+              <Link key={tool.path} to={tool.path} className='tool-pill'>
+                {tool.name}
               </Link>
-            ) : (
-              <div key={specialty.id} className='specialty-card specialty-card--muted'>
-                {specialtyCard}
-              </div>
-            )
-          })}
+            ))
+          ) : (
+            <p className='empty-text'>Sin herramientas activas.</p>
+          )}
         </div>
       </section>
     </div>

@@ -55,10 +55,7 @@ export default function CHA2DS2VASc() {
         <section className='question-card'>
           <div className='question-card-head'>
             <span className='question-index'>01</span>
-            <div>
-              <h4>Edad</h4>
-              <p>Selecciona un solo tramo de edad.</p>
-            </div>
+            <h4>Edad</h4>
           </div>
 
           <div className='option-stack'>
@@ -89,10 +86,7 @@ export default function CHA2DS2VASc() {
             <section key={factor.k} className='question-card'>
               <div className='question-card-head'>
                 <span className='question-index'>{String(index + 2).padStart(2, '0')}</span>
-                <div>
-                  <h4>{factor.t}</h4>
-                  <p>Activa el factor si está presente.</p>
-                </div>
+                <h4>{factor.t}</h4>
               </div>
 
               <label className={selected ? 'choice-card choice-card--selected' : 'choice-card'}>

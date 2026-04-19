@@ -50,10 +50,7 @@ export default function HASBLED() {
             <section key={factor.k} className='question-card'>
               <div className='question-card-head'>
                 <span className='question-index'>{String(index + 1).padStart(2, '0')}</span>
-                <div>
-                  <h4>{factor.t}</h4>
-                  <p>Activa la casilla si el factor está presente.</p>
-                </div>
+                <h4>{factor.t}</h4>
               </div>
 
               <label className={selected ? 'choice-card choice-card--selected' : 'choice-card'}>

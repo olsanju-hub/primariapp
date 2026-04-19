@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { ArrowRight, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
-import { findRouteMeta, mobileNav } from './appData'
+import { mobileNav } from './appData'
 import { appIconUrl } from './appIcon'
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const location = useLocation()
-  const meta = findRouteMeta(location.pathname)
 
   useEffect(() => {
     setDrawerOpen(false)
@@ -32,29 +31,18 @@ export default function App() {
 
       <div className='app-frame'>
         <header className='topbar'>
-          <div className='topbar-leading'>
-            <button
-              type='button'
-              className='icon-button topbar-menu'
-              onClick={() => setDrawerOpen((open) => !open)}
-              aria-label={drawerOpen ? 'Cerrar menú' : 'Abrir menú'}
-            >
-              {drawerOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
+          <button
+            type='button'
+            className='icon-button topbar-menu'
+            onClick={() => setDrawerOpen((open) => !open)}
+            aria-label={drawerOpen ? 'Cerrar menú' : 'Abrir menú'}
+          >
+            {drawerOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
 
-            <div className='topbar-brand'>
-              <img className='topbar-brand-mark' src={appIconUrl} alt='Icono PrimariAPP' />
-              <div>
-                <span className='topbar-kicker'>{meta.specialty}</span>
-                <h1>{meta.title}</h1>
-                <p>{meta.description}</p>
-              </div>
-            </div>
-          </div>
-
-          <Link to='/herramientas' className='topbar-action'>
-            Ver herramientas
-            <ArrowRight size={16} />
+          <Link to='/' className='topbar-brand'>
+            <img className='topbar-brand-mark' src={appIconUrl} alt='Icono PrimariAPP' />
+            <span>PrimariAPP</span>
           </Link>
         </header>
 

@@ -1,7 +1,8 @@
 {
   "name": "PrimariAPP",
   "short_name": "PrimariAPP",
-  "description": "Herramientas clínicas y escalas rápidas para Atención Primaria.",
+  "description": "Escalas clínicas rápidas para consulta y urgencias.",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

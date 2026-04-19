@@ -34,80 +34,67 @@ export default function Tools() {
 
   return (
     <div className='tools-page'>
-      <section className='surface tools-intro'>
-        <div>
-          <span className='section-kicker'>Herramientas</span>
-          <h2>Un listado simple y clínico para llegar a cualquier escala sin ruido.</h2>
-        </div>
-        <p className='section-copy'>
-          Recorre todas las herramientas disponibles desde un único punto y filtra por
-          especialidad, utilidad o nombre.
-        </p>
-      </section>
-
-      <section className='surface surface--search'>
-        <div className='surface-head'>
-          <div>
-            <span className='surface-kicker'>Filtro</span>
-            <h3>Buscar herramienta</h3>
-          </div>
-          <p>{resultCount} resultados visibles</p>
-        </div>
-
+      <section className='surface surface--compact tools-toolbar'>
         <label className='searchbar'>
           <Search size={18} />
           <input
             type='search'
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder='Buscar por nombre, especialidad o utilidad...'
+            placeholder='Buscar por nombre o especialidad...'
           />
         </label>
+        <span className='tools-count'>{resultCount}</span>
       </section>
 
-      <section className='tools-groups'>
-        {filteredSpecialties.map((specialty) => {
-          const Icon = specialty.icon
-          return (
-            <section key={specialty.id} className='surface surface--compact tool-group'>
-              <div className='tool-group-head'>
-                <div
-                  className='specialty-icon'
-                  style={{ backgroundColor: specialty.soft, color: specialty.accent }}
-                >
-                  <Icon size={18} />
+      {filteredSpecialties.length > 0 ? (
+        <section className='tools-groups'>
+          {filteredSpecialties.map((specialty) => {
+            const Icon = specialty.icon
+            return (
+              <section key={specialty.id} className='surface surface--compact tool-group'>
+                <div className='tool-group-head'>
+                  <div
+                    className='specialty-icon'
+                    style={{ backgroundColor: specialty.soft, color: specialty.accent }}
+                  >
+                    <Icon size={18} />
+                  </div>
+                  <div>
+                    <h3>{specialty.name}</h3>
+                  </div>
                 </div>
-                <div>
-                  <h3>{specialty.name}</h3>
-                  <p>{specialty.summary}</p>
-                </div>
-              </div>
 
-              <div className='tool-list'>
-                {specialty.tools.map((tool) =>
-                  tool.path ? (
-                    <Link key={tool.name} to={tool.path} className='tool-row'>
-                      <div>
-                        <strong>{tool.name}</strong>
-                        <span>{tool.blurb}</span>
+                <div className='tool-list'>
+                  {specialty.tools.map((tool) =>
+                    tool.path ? (
+                      <Link key={tool.name} to={tool.path} className='tool-row'>
+                        <div className='tool-row-copy'>
+                          <strong>{tool.name}</strong>
+                          <span>{tool.blurb}</span>
+                        </div>
+                        <ArrowRight size={16} />
+                      </Link>
+                    ) : (
+                      <div key={tool.name} className='tool-row tool-row--muted'>
+                        <div className='tool-row-copy'>
+                          <strong>{tool.name}</strong>
+                          <span>{tool.blurb}</span>
+                        </div>
+                        <small className='status-pill'>{tool.status}</small>
                       </div>
-                      <ArrowRight size={16} />
-                    </Link>
-                  ) : (
-                    <div key={tool.name} className='tool-row tool-row--muted'>
-                      <div>
-                        <strong>{tool.name}</strong>
-                        <span>{tool.blurb}</span>
-                      </div>
-                      <small>{tool.status}</small>
-                    </div>
-                  )
-                )}
-              </div>
-            </section>
-          )
-        })}
-      </section>
+                    )
+                  )}
+                </div>
+              </section>
+            )
+          })}
+        </section>
+      ) : (
+        <section className='surface surface--compact'>
+          <p className='empty-text'>Sin coincidencias.</p>
+        </section>
+      )}
     </div>
   )
 }

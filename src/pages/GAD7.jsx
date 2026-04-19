@@ -50,10 +50,7 @@ export default function GAD7() {
           <section key={question} className='question-card question-card--wide'>
             <div className='question-card-head'>
               <span className='question-index'>{String(index + 1).padStart(2, '0')}</span>
-              <div>
-                <h4>Ítem {index + 1}</h4>
-                <p>{question}</p>
-              </div>
+              <h4>{question}</h4>
             </div>
 
             <div className='option-stack option-stack--inline'>

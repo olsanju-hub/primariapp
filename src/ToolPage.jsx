@@ -2,8 +2,8 @@ import React from 'react'
 import {
   AlertTriangle,
   ClipboardList,
-  ShieldCheck,
   Stethoscope,
+  ShieldCheck,
 } from 'lucide-react'
 
 export default function ToolPage({
@@ -22,42 +22,33 @@ export default function ToolPage({
 }) {
   return (
     <article className='tool-page'>
-      <header className='tool-hero'>
-        <div className='tool-hero-copy'>
-          <span className='section-kicker'>{specialty}</span>
+      <header className='surface surface--compact tool-header'>
+        <div className='tool-header-main'>
+          <span className='tool-header-tag'>{specialty}</span>
           <h2>{title}</h2>
-          <p className='section-copy'>{description}</p>
+          <p className='tool-header-copy'>{description}</p>
         </div>
 
-        <div className='tool-hero-grid'>
-          <div className='context-chip'>
-            <ClipboardList size={18} />
-            <div>
-              <span>Utilidad clínica</span>
-              <strong>{clinicalUse}</strong>
-            </div>
+        <dl className='tool-meta-list'>
+          <div className='tool-meta-item'>
+            <dt className='tool-meta-label'>
+              <ClipboardList size={16} />
+              <span>Utilidad</span>
+            </dt>
+            <dd>{clinicalUse}</dd>
           </div>
-          <div className='context-chip'>
-            <Stethoscope size={18} />
-            <div>
-              <span>Cuándo usarla</span>
-              <strong>{whenToUse}</strong>
-            </div>
+          <div className='tool-meta-item'>
+            <dt className='tool-meta-label'>
+              <Stethoscope size={16} />
+              <span>Uso</span>
+            </dt>
+            <dd>{whenToUse}</dd>
           </div>
-        </div>
+        </dl>
       </header>
 
       <div className='tool-layout'>
         <section className='surface surface--form'>
-          <div className='surface-head'>
-            <div>
-              <span className='surface-kicker'>Formulario</span>
-              <h3>Completa la valoración clínica</h3>
-            </div>
-            <p>
-              Selecciona la opción que mejor represente la situación actual del paciente.
-            </p>
-          </div>
           {children}
         </section>
 
@@ -71,7 +62,7 @@ export default function ToolPage({
           <section className='surface surface--compact'>
             <div className='surface-inline-title'>
               <ShieldCheck size={18} />
-              <h3>Conducta orientativa</h3>
+              <h3>Conducta</h3>
             </div>
             <p>{conduct}</p>
           </section>
@@ -80,7 +71,7 @@ export default function ToolPage({
             <section className='surface surface--compact surface--alert'>
               <div className='surface-inline-title'>
                 <AlertTriangle size={18} />
-                <h3>Consideraciones</h3>
+                <h3>Nota</h3>
               </div>
               <p>{note}</p>
             </section>

@@ -31,10 +31,7 @@ export default function QSOFA() {
         <section className='question-card'>
           <div className='question-card-head'>
             <span className='question-index'>01</span>
-            <div>
-              <h4>Frecuencia respiratoria</h4>
-              <p>Marca si la frecuencia es igual o superior a 22 respiraciones por minuto.</p>
-            </div>
+            <h4>Frecuencia respiratoria</h4>
           </div>
           <label className={fr ? 'choice-card choice-card--selected' : 'choice-card'}>
             <input type='checkbox' checked={fr} onChange={(event) => setFr(event.target.checked)} />
@@ -46,10 +43,7 @@ export default function QSOFA() {
         <section className='question-card'>
           <div className='question-card-head'>
             <span className='question-index'>02</span>
-            <div>
-              <h4>Presión arterial sistólica</h4>
-              <p>Activa el criterio si la PAS es igual o inferior a 100 mmHg.</p>
-            </div>
+            <h4>Presión arterial sistólica</h4>
           </div>
           <label className={pas ? 'choice-card choice-card--selected' : 'choice-card'}>
             <input type='checkbox' checked={pas} onChange={(event) => setPas(event.target.checked)} />
@@ -61,10 +55,7 @@ export default function QSOFA() {
         <section className='question-card'>
           <div className='question-card-head'>
             <span className='question-index'>03</span>
-            <div>
-              <h4>Estado mental</h4>
-              <p>Activa el criterio si Glasgow es inferior a 15 o existe alteración aguda del estado mental.</p>
-            </div>
+            <h4>Estado mental</h4>
           </div>
           <label className={gcs ? 'choice-card choice-card--selected' : 'choice-card'}>
             <input type='checkbox' checked={gcs} onChange={(event) => setGcs(event.target.checked)} />

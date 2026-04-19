@@ -63,10 +63,7 @@ export default function Barthel() {
           <section key={item.key} className='question-card'>
             <div className='question-card-head'>
               <span className='question-index'>{String(index + 1).padStart(2, '0')}</span>
-              <div>
-                <h4>{item.label}</h4>
-                <p>Selecciona la opción que mejor describa la situación actual.</p>
-              </div>
+              <h4>{item.label}</h4>
             </div>
 
             <div className='option-stack'>
