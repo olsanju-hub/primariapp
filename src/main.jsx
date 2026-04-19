@@ -12,6 +12,11 @@ import CHA2DS2VASc from './pages/CHA2DS2VASc'
 import HASBLED from './pages/HASBLED'
 import QSOFA from './pages/qSOFA'
 import SCORE2 from './pages/SCORE2'
+import NEWS2 from './pages/NEWS2'
+import CRB65 from './pages/CRB65'
+import WellsTVP from './pages/WellsTVP'
+import CentorMcIsaac from './pages/CentorMcIsaac'
+import FINDRISC from './pages/FINDRISC'
 import './index.css'
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
@@ -37,6 +42,11 @@ createRoot(document.getElementById('root')).render(
         <Route path='cha2ds2vasc' element={<CHA2DS2VASc />} />
         <Route path='hasbled' element={<HASBLED />} />
         <Route path='qsofa' element={<QSOFA />} />
+        <Route path='news2' element={<NEWS2 />} />
+        <Route path='crb65' element={<CRB65 />} />
+        <Route path='wells-tvp' element={<WellsTVP />} />
+        <Route path='centor-mcisaac' element={<CentorMcIsaac />} />
+        <Route path='findrisc' element={<FINDRISC />} />
         <Route path='score2' element={<SCORE2 />} />
       </Route>
     </Routes>

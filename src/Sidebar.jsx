@@ -39,7 +39,10 @@ export default function Sidebar({ onNavigate = () => {} }) {
                 >
                   <Icon size={20} />
                 </span>
-                <span className='sidebar-section-title'>{specialty.name}</span>
+                <div className='sidebar-section-copy'>
+                  <span className='sidebar-section-title'>{specialty.name}</span>
+                  <small className='sidebar-section-count'>{specialty.tools.length}</small>
+                </div>
               </div>
 
               <ul className='sidebar-links'>

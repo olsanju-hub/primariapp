@@ -1,6 +1,4 @@
 import {
-  Activity,
-  Baby,
   Brain,
   Heart,
   Home,
@@ -12,6 +10,54 @@ import {
 } from 'lucide-react'
 
 export const specialties = [
+  {
+    id: 'urgencias',
+    name: 'Urgencias',
+    icon: ShieldAlert,
+    accent: '#ef7f4e',
+    soft: '#fff1e8',
+    tools: [
+      {
+        name: 'qSOFA',
+        path: '/qsofa',
+        blurb: 'Cribado rápido de sepsis.',
+        status: 'Operativa',
+      },
+      {
+        name: 'NEWS2',
+        path: '/news2',
+        blurb: 'Detección de deterioro agudo.',
+        status: 'Operativa',
+      },
+      {
+        name: 'Wells TVP',
+        path: '/wells-tvp',
+        blurb: 'Probabilidad clínica de TVP.',
+        status: 'Operativa',
+      },
+    ],
+  },
+  {
+    id: 'atencion-primaria',
+    name: 'Atención Primaria',
+    icon: Stethoscope,
+    accent: '#3487b5',
+    soft: '#eaf7fb',
+    tools: [
+      {
+        name: 'Centor/McIsaac',
+        path: '/centor-mcisaac',
+        blurb: 'Faringoamigdalitis aguda.',
+        status: 'Operativa',
+      },
+      {
+        name: 'FINDRISC',
+        path: '/findrisc',
+        blurb: 'Riesgo de diabetes tipo 2.',
+        status: 'Operativa',
+      },
+    ],
+  },
   {
     id: 'cardiologia',
     name: 'Cardiología',
@@ -40,20 +86,6 @@ export const specialties = [
     ],
   },
   {
-    id: 'endocrinologia',
-    name: 'Endocrinología',
-    icon: Activity,
-    accent: '#3d9b82',
-    soft: '#e7f7f2',
-    tools: [
-      {
-        name: 'Riesgo metabólico',
-        blurb: 'Cribado y seguimiento.',
-        status: 'Próximamente',
-      },
-    ],
-  },
-  {
     id: 'geriatria',
     name: 'Geriatría',
     icon: Users,
@@ -69,35 +101,6 @@ export const specialties = [
     ],
   },
   {
-    id: 'ginecologia',
-    name: 'Ginecología',
-    icon: Baby,
-    accent: '#d77292',
-    soft: '#fff0f5',
-    tools: [
-      {
-        name: 'Riesgo gestacional',
-        blurb: 'Seguimiento obstétrico.',
-        status: 'Próximamente',
-      },
-    ],
-  },
-  {
-    id: 'urgencias',
-    name: 'Urgencias',
-    icon: ShieldAlert,
-    accent: '#ef7f4e',
-    soft: '#fff1e8',
-    tools: [
-      {
-        name: 'qSOFA',
-        path: '/qsofa',
-        blurb: 'Cribado rápido de sepsis.',
-        status: 'Operativa',
-      },
-    ],
-  },
-  {
     id: 'neumologia',
     name: 'Neumología',
     icon: Thermometer,
@@ -105,29 +108,16 @@ export const specialties = [
     soft: '#e8f8fb',
     tools: [
       {
-        name: 'Riesgo respiratorio',
-        blurb: 'Patología respiratoria.',
-        status: 'Próximamente',
+        name: 'CRB-65',
+        path: '/crb65',
+        blurb: 'Neumonía adquirida en la comunidad.',
+        status: 'Operativa',
       },
     ],
   },
   {
-    id: 'pediatria',
-    name: 'Pediatría',
-    icon: Stethoscope,
-    accent: '#5d8cce',
-    soft: '#ecf4ff',
-    tools: [
-      {
-        name: 'Percentiles pediátricos',
-        blurb: 'Desarrollo y crecimiento.',
-        status: 'Próximamente',
-      },
-    ],
-  },
-  {
-    id: 'psiquiatria',
-    name: 'Psiquiatría',
+    id: 'salud-mental',
+    name: 'Salud Mental',
     icon: Brain,
     accent: '#5b70d6',
     soft: '#eef1ff',
@@ -158,15 +148,29 @@ export const toolIndex = specialties.flatMap((specialty) =>
   }))
 )
 
-export const availableTools = toolIndex.filter(({ path }) => Boolean(path))
+export const availableTools = toolIndex.filter(
+  ({ path, status }) => Boolean(path) && status === 'Operativa'
+)
+export const plannedTools = toolIndex.filter(({ status }) => status !== 'Operativa')
+
 export const activeSpecialties = specialties
   .map((specialty) => ({
     ...specialty,
-    tools: specialty.tools.filter(({ path }) => Boolean(path)),
+    tools: specialty.tools.filter(({ path, status }) => Boolean(path) && status === 'Operativa'),
   }))
   .filter((specialty) => specialty.tools.length > 0)
 
 export const defaultHomeSpecialty = 'urgencias'
+
+export const featuredTools = availableTools.filter(({ path }) =>
+  ['/qsofa', '/news2', '/centor-mcisaac', '/cha2ds2vasc'].includes(path)
+)
+
+export const catalogStats = {
+  activeTools: availableTools.length,
+  plannedTools: plannedTools.length,
+  activeSpecialties: activeSpecialties.length,
+}
 
 export const primaryNav = [
   { name: 'Inicio', path: '/', icon: Home },
@@ -177,5 +181,5 @@ export const mobileNav = [
   { name: 'Inicio', path: '/', icon: Home },
   { name: 'Lista', path: '/herramientas', icon: LayoutGrid },
   { name: 'qSOFA', path: '/qsofa', icon: ShieldAlert },
-  { name: 'PHQ-9', path: '/phq9', icon: Brain },
+  { name: 'NEWS2', path: '/news2', icon: Heart },
 ]

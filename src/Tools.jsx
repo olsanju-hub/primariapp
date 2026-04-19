@@ -1,7 +1,7 @@
 import React, { useDeferredValue, useMemo, useState } from 'react'
 import { ArrowRight, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { specialties, toolIndex } from './appData'
+import { availableTools, plannedTools, specialties, toolIndex } from './appData'
 
 export default function Tools() {
   const [query, setQuery] = useState('')
@@ -44,13 +44,26 @@ export default function Tools() {
             placeholder='Buscar por nombre o especialidad...'
           />
         </label>
-        <span className='tools-count'>{resultCount}</span>
+        <div className='summary-row'>
+          <span className='summary-pill'>{availableTools.length} activas</span>
+          {plannedTools.length > 0 ? (
+            <span className='summary-pill summary-pill--muted'>
+              {plannedTools.length} pendientes
+            </span>
+          ) : null}
+          <span className='tools-count'>
+            {normalized ? `${resultCount} resultados` : 'Catálogo completo'}
+          </span>
+        </div>
       </section>
 
       {filteredSpecialties.length > 0 ? (
         <section className='tools-groups'>
           {filteredSpecialties.map((specialty) => {
             const Icon = specialty.icon
+            const activeCount = specialty.tools.filter(
+              ({ path, status }) => Boolean(path) && status === 'Operativa'
+            ).length
             return (
               <section key={specialty.id} className='surface surface--compact tool-group'>
                 <div className='tool-group-head'>
@@ -63,17 +76,26 @@ export default function Tools() {
                   <div>
                     <h3>{specialty.name}</h3>
                   </div>
+                  <span className='status-pill'>{activeCount}</span>
                 </div>
 
                 <div className='tool-list'>
                   {specialty.tools.map((tool) =>
-                    tool.path ? (
+                    tool.path && tool.status === 'Operativa' ? (
                       <Link key={tool.name} to={tool.path} className='tool-row'>
                         <div className='tool-row-copy'>
                           <strong>{tool.name}</strong>
                           <span>{tool.blurb}</span>
                         </div>
                         <ArrowRight size={16} />
+                      </Link>
+                    ) : tool.path ? (
+                      <Link key={tool.name} to={tool.path} className='tool-row tool-row--muted'>
+                        <div className='tool-row-copy'>
+                          <strong>{tool.name}</strong>
+                          <span>{tool.blurb}</span>
+                        </div>
+                        <small className='status-pill'>{tool.status}</small>
                       </Link>
                     ) : (
                       <div key={tool.name} className='tool-row tool-row--muted'>
