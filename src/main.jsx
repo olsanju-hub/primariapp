@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import App from './App'
 import Home from './Home'
 import About from './About'
@@ -14,7 +14,7 @@ import SCORE2 from './pages/SCORE2'
 import './index.css'
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+  <HashRouter>
     <Routes>
       <Route path='/' element={<App />}>
         <Route index element={<Home />} />
@@ -28,5 +28,5 @@ createRoot(document.getElementById('root')).render(
         <Route path='score2' element={<SCORE2 />} />
       </Route>
     </Routes>
-  </BrowserRouter>
+  </HashRouter>
 )

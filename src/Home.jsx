@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+const logoUrl = `${import.meta.env.BASE_URL}logo.png`
+
 export default function Home() {
   return (
     <div className='card hero-card'>
-      <img className='hero-logo' src='/logo.png' alt='PrimariAPP Logo' />
+      <img className='hero-logo' src={logoUrl} alt='PrimariAPP Logo' />
       <h1>👋 Bienvenido a PrimariAPP</h1>
       <p className='small hero-copy'>
         PrimariAPP es una herramienta médica diseñada para profesionales de Atención Primaria.
