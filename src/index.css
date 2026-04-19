@@ -102,8 +102,8 @@ h4,
 }
 
 .app-shell-sidebar {
-  width: 276px;
-  flex: 0 0 276px;
+  width: 284px;
+  flex: 0 0 284px;
   padding: 16px 12px 16px 16px;
 }
 
@@ -175,13 +175,18 @@ h4,
 .app-workspace {
   flex: 1;
   min-width: 0;
-  padding: 18px 18px 110px;
+  padding: 18px 16px 110px;
 }
 
 .app-workspace > * {
   width: 100%;
   max-width: 1680px;
   margin: 0 auto;
+}
+
+.app-workspace > .home-page,
+.app-workspace > .tools-page {
+  max-width: none;
 }
 
 .sidebar-panel {
@@ -404,8 +409,9 @@ h4,
 }
 
 .home-page {
-  grid-template-columns: minmax(0, 2fr) minmax(360px, 0.9fr);
+  grid-template-columns: minmax(0, 2.4fr) minmax(390px, 0.96fr);
   align-items: start;
+  gap: 1.1rem;
 }
 
 .home-top-grid {
@@ -782,8 +788,8 @@ h4,
 
 @media (min-width: 1360px) {
   .app-shell-sidebar {
-    width: 258px;
-    flex-basis: 258px;
+    width: 284px;
+    flex-basis: 284px;
   }
 
   .topbar {
@@ -791,16 +797,16 @@ h4,
   }
 
   .app-workspace {
-    padding-inline: 14px;
+    padding-inline: 12px;
   }
 
   .app-workspace > * {
-    max-width: 1780px;
+    max-width: 1820px;
   }
 
   .home-page {
-    grid-template-columns: minmax(0, 2.15fr) minmax(380px, 0.95fr);
-    gap: 1rem;
+    grid-template-columns: minmax(0, 2.8fr) minmax(418px, 0.94fr);
+    gap: 1.1rem;
   }
 
   .surface--compact {
@@ -813,7 +819,7 @@ h4,
   }
 
   .home-search-head h2 {
-    font-size: 2.35rem;
+    font-size: 2.45rem;
   }
 
   .summary-pill {
@@ -823,7 +829,7 @@ h4,
   }
 
   .home-searchbar {
-    min-height: 74px;
+    min-height: 76px;
   }
 
   .specialty-focus {
@@ -840,6 +846,16 @@ h4,
     padding: 1rem 1.05rem;
   }
 
+  .frequent-card {
+    min-height: 112px;
+    padding: 1.1rem;
+  }
+
+  .frequent-card strong,
+  .tool-pill--detail strong {
+    font-size: 1.08rem;
+  }
+
   .tools-groups {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -847,8 +863,8 @@ h4,
 
 @media (min-width: 1720px) {
   .app-shell-sidebar {
-    width: 244px;
-    flex-basis: 244px;
+    width: 280px;
+    flex-basis: 280px;
   }
 
   .topbar {
@@ -856,20 +872,20 @@ h4,
   }
 
   .app-workspace {
-    padding-inline: 10px;
+    padding-inline: 8px;
   }
 
   .app-workspace > * {
-    max-width: 1860px;
+    max-width: 1920px;
   }
 
   .home-page {
-    grid-template-columns: minmax(0, 2.35fr) minmax(410px, 0.92fr);
-    gap: 1.05rem;
+    grid-template-columns: minmax(0, 3.15fr) minmax(438px, 0.92fr);
+    gap: 1.15rem;
   }
 
   .home-search-head h2 {
-    font-size: 2.55rem;
+    font-size: 2.7rem;
   }
 
   .home-frequent {
@@ -881,12 +897,16 @@ h4,
   }
 
   .frequent-card {
-    min-height: 116px;
+    min-height: 124px;
   }
 
   .specialty-tab {
-    min-height: 52px;
-    padding-inline: 1rem;
+    min-height: 54px;
+    padding-inline: 1.04rem;
+  }
+
+  .specialty-tab span {
+    font-size: 0.94rem;
   }
 
   .specialty-focus {
@@ -904,8 +924,8 @@ h4,
   }
 
   .tool-pill--detail {
-    min-height: 104px;
-    padding: 1.05rem 1.1rem;
+    min-height: 110px;
+    padding: 1.08rem 1.12rem;
   }
 }
 
