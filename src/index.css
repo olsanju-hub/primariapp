@@ -786,10 +786,104 @@ h4,
   line-height: 1.35;
 }
 
+@media (min-width: 1081px) {
+  .app-shell-sidebar {
+    width: 520px;
+    flex-basis: 520px;
+  }
+
+  .sidebar-panel {
+    gap: 1.15rem;
+    padding: 20px 18px 18px;
+    border-radius: 32px;
+  }
+
+  .sidebar-brand {
+    gap: 1rem;
+    padding-bottom: 0.9rem;
+    font-size: 1.75rem;
+  }
+
+  .sidebar-brand-mark {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+
+  .sidebar-quicklinks {
+    gap: 0.7rem;
+  }
+
+  .sidebar-quicklink {
+    gap: 0.9rem;
+    min-height: 66px;
+    padding: 0.95rem 1.1rem;
+    border-radius: 18px;
+    font-size: 1.6rem;
+  }
+
+  .sidebar-quicklink svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sidebar-nav {
+    gap: 0.95rem;
+    padding-right: 6px;
+  }
+
+  .sidebar-section {
+    gap: 0.85rem;
+    padding: 0.95rem;
+    border-radius: 22px;
+  }
+
+  .sidebar-section-header {
+    gap: 0.9rem;
+  }
+
+  .sidebar-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+  }
+
+  .sidebar-icon-wrap svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sidebar-section-title {
+    font-size: 1.58rem;
+  }
+
+  .sidebar-section-count {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0 0.7rem;
+    font-size: 1.25rem;
+  }
+
+  .sidebar-links {
+    gap: 0.5rem;
+  }
+
+  .sidebar-link {
+    min-height: 60px;
+    padding: 0.95rem 1rem;
+    border-radius: 16px;
+  }
+
+  .sidebar-link-name {
+    font-size: 1.58rem;
+    line-height: 1.24;
+  }
+}
+
 @media (min-width: 1360px) {
   .app-shell-sidebar {
-    width: 284px;
-    flex-basis: 284px;
+    width: 568px;
+    flex-basis: 568px;
   }
 
   .topbar {
@@ -863,8 +957,8 @@ h4,
 
 @media (min-width: 1720px) {
   .app-shell-sidebar {
-    width: 280px;
-    flex-basis: 280px;
+    width: 584px;
+    flex-basis: 584px;
   }
 
   .topbar {
