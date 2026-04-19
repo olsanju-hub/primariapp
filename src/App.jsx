@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { ArrowRight, Menu, X } from 'lucide-react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import { findRouteMeta, mobileNav } from './appData'
+import { appIconUrl } from './appIcon'
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -41,23 +42,20 @@ export default function App() {
               {drawerOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
-            <div>
-              <span className='topbar-kicker'>{meta.specialty}</span>
-              <div className='topbar-title-row'>
+            <div className='topbar-brand'>
+              <img className='topbar-brand-mark' src={appIconUrl} alt='Icono PrimariAPP' />
+              <div>
+                <span className='topbar-kicker'>{meta.specialty}</span>
                 <h1>{meta.title}</h1>
-                <span className='topbar-pill'>Consulta</span>
+                <p>{meta.description}</p>
               </div>
-              <p>{meta.description}</p>
             </div>
           </div>
 
-          <div className='topbar-profile'>
-            <div className='topbar-profile-copy'>
-              <strong>PrimariAPP</strong>
-              <span>Entorno clínico de apoyo</span>
-            </div>
-            <div className='topbar-avatar'>AP</div>
-          </div>
+          <Link to='/herramientas' className='topbar-action'>
+            Ver herramientas
+            <ArrowRight size={16} />
+          </Link>
         </header>
 
         <main className='app-workspace'>

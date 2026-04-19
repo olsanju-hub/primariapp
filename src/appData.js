@@ -5,6 +5,7 @@ import {
   Heart,
   Home,
   Info,
+  LayoutGrid,
   ShieldAlert,
   Stethoscope,
   Syringe,
@@ -167,35 +168,25 @@ export const toolIndex = specialties.flatMap((specialty) =>
   }))
 )
 
-export const favoriteTools = toolIndex.filter(({ path }) =>
+export const availableTools = toolIndex.filter(({ path }) => Boolean(path))
+
+export const favoriteTools = availableTools.filter(({ path }) =>
   ['/cha2ds2vasc', '/barthel', '/qsofa'].includes(path)
 )
 
-export const recentTools = toolIndex.filter(({ path }) =>
-  ['/hasbled', '/phq9', '/gad7'].includes(path)
+export const quickAccess = availableTools.filter(({ path }) =>
+  ['/cha2ds2vasc', '/hasbled', '/barthel', '/qsofa', '/phq9'].includes(path)
 )
-
-export const quickAccess = [
-  {
-    title: 'Toma de decisiones rápida',
-    description: 'Prioriza las herramientas que más se consultan en triaje, FA y fragilidad.',
-    tools: favoriteTools,
-  },
-  {
-    title: 'Seguimiento longitudinal',
-    description: 'Escalas útiles para revisión funcional y monitorización de salud mental.',
-    tools: recentTools,
-  },
-]
 
 export const primaryNav = [
   { name: 'Inicio', path: '/', icon: Home },
+  { name: 'Herramientas', path: '/herramientas', icon: LayoutGrid },
   { name: 'Acerca de', path: '/about', icon: Info },
 ]
 
 export const mobileNav = [
   { name: 'Inicio', path: '/', icon: Home },
-  { name: 'Cardio', path: '/cha2ds2vasc', icon: Heart },
+  { name: 'Tools', path: '/herramientas', icon: LayoutGrid },
   { name: 'Urgencias', path: '/qsofa', icon: Syringe },
   { name: 'Mental', path: '/phq9', icon: Brain },
 ]
@@ -212,6 +203,12 @@ const routeMeta = [
     title: 'Marco de uso',
     specialty: 'PrimariAPP',
     description: 'Alcance clínico, propósito del proyecto y principios de uso seguro en consulta.',
+  },
+  {
+    path: '/herramientas',
+    title: 'Todas las herramientas',
+    specialty: 'Exploración',
+    description: 'Listado clínico único para recorrer las escalas activas y las próximas incorporaciones.',
   },
   {
     path: '/barthel',
@@ -269,7 +266,7 @@ export const overviewStats = [
   },
   {
     label: 'Herramientas operativas',
-    value: `${toolIndex.filter(({ path }) => Boolean(path)).length}`,
+    value: `${availableTools.length}`,
     detail: 'Escalas listas para uso en consulta',
   },
   {

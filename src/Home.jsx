@@ -1,22 +1,8 @@
 import React, { useDeferredValue, useMemo, useState } from 'react'
-import {
-  ArrowRight,
-  Clock3,
-  Search,
-  Sparkles,
-  Star,
-} from 'lucide-react'
+import { ArrowRight, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import {
-  favoriteTools,
-  overviewStats,
-  quickAccess,
-  recentTools,
-  specialties,
-  toolIndex,
-} from './appData'
-
-const logoUrl = `${import.meta.env.BASE_URL}logo.png`
+import { quickAccess, specialties, toolIndex } from './appData'
+import { appIconUrl } from './appIcon'
 
 export default function Home() {
   const [query, setQuery] = useState('')
@@ -26,7 +12,7 @@ export default function Home() {
     const normalized = deferredQuery.trim().toLowerCase()
 
     if (!normalized) {
-      return favoriteTools
+      return []
     }
 
     return toolIndex.filter(({ name, specialty, blurb }) =>
@@ -36,140 +22,86 @@ export default function Home() {
 
   return (
     <div className='dashboard'>
-      <section className='hero-panel'>
-        <div className='hero-copy-block'>
-          <span className='section-kicker'>Entorno clínico</span>
-          <h2>Consulta escalas útiles en segundos y mantén una lectura clínica clara.</h2>
+      <section className='home-intro'>
+        <div>
+          <span className='section-kicker'>PrimariAPP</span>
+          <h2>Escalas clínicas a mano, con menos ruido y mejor lectura en consulta.</h2>
           <p className='section-copy'>
-            PrimariAPP reorganiza acceso, interpretación y conducta orientativa para que
-            cada herramienta se use con menos ruido visual y mejor jerarquía.
+            Busca, entra y resuelve. La portada queda centrada en acceso rápido, no en
+            paneles repetidos.
           </p>
-
-          <div className='hero-actions'>
-            <Link to='/cha2ds2vasc' className='btn btn-primary'>
-              Abrir acceso rápido
-              <ArrowRight size={16} />
-            </Link>
-            <Link to='/about' className='btn btn-secondary'>Ver marco de uso</Link>
-          </div>
         </div>
 
-        <div className='hero-summary'>
-          <div className='hero-logo-wrap'>
-            <img className='hero-logo' src={logoUrl} alt='PrimariAPP Logo' />
-            <div>
-              <strong>PrimariAPP</strong>
-              <span>Suite clínica para Atención Primaria</span>
-            </div>
-          </div>
-
-          <div className='hero-stats'>
-            {overviewStats.map((item) => (
-              <div key={item.label} className='hero-stat-card'>
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-                <p>{item.detail}</p>
-              </div>
-            ))}
-          </div>
+        <div className='home-intro-side'>
+          <img className='home-intro-mark' src={appIconUrl} alt='Icono PrimariAPP' />
+          <Link to='/herramientas' className='btn btn-secondary'>
+            Ver todas las herramientas
+            <ArrowRight size={16} />
+          </Link>
         </div>
       </section>
 
-      <section className='dashboard-main'>
-        <div className='surface surface--search'>
-          <div className='surface-head'>
-            <div>
-              <span className='surface-kicker'>Buscador</span>
-              <h3>Encuentra una escala por nombre, utilidad o especialidad</h3>
-            </div>
-            <p>Optimizado para consulta rápida y navegación móvil sin perder contexto.</p>
+      <section className='surface surface--search home-search'>
+        <div className='surface-head'>
+          <div>
+            <span className='surface-kicker'>Buscador principal</span>
+            <h3>Encuentra cualquier escala en segundos</h3>
           </div>
+          <Link to='/herramientas' className='surface-link'>
+            Ver todas
+            <ArrowRight size={16} />
+          </Link>
+        </div>
 
-          <label className='searchbar'>
-            <Search size={18} />
-            <input
-              type='search'
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder='Buscar Barthel, qSOFA, depresión, anticoagulación...'
-            />
-          </label>
+        <label className='searchbar'>
+          <Search size={18} />
+          <input
+            type='search'
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder='Buscar Barthel, qSOFA, depresión, anticoagulación...'
+          />
+        </label>
 
+        {results.length > 0 ? (
           <div className='search-results'>
-            {results.map((tool) => (
+            {results.slice(0, 6).map((tool) => (
               tool.path ? (
-                <Link key={tool.name} to={tool.path} className='search-result-card'>
+                <Link key={tool.name} to={tool.path} className='search-result-card search-result-card--compact'>
                   <div>
                     <span className='search-result-tag'>{tool.specialty}</span>
                     <strong>{tool.name}</strong>
-                    <p>{tool.blurb}</p>
                   </div>
-                  <span className='search-result-status'>{tool.status}</span>
+                  <ArrowRight size={16} />
                 </Link>
               ) : (
-                <div key={tool.name} className='search-result-card search-result-card--muted'>
+                <div key={tool.name} className='search-result-card search-result-card--muted search-result-card--compact'>
                   <div>
                     <span className='search-result-tag'>{tool.specialty}</span>
                     <strong>{tool.name}</strong>
-                    <p>{tool.blurb}</p>
                   </div>
-                  <span className='search-result-status'>{tool.status}</span>
                 </div>
               )
             ))}
           </div>
-        </div>
-
-        <div className='dashboard-aside'>
-          <section className='surface surface--compact'>
-            <div className='surface-inline-title'>
-              <Star size={18} />
-              <h3>Favoritos</h3>
-            </div>
-            <div className='mini-list'>
-              {favoriteTools.map((tool) => (
-                <Link key={tool.path} to={tool.path} className='mini-list-link'>
-                  <strong>{tool.name}</strong>
-                  <span>{tool.specialty}</span>
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          <section className='surface surface--compact'>
-            <div className='surface-inline-title'>
-              <Clock3 size={18} />
-              <h3>Recientes sugeridos</h3>
-            </div>
-            <div className='mini-list'>
-              {recentTools.map((tool) => (
-                <Link key={tool.path} to={tool.path} className='mini-list-link'>
-                  <strong>{tool.name}</strong>
-                  <span>{tool.blurb}</span>
-                </Link>
-              ))}
-            </div>
-          </section>
-        </div>
+        ) : null}
       </section>
 
-      <section className='dashboard-quick-grid'>
-        {quickAccess.map((group) => (
-          <div key={group.title} className='surface surface--compact'>
-            <div className='surface-inline-title'>
-              <Sparkles size={18} />
-              <h3>{group.title}</h3>
-            </div>
-            <p className='surface-text'>{group.description}</p>
-            <div className='pill-row'>
-              {group.tools.map((tool) => (
-                <Link key={tool.path} to={tool.path} className='tool-pill'>
-                  {tool.name}
-                </Link>
-              ))}
-            </div>
+      <section className='surface surface--compact home-quick'>
+        <div className='surface-head'>
+          <div>
+            <span className='surface-kicker'>Accesos rápidos</span>
+            <h3>Lo más usado en consulta</h3>
           </div>
-        ))}
+        </div>
+
+        <div className='pill-row'>
+          {quickAccess.map((tool) => (
+            <Link key={tool.path} to={tool.path} className='tool-pill'>
+              {tool.name}
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section className='dashboard-specialties'>
@@ -178,9 +110,10 @@ export default function Home() {
             <span className='section-kicker'>Especialidades</span>
             <h3>Explora por área clínica</h3>
           </div>
-          <p className='section-copy'>
-            La navegación se reorganiza por contexto asistencial para reducir pasos innecesarios.
-          </p>
+          <Link to='/herramientas' className='surface-link'>
+            Ver todas las herramientas
+            <ArrowRight size={16} />
+          </Link>
         </div>
 
         <div className='specialty-grid'>
@@ -199,7 +132,6 @@ export default function Home() {
                 </div>
                 <div className='specialty-copy'>
                   <strong>{specialty.name}</strong>
-                  <p>{specialty.summary}</p>
                 </div>
                 <div className='specialty-meta'>
                   <span>{activeTools.length} activas</span>

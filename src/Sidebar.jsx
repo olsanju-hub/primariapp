@@ -2,15 +2,14 @@ import {
   Activity,
   Baby,
   Brain,
-  ChevronRight,
   Heart,
-  Home,
   Info,
   Stethoscope,
   Users,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
-import { favoriteTools, primaryNav, specialties } from './appData'
+import { primaryNav, specialties } from './appData'
+import { appIconUrl } from './appIcon'
 
 const localIcons = {
   Cardiología: Heart,
@@ -26,15 +25,18 @@ export default function Sidebar({ onNavigate = () => {} }) {
     <div className='sidebar-panel'>
       <div className='sidebar-brand'>
         <NavLink to='/' className='sidebar-brand-link' onClick={onNavigate}>
-          <span className='sidebar-eyebrow'>Herramientas clínicas</span>
-          <h1>PrimariAPP</h1>
-          <p className='sidebar-copy'>
-            Navegación clínica unificada para consulta, seguimiento y decisiones rápidas.
-          </p>
+          <img className='sidebar-brand-mark' src={appIconUrl} alt='Icono PrimariAPP' />
+          <div>
+            <span className='sidebar-eyebrow'>Herramientas clínicas</span>
+            <h1>PrimariAPP</h1>
+            <p className='sidebar-copy'>
+              Navegación clara para abrir una escala con menos pasos y menos ruido.
+            </p>
+          </div>
         </NavLink>
       </div>
 
-      <div className='sidebar-quicklinks'>
+      <nav className='sidebar-quicklinks' aria-label='Accesos principales'>
         {primaryNav.map(({ name, path, icon: Icon }) => (
           <NavLink
             key={path}
@@ -49,29 +51,7 @@ export default function Sidebar({ onNavigate = () => {} }) {
             <span>{name}</span>
           </NavLink>
         ))}
-      </div>
-
-      <section className='sidebar-favorites'>
-        <div className='sidebar-favorites-head'>
-          <span className='sidebar-mini-title'>Favoritos de consulta</span>
-          <span className='sidebar-counter'>{favoriteTools.length}</span>
-        </div>
-        <div className='sidebar-favorites-list'>
-          {favoriteTools.map((tool) => (
-            <NavLink
-              key={tool.path}
-              to={tool.path}
-              onClick={onNavigate}
-              className={({ isActive }) =>
-                isActive ? 'favorite-link favorite-link--active' : 'favorite-link'
-              }
-            >
-              <span>{tool.name}</span>
-              <ChevronRight size={14} />
-            </NavLink>
-          ))}
-        </div>
-      </section>
+      </nav>
 
       <nav className='sidebar-nav' aria-label='Navegación principal'>
         {specialties.map((specialty) => {
@@ -84,7 +64,9 @@ export default function Sidebar({ onNavigate = () => {} }) {
                 </span>
                 <div>
                   <span className='sidebar-section-title'>{specialty.name}</span>
-                  <p className='sidebar-section-copy'>{specialty.summary}</p>
+                  <p className='sidebar-section-copy'>
+                    {specialty.tools.filter(({ path }) => Boolean(path)).length} herramientas activas
+                  </p>
                 </div>
               </div>
 

@@ -4,6 +4,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import App from './App'
 import Home from './Home'
 import About from './About'
+import Tools from './Tools'
 import Barthel from './pages/Barthel'
 import PHQ9 from './pages/PHQ9'
 import GAD7 from './pages/GAD7'
@@ -13,11 +14,22 @@ import QSOFA from './pages/qSOFA'
 import SCORE2 from './pages/SCORE2'
 import './index.css'
 
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register(`${import.meta.env.BASE_URL}service-worker.js`, {
+        scope: import.meta.env.BASE_URL,
+      })
+      .catch(() => {})
+  })
+}
+
 createRoot(document.getElementById('root')).render(
   <HashRouter>
     <Routes>
       <Route path='/' element={<App />}>
         <Route index element={<Home />} />
+        <Route path='herramientas' element={<Tools />} />
         <Route path='about' element={<About />} />
         <Route path='barthel' element={<Barthel />} />
         <Route path='phq9' element={<PHQ9 />} />
