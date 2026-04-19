@@ -2,112 +2,113 @@ import {
   Activity,
   Baby,
   Brain,
+  ChevronRight,
   Heart,
   Home,
   Info,
   Stethoscope,
-  Syringe,
-  Thermometer,
   Users,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
+import { favoriteTools, primaryNav, specialties } from './appData'
 
-const categories = [
-  {
-    name: 'Cardiología',
-    icon: Heart,
-    scales: [
-      { name: 'CHA₂DS₂-VASc', path: '/cha2ds2vasc' },
-      { name: 'HAS-BLED', path: '/hasbled' },
-      { name: 'SCORE2 (en construcción)', path: '/score2' },
-    ],
-  },
-  {
-    name: 'Endocrinología',
-    icon: Activity,
-    scales: [{ name: 'En construcción (Endocrinología)' }],
-  },
-  {
-    name: 'Geriatría',
-    icon: Users,
-    scales: [{ name: 'Barthel', path: '/barthel' }],
-  },
-  {
-    name: 'Ginecología',
-    icon: Baby,
-    scales: [{ name: 'En construcción (Ginecología)' }],
-  },
-  {
-    name: 'Urgencias',
-    icon: Syringe,
-    scales: [{ name: 'qSOFA', path: '/qsofa' }],
-  },
-  {
-    name: 'Neumología',
-    icon: Thermometer,
-    scales: [{ name: 'En construcción (Neumología)' }],
-  },
-  {
-    name: 'Pediatría',
-    icon: Stethoscope,
-    scales: [{ name: 'En construcción (Pediatría)' }],
-  },
-  {
-    name: 'Psiquiatría',
-    icon: Brain,
-    scales: [
-      { name: 'PHQ-9', path: '/phq9' },
-      { name: 'GAD-7', path: '/gad7' },
-    ],
-  },
-]
+const localIcons = {
+  Cardiología: Heart,
+  Endocrinología: Activity,
+  Geriatría: Users,
+  Ginecología: Baby,
+  Pediatría: Stethoscope,
+  Psiquiatría: Brain,
+}
 
-const utilityLinks = [
-  { name: 'Inicio', path: '/', icon: Home },
-  { name: 'Acerca de', path: '/about', icon: Info },
-]
-
-export default function Sidebar() {
+export default function Sidebar({ onNavigate = () => {} }) {
   return (
     <div className='sidebar-panel'>
       <div className='sidebar-brand'>
-        <NavLink to='/' className='sidebar-brand-link'>
-          <span className='sidebar-eyebrow'>Herramientas clinicas</span>
+        <NavLink to='/' className='sidebar-brand-link' onClick={onNavigate}>
+          <span className='sidebar-eyebrow'>Herramientas clínicas</span>
           <h1>PrimariAPP</h1>
           <p className='sidebar-copy'>
-            Escalas y calculadoras medicas para consulta de Atencion Primaria.
+            Navegación clínica unificada para consulta, seguimiento y decisiones rápidas.
           </p>
         </NavLink>
       </div>
 
-      <nav className='sidebar-nav' aria-label='Navegacion principal'>
-        {categories.map((cat) => {
-          const Icon = cat.icon
+      <div className='sidebar-quicklinks'>
+        {primaryNav.map(({ name, path, icon: Icon }) => (
+          <NavLink
+            key={path}
+            to={path}
+            end={path === '/'}
+            onClick={onNavigate}
+            className={({ isActive }) =>
+              isActive ? 'sidebar-quicklink sidebar-quicklink--active' : 'sidebar-quicklink'
+            }
+          >
+            <Icon size={18} />
+            <span>{name}</span>
+          </NavLink>
+        ))}
+      </div>
+
+      <section className='sidebar-favorites'>
+        <div className='sidebar-favorites-head'>
+          <span className='sidebar-mini-title'>Favoritos de consulta</span>
+          <span className='sidebar-counter'>{favoriteTools.length}</span>
+        </div>
+        <div className='sidebar-favorites-list'>
+          {favoriteTools.map((tool) => (
+            <NavLink
+              key={tool.path}
+              to={tool.path}
+              onClick={onNavigate}
+              className={({ isActive }) =>
+                isActive ? 'favorite-link favorite-link--active' : 'favorite-link'
+              }
+            >
+              <span>{tool.name}</span>
+              <ChevronRight size={14} />
+            </NavLink>
+          ))}
+        </div>
+      </section>
+
+      <nav className='sidebar-nav' aria-label='Navegación principal'>
+        {specialties.map((specialty) => {
+          const Icon = localIcons[specialty.name] ?? specialty.icon
           return (
-            <section key={cat.name} className='sidebar-section'>
+            <section key={specialty.name} className='sidebar-section'>
               <div className='sidebar-section-header'>
                 <span className='sidebar-icon-wrap'>
                   <Icon size={20} />
                 </span>
-                <span className='sidebar-section-title'>{cat.name}</span>
+                <div>
+                  <span className='sidebar-section-title'>{specialty.name}</span>
+                  <p className='sidebar-section-copy'>{specialty.summary}</p>
+                </div>
               </div>
 
               <ul className='sidebar-links'>
-                {cat.scales.map((scale, idx) => (
-                  <li key={idx}>
-                    {scale.path ? (
+                {specialty.tools.map((tool) => (
+                  <li key={tool.name}>
+                    {tool.path ? (
                       <NavLink
-                        to={scale.path}
+                        to={tool.path}
+                        onClick={onNavigate}
                         className={({ isActive }) =>
                           isActive
                             ? 'sidebar-link sidebar-link--active'
                             : 'sidebar-link'
                         }
                       >
-                        {scale.name}
+                        <span>{tool.name}</span>
+                        <small>{tool.status}</small>
                       </NavLink>
                     ) : (
-                      <span className='sidebar-link sidebar-link--muted'>{scale.name}</span>
+                      <span className='sidebar-link sidebar-link--muted'>
+                        <span>{tool.name}</span>
+                        <small>{tool.status}</small>
+                      </span>
                     )}
                   </li>
                 ))}
@@ -117,22 +118,9 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className='sidebar-utility'>
-        {utilityLinks.map(({ name, path, icon: Icon }) => (
-          <NavLink
-            key={path}
-            to={path}
-            end={path === '/'}
-            className={({ isActive }) =>
-              isActive
-                ? 'sidebar-utility-link sidebar-utility-link--active'
-                : 'sidebar-utility-link'
-            }
-          >
-            <Icon size={18} />
-            <span>{name}</span>
-          </NavLink>
-        ))}
+      <div className='sidebar-footer-note'>
+        <Info size={16} />
+        <p>Las calculadoras complementan la decisión clínica y no sustituyen juicio profesional.</p>
       </div>
     </div>
   )
