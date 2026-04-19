@@ -1,4 +1,4 @@
-const CACHE_NAME = 'primariapp-shell-v1'
+const CACHE_NAME = 'primariapp-shell-v2'
 const CORE_ASSETS = [
   './',
   './manifest.webmanifest',
@@ -33,7 +33,9 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return
 
   if (event.request.mode === 'navigate') {
-    event.respondWith(fetch(event.request).catch(() => caches.match('./')))
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match('./'))
+    )
     return
   }
 
@@ -49,7 +51,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy))
           return response
         })
-        .catch(() => caches.match('./primariapp-icon.svg'))
+        .catch(() => Response.error())
     })
   )
 })

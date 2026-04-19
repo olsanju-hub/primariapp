@@ -33,7 +33,7 @@ export default function GAD7() {
 
   return (
     <ToolPage
-      specialty='Psiquiatría'
+      specialty='Salud Mental'
       title='GAD-7'
       description='Escala breve para cuantificar ansiedad generalizada y monitorizar respuesta clínica.'
       clinicalUse='Cribado estructurado de síntomas ansiosos e impacto subjetivo.'

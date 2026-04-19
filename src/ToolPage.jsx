@@ -8,6 +8,7 @@ import {
 
 export default function ToolPage({
   specialty,
+  status,
   title,
   description,
   clinicalUse,
@@ -24,7 +25,10 @@ export default function ToolPage({
     <article className='tool-page'>
       <header className='surface surface--compact tool-header'>
         <div className='tool-header-main'>
-          <span className='tool-header-tag'>{specialty}</span>
+          <div className='tool-header-tags'>
+            <span className='tool-header-tag'>{specialty}</span>
+            {status ? <span className='status-pill'>{status}</span> : null}
+          </div>
           <h2>{title}</h2>
           <p className='tool-header-copy'>{description}</p>
         </div>

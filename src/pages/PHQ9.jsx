@@ -40,7 +40,7 @@ export default function PHQ9() {
 
   return (
     <ToolPage
-      specialty='Psiquiatría'
+      specialty='Salud Mental'
       title='PHQ-9'
       description='Cuestionario breve de depresión útil para cribado, cuantificación de severidad y seguimiento evolutivo.'
       clinicalUse='Apoya la conversación clínica y el seguimiento estructurado de síntomas depresivos.'

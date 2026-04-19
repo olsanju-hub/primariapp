@@ -9,33 +9,23 @@ import {
   Users,
 } from 'lucide-react'
 
-export const specialties = [
+export const TOOL_STATUS = {
+  READY: 'ready',
+  PLANNED: 'planned',
+}
+
+export const TOOL_STATUS_LABELS = {
+  [TOOL_STATUS.READY]: 'Operativa',
+  [TOOL_STATUS.PLANNED]: 'En preparación',
+}
+
+const specialtyMeta = [
   {
     id: 'urgencias',
     name: 'Urgencias',
     icon: ShieldAlert,
     accent: '#ef7f4e',
     soft: '#fff1e8',
-    tools: [
-      {
-        name: 'qSOFA',
-        path: '/qsofa',
-        blurb: 'Cribado rápido de sepsis.',
-        status: 'Operativa',
-      },
-      {
-        name: 'NEWS2',
-        path: '/news2',
-        blurb: 'Detección de deterioro agudo.',
-        status: 'Operativa',
-      },
-      {
-        name: 'Wells TVP',
-        path: '/wells-tvp',
-        blurb: 'Probabilidad clínica de TVP.',
-        status: 'Operativa',
-      },
-    ],
   },
   {
     id: 'atencion-primaria',
@@ -43,20 +33,6 @@ export const specialties = [
     icon: Stethoscope,
     accent: '#3487b5',
     soft: '#eaf7fb',
-    tools: [
-      {
-        name: 'Centor/McIsaac',
-        path: '/centor-mcisaac',
-        blurb: 'Faringoamigdalitis aguda.',
-        status: 'Operativa',
-      },
-      {
-        name: 'FINDRISC',
-        path: '/findrisc',
-        blurb: 'Riesgo de diabetes tipo 2.',
-        status: 'Operativa',
-      },
-    ],
   },
   {
     id: 'cardiologia',
@@ -64,26 +40,6 @@ export const specialties = [
     icon: Heart,
     accent: '#2f72de',
     soft: '#e8f1ff',
-    tools: [
-      {
-        name: 'CHA₂DS₂-VASc',
-        path: '/cha2ds2vasc',
-        blurb: 'Riesgo tromboembólico en FA.',
-        status: 'Operativa',
-      },
-      {
-        name: 'HAS-BLED',
-        path: '/hasbled',
-        blurb: 'Riesgo hemorrágico.',
-        status: 'Operativa',
-      },
-      {
-        name: 'SCORE2',
-        path: '/score2',
-        blurb: 'Riesgo cardiovascular preventivo.',
-        status: 'En preparación',
-      },
-    ],
   },
   {
     id: 'geriatria',
@@ -91,14 +47,6 @@ export const specialties = [
     icon: Users,
     accent: '#7e6ad9',
     soft: '#f0ecff',
-    tools: [
-      {
-        name: 'Índice de Barthel',
-        path: '/barthel',
-        blurb: 'Dependencia en ABVD.',
-        status: 'Operativa',
-      },
-    ],
   },
   {
     id: 'neumologia',
@@ -106,14 +54,6 @@ export const specialties = [
     icon: Thermometer,
     accent: '#4597a9',
     soft: '#e8f8fb',
-    tools: [
-      {
-        name: 'CRB-65',
-        path: '/crb65',
-        blurb: 'Neumonía adquirida en la comunidad.',
-        status: 'Operativa',
-      },
-    ],
   },
   {
     id: 'salud-mental',
@@ -121,52 +61,157 @@ export const specialties = [
     icon: Brain,
     accent: '#5b70d6',
     soft: '#eef1ff',
-    tools: [
-      {
-        name: 'PHQ-9',
-        path: '/phq9',
-        blurb: 'Síntomas depresivos.',
-        status: 'Operativa',
-      },
-      {
-        name: 'GAD-7',
-        path: '/gad7',
-        blurb: 'Ansiedad generalizada.',
-        status: 'Operativa',
-      },
-    ],
   },
 ]
 
-export const toolIndex = specialties.flatMap((specialty) =>
-  specialty.tools.map((tool) => ({
+const specialtyMap = new Map(specialtyMeta.map((specialty) => [specialty.id, specialty]))
+
+const rawToolCatalog = [
+  {
+    slug: 'qsofa',
+    name: 'qSOFA',
+    specialtyId: 'urgencias',
+    blurb: 'Cribado rápido de sepsis.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['sepsis', 'infección', 'deterioro', 'urgencias'],
+  },
+  {
+    slug: 'news2',
+    name: 'NEWS2',
+    specialtyId: 'urgencias',
+    blurb: 'Detección de deterioro agudo.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['deterioro', 'alerta temprana', 'monitorización'],
+  },
+  {
+    slug: 'wells-tvp',
+    name: 'Wells TVP',
+    specialtyId: 'urgencias',
+    blurb: 'Probabilidad clínica de TVP.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['trombosis', 'edema', 'pierna', 'dímero-d'],
+  },
+  {
+    slug: 'centor-mcisaac',
+    name: 'Centor/McIsaac',
+    specialtyId: 'atencion-primaria',
+    blurb: 'Faringoamigdalitis aguda.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['amigdalitis', 'odinofagia', 'estreptococo'],
+  },
+  {
+    slug: 'findrisc',
+    name: 'FINDRISC',
+    specialtyId: 'atencion-primaria',
+    blurb: 'Riesgo de diabetes tipo 2.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['diabetes', 'metabólico', 'cribado', 'glucemia'],
+  },
+  {
+    slug: 'cha2ds2vasc',
+    name: 'CHA₂DS₂-VASc',
+    specialtyId: 'cardiologia',
+    blurb: 'Riesgo tromboembólico en FA.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['fibrilación auricular', 'anticoagulación', 'ictus'],
+  },
+  {
+    slug: 'hasbled',
+    name: 'HAS-BLED',
+    specialtyId: 'cardiologia',
+    blurb: 'Riesgo hemorrágico.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['sangrado', 'hemorragia', 'anticoagulación'],
+  },
+  {
+    slug: 'score2',
+    name: 'SCORE2',
+    specialtyId: 'cardiologia',
+    blurb: 'Riesgo cardiovascular preventivo.',
+    status: TOOL_STATUS.PLANNED,
+    searchTerms: ['prevención', 'lípidos', 'colesterol', 'cardiovascular'],
+  },
+  {
+    slug: 'barthel',
+    name: 'Índice de Barthel',
+    specialtyId: 'geriatria',
+    blurb: 'Dependencia en ABVD.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['funcionalidad', 'dependencia', 'geriatría', 'abvd'],
+  },
+  {
+    slug: 'crb65',
+    name: 'CRB-65',
+    specialtyId: 'neumologia',
+    blurb: 'Neumonía adquirida en la comunidad.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['neumonía', 'pac', 'gravedad'],
+  },
+  {
+    slug: 'phq9',
+    name: 'PHQ-9',
+    specialtyId: 'salud-mental',
+    blurb: 'Síntomas depresivos.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['depresión', 'ánimo', 'cribado'],
+  },
+  {
+    slug: 'gad7',
+    name: 'GAD-7',
+    specialtyId: 'salud-mental',
+    blurb: 'Ansiedad generalizada.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['ansiedad', 'preocupación', 'salud mental'],
+  },
+]
+
+export const toolCatalog = rawToolCatalog.map((tool) => {
+  const specialty = specialtyMap.get(tool.specialtyId)
+
+  return {
     ...tool,
+    path: `/${tool.slug}`,
     specialty: specialty.name,
+    icon: specialty.icon,
     accent: specialty.accent,
     soft: specialty.soft,
-    icon: specialty.icon,
-  }))
-)
+    statusLabel: TOOL_STATUS_LABELS[tool.status],
+    searchText: [
+      tool.name,
+      tool.blurb,
+      specialty.name,
+      ...(tool.searchTerms ?? []),
+    ]
+      .join(' ')
+      .toLowerCase(),
+  }
+})
 
-export const availableTools = toolIndex.filter(
-  ({ path, status }) => Boolean(path) && status === 'Operativa'
-)
-export const plannedTools = toolIndex.filter(({ status }) => status !== 'Operativa')
+export const specialties = specialtyMeta.map((specialty) => ({
+  ...specialty,
+  tools: toolCatalog.filter((tool) => tool.specialtyId === specialty.id),
+}))
+
+export const availableTools = toolCatalog.filter(({ status }) => status === TOOL_STATUS.READY)
+export const plannedTools = toolCatalog.filter(({ status }) => status === TOOL_STATUS.PLANNED)
 
 export const activeSpecialties = specialties
   .map((specialty) => ({
     ...specialty,
-    tools: specialty.tools.filter(({ path, status }) => Boolean(path) && status === 'Operativa'),
+    tools: specialty.tools.filter(({ status }) => status === TOOL_STATUS.READY),
   }))
   .filter((specialty) => specialty.tools.length > 0)
 
-export const defaultHomeSpecialty = 'urgencias'
+export const defaultHomeSpecialty = activeSpecialties[0]?.id ?? specialtyMeta[0].id
 
-export const featuredTools = availableTools.filter(({ path }) =>
-  ['/qsofa', '/news2', '/centor-mcisaac', '/cha2ds2vasc'].includes(path)
-)
+export const featuredTools = availableTools.filter(({ featured }) => Boolean(featured))
 
 export const catalogStats = {
+  totalTools: toolCatalog.length,
   activeTools: availableTools.length,
   plannedTools: plannedTools.length,
   activeSpecialties: activeSpecialties.length,

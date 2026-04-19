@@ -11,6 +11,7 @@ export default function App() {
 
   useEffect(() => {
     setDrawerOpen(false)
+    window.scrollTo(0, 0)
   }, [location.pathname])
 
   return (

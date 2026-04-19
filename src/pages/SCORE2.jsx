@@ -7,6 +7,7 @@ export default function SCORE2() {
   return (
     <ToolPage
       specialty='Cardiología'
+      status='En preparación'
       title='SCORE2'
       description='Módulo preparado para integrar cálculo de riesgo cardiovascular preventivo en consulta.'
       clinicalUse='Servirá para apoyar prevención primaria y conversación de riesgo compartido.'

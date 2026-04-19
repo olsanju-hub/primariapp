@@ -31,7 +31,7 @@ export default function Sidebar({ onNavigate = () => {} }) {
         {activeSpecialties.map((specialty) => {
           const Icon = specialty.icon
           return (
-            <section key={specialty.name} className='sidebar-section'>
+            <section key={specialty.id} className='sidebar-section'>
               <div className='sidebar-section-header'>
                 <span
                   className='sidebar-icon-wrap'
@@ -47,7 +47,7 @@ export default function Sidebar({ onNavigate = () => {} }) {
 
               <ul className='sidebar-links'>
                 {specialty.tools.map((tool) => (
-                  <li key={tool.name}>
+                  <li key={tool.slug}>
                     <NavLink
                       to={tool.path}
                       onClick={onNavigate}

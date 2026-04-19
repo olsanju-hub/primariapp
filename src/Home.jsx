@@ -21,15 +21,12 @@ export default function Home() {
       return []
     }
 
-    return availableTools.filter(({ name, specialty, blurb }) =>
-      `${name} ${specialty} ${blurb}`.toLowerCase().includes(normalized)
-    )
+    return availableTools.filter(({ searchText }) => searchText.includes(normalized))
   }, [deferredQuery])
 
   const activeSpecialty = useMemo(
     () =>
-      activeSpecialties.find((specialty) => specialty.id === specialtyId) ??
-      activeSpecialties[0],
+      activeSpecialties.find((specialty) => specialty.id === specialtyId) ?? activeSpecialties[0],
     [specialtyId]
   )
   const ActiveSpecialtyIcon = activeSpecialty.icon
@@ -66,7 +63,7 @@ export default function Home() {
           {results.length > 0 ? (
             <div className='search-results search-results--featured'>
               {results.slice(0, 6).map((tool) => (
-                <Link key={tool.name} to={tool.path} className='search-result-card'>
+                <Link key={tool.slug} to={tool.path} className='search-result-card'>
                   <div>
                     <span className='search-result-tag'>{tool.specialty}</span>
                     <strong className='search-result-name'>{tool.name}</strong>
@@ -91,7 +88,7 @@ export default function Home() {
 
           <div className='home-frequent-list'>
             {featuredTools.map((tool) => (
-              <Link key={tool.path} to={tool.path} className='frequent-card'>
+              <Link key={tool.slug} to={tool.path} className='frequent-card'>
                 <div>
                   <span className='search-result-tag'>{tool.specialty}</span>
                   <strong>{tool.name}</strong>
@@ -155,7 +152,7 @@ export default function Home() {
 
           <div className='home-specialty-tools'>
             {specialtyTools.map((tool) => (
-              <Link key={tool.path} to={tool.path} className='tool-pill tool-pill--detail'>
+              <Link key={tool.slug} to={tool.path} className='tool-pill tool-pill--detail'>
                 <strong>{tool.name}</strong>
                 <span>{tool.blurb}</span>
               </Link>
