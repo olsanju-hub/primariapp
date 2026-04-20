@@ -1,12 +1,10 @@
 import React from 'react'
 import {
   AlertTriangle,
-  ArrowLeft,
   ClipboardList,
   ShieldCheck,
   Stethoscope,
 } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import { specialties } from './appData'
 
 export default function ToolPage({
@@ -26,7 +24,6 @@ export default function ToolPage({
 }) {
   const specialtyEntry = specialties.find((entry) => entry.name === specialty) ?? null
   const urgent = specialtyEntry?.id === 'urgencias'
-  const backPath = specialtyEntry ? `/herramientas?specialty=${specialtyEntry.id}` : '/herramientas'
 
   const scoreToneClass = {
     neutral: 'score-panel score-panel--neutral',
@@ -37,14 +34,6 @@ export default function ToolPage({
 
   return (
     <article className='tool-page'>
-      <Link
-        to={backPath}
-        className={urgent ? 'page-back-link page-back-link--urgent' : 'page-back-link'}
-      >
-        <ArrowLeft size={18} />
-        Volver al panel
-      </Link>
-
       <div
         className={
           urgent

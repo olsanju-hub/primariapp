@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { ArrowLeft, ArrowRight, Search } from 'lucide-react'
+import { ArrowRight, Search } from 'lucide-react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { activeSpecialties, availableTools } from './appData'
 
@@ -27,14 +27,6 @@ export default function Tools() {
 
     return (
       <section className='page-stage page-stage--narrow'>
-        <Link
-          to='/'
-          className={urgent ? 'page-back-link page-back-link--urgent' : 'page-back-link'}
-        >
-          <ArrowLeft size={18} />
-          Volver al panel
-        </Link>
-
         <div
           className={
             urgent
