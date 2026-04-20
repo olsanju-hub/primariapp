@@ -1,108 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import Sidebar from './Sidebar'
-import { mobileNav, primaryNav, toolCatalog } from './appData'
-import { appIconUrl } from './appIcon'
+import React, { useEffect } from 'react'
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Home, LayoutGrid } from 'lucide-react'
 
 export default function App() {
-  const [drawerOpen, setDrawerOpen] = useState(false)
   const location = useLocation()
 
-  const currentLabel = (() => {
-    if (location.pathname === '/') return 'Inicio'
-    if (location.pathname === '/herramientas') return 'Catálogo'
-
-    const activeTool = toolCatalog.find(({ path }) => path === location.pathname)
-    return activeTool?.name ?? 'Escala'
-  })()
-
   useEffect(() => {
-    setDrawerOpen(false)
-    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [location.pathname])
 
   return (
-    <div className='app-shell'>
-      <button
-        type='button'
-        aria-label='Cerrar menú'
-        className={drawerOpen ? 'app-drawer-backdrop app-drawer-backdrop--open' : 'app-drawer-backdrop'}
-        onClick={() => setDrawerOpen(false)}
-      />
-      <aside className={drawerOpen ? 'app-drawer app-drawer--open' : 'app-drawer'}>
-        <Sidebar onNavigate={() => setDrawerOpen(false)} />
-      </aside>
+    <div className="p-4 md:p-8 font-sans pb-32 min-h-screen">
+      
+      {/* HEADER LIMPIO */}
+      <header className="max-w-6xl mx-auto flex justify-between items-center mb-8">
+        <Link to="/">
+          <h1 className="text-2xl font-bold text-[#3e5a3e] tracking-tight">Primari<span className="text-[#557c55]">APP</span></h1>
+          <p className="text-sm text-[#557c55]/80 font-medium">Asistente de valoración clínica</p>
+        </Link>
+        <Link to="/" className="p-3 bg-white rounded-2xl shadow-sm hover:bg-slate-50 transition-colors border border-slate-100">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#557c55]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </Link>
+      </header>
 
-      <div className='app-frame'>
-        <header className='topbar'>
-          <div className='topbar-brand-wrap'>
-            <Link to='/' className='topbar-brand'>
-              <img className='topbar-brand-mark' src={appIconUrl} alt='Icono PrimariAPP' />
-              <span>PrimariAPP</span>
-            </Link>
+      {/* WORKSPACE PRINCIPAL */}
+      <main className="max-w-6xl mx-auto">
+        <Outlet />
+      </main>
 
-            <span className='topbar-context'>{currentLabel}</span>
-          </div>
-
-          <nav className='topbar-nav' aria-label='Navegación principal'>
-            {primaryNav.map(({ name, path, icon: Icon }) => (
-              <NavLink
-                key={path}
-                to={path}
-                end={path === '/'}
-                className={({ isActive }) =>
-                  isActive ? 'topbar-link topbar-link--active' : 'topbar-link'
-                }
-              >
-                <Icon size={16} />
-                <span>{name}</span>
-              </NavLink>
-            ))}
-          </nav>
-
-          <div className='topbar-actions'>
-            <button
-              type='button'
-              className='icon-button topbar-menu'
-              onClick={() => setDrawerOpen((open) => !open)}
-              aria-label={drawerOpen ? 'Cerrar menú' : 'Abrir menú'}
-            >
-              {drawerOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
-        </header>
-
-        <main className='app-workspace'>
-          <Outlet />
-        </main>
-
-        <nav className='mobile-nav' aria-label='Accesos móviles'>
-          {mobileNav.map(({ name, path, icon: Icon }) => (
-            <NavLink
-              key={path}
-              to={path}
-              end={path === '/'}
-              className={({ isActive }) =>
-                isActive ? 'mobile-nav-link mobile-nav-link--active' : 'mobile-nav-link'
-              }
-            >
-              <Icon size={18} />
-              <span>{name}</span>
-            </NavLink>
-          ))}
-
-          <button
-            type='button'
-            className='mobile-nav-link mobile-nav-link--menu'
-            onClick={() => setDrawerOpen(true)}
-            aria-label='Más herramientas'
-          >
-            <Menu size={18} />
-            <span>Menú</span>
-          </button>
-        </nav>
-      </div>
+      {/* NAVEGACIÓN INFERIOR FLOTANTE */}
+      <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[85%] max-w-sm bg-white/90 backdrop-blur-md border border-slate-100 shadow-xl rounded-full p-2 flex justify-around items-center z-50">
+        <Link to="/" className={`p-4 rounded-full transition-all ${location.pathname === '/' ? 'text-[#557c55] bg-slate-50' : 'text-slate-400 hover:bg-slate-50'}`}><Home size={24} /></Link>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="w-14 h-14 bg-[#557c55] text-white rounded-full shadow-lg shadow-[#557c55]/20 flex items-center justify-center hover:scale-105 transition-transform -mt-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+        </button>
+        <Link to="/herramientas" className={`p-4 rounded-full transition-all ${location.pathname === '/herramientas' ? 'text-[#557c55] bg-slate-50' : 'text-slate-400 hover:bg-slate-50'}`}><LayoutGrid size={24} /></Link>
+      </nav>
     </div>
   )
 }

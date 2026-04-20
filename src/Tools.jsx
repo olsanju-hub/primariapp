@@ -1,144 +1,40 @@
-import React, { useDeferredValue, useMemo, useState } from 'react'
-import { ArrowRight, Search } from 'lucide-react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  TOOL_STATUS,
-  availableTools,
-  plannedTools,
-  specialties,
-  toolCatalog,
-} from './appData'
+import { Search } from 'lucide-react'
+import { availableTools } from './appData'
 
 export default function Tools() {
   const [query, setQuery] = useState('')
-  const deferredQuery = useDeferredValue(query)
-
-  const normalized = deferredQuery.trim().toLowerCase()
-
-  const filteredSpecialties = useMemo(() => {
-    if (!normalized) {
-      return specialties
-    }
-
-    return specialties
-      .map((specialty) => ({
-        ...specialty,
-        tools: specialty.tools.filter((tool) => tool.searchText.includes(normalized)),
-      }))
-      .filter((specialty) => specialty.tools.length > 0)
-  }, [normalized])
-
-  const resultCount = useMemo(() => {
-    if (!normalized) {
-      return toolCatalog.length
-    }
-
-    return filteredSpecialties.reduce((total, specialty) => total + specialty.tools.length, 0)
-  }, [filteredSpecialties, normalized])
+  const normalized = query.trim().toLowerCase()
+  const results = normalized ? availableTools.filter(t => t.searchText.includes(normalized)) : availableTools
 
   return (
-    <div className='tools-page'>
-      <section className='surface surface--compact surface--hero tools-hero'>
-        <div className='tools-hero-head'>
-          <div className='tools-hero-copy'>
-            <span className='section-label'>Catálogo clínico</span>
-            <h2>Herramientas</h2>
-          </div>
+    <div className="max-w-6xl mx-auto page-section active space-y-8">
+      {/* CABECERA BUSCADOR */}
+      <div className="floating-card p-8 md:p-10 rounded-3xl">
+        <h2 className="text-3xl font-bold text-slate-800 mb-2">Catálogo de Herramientas</h2>
+        <p className="text-slate-500 mb-8">Todas las calculadoras, escalas y criterios activos.</p>
 
-          <div className='summary-row'>
-            <span className='summary-pill'>{availableTools.length} activas</span>
-            {plannedTools.length > 0 ? (
-              <span className='summary-pill summary-pill--muted'>
-                {plannedTools.length} pendientes
-              </span>
-            ) : null}
-            <span className='tools-count'>
-              {normalized ? `${resultCount} resultados` : 'Catálogo completo'}
-            </span>
-          </div>
+        <div className="relative">
+          <input type="text" placeholder="Buscar por nombre o especialidad..." value={query} onChange={e => setQuery(e.target.value)}
+            className="w-full p-4 pl-12 rounded-2xl bg-[#f4f7f5] border border-transparent focus:bg-white focus:border-slate-200 focus:ring-2 focus:ring-[#557c55] outline-none transition-all" />
+          <Search className="absolute left-4 top-4 text-slate-400" size={24} />
         </div>
+      </div>
 
-        <label className='searchbar searchbar--large tools-searchbar'>
-          <Search size={18} />
-          <input
-            type='search'
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder='Buscar por nombre, síntoma o especialidad...'
-          />
-        </label>
-      </section>
-
-      {filteredSpecialties.length > 0 ? (
-        <section className='tools-directory'>
-          {filteredSpecialties.map((specialty) => {
-            const Icon = specialty.icon
-            const activeTools = specialty.tools.filter(({ status }) => status === TOOL_STATUS.READY)
-            const plannedSpecialtyTools = specialty.tools.filter(
-              ({ status }) => status === TOOL_STATUS.PLANNED
-            )
-            return (
-              <section key={specialty.id} className='surface surface--compact tool-group'>
-                <div className='tool-group-head'>
-                  <div
-                    className='specialty-icon floating-icon floating-icon--large'
-                    style={{ backgroundColor: specialty.soft, color: specialty.accent }}
-                  >
-                    <Icon size={18} />
-                  </div>
-                  <div>
-                    <h3>{specialty.name}</h3>
-                  </div>
-                  <span className='status-pill'>{activeTools.length}</span>
-                </div>
-
-                <div className='tool-list'>
-                  {activeTools.map((tool) => (
-                    <Link key={tool.slug} to={tool.path} className='tool-row'>
-                      <div className='tool-row-copy'>
-                        <strong>{tool.name}</strong>
-                        <span>{tool.blurb}</span>
-                      </div>
-                      <ArrowRight size={16} />
-                    </Link>
-                  ))}
-                </div>
-
-                {plannedSpecialtyTools.length > 0 ? (
-                  <div className='tool-group-secondary'>
-                    <span className='tool-group-subhead'>En preparación</span>
-                    <div className='tool-list'>
-                      {plannedSpecialtyTools.map((tool) =>
-                        tool.path ? (
-                          <Link key={tool.slug} to={tool.path} className='tool-row tool-row--planned'>
-                            <div className='tool-row-copy'>
-                              <strong>{tool.name}</strong>
-                              <span>{tool.blurb}</span>
-                            </div>
-                            <small className='status-pill'>{tool.statusLabel}</small>
-                          </Link>
-                        ) : (
-                          <div key={tool.slug} className='tool-row tool-row--planned'>
-                            <div className='tool-row-copy'>
-                              <strong>{tool.name}</strong>
-                              <span>{tool.blurb}</span>
-                            </div>
-                            <small className='status-pill'>{tool.statusLabel}</small>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                ) : null}
-              </section>
-            )
-          })}
-        </section>
-      ) : (
-        <section className='surface surface--compact'>
-          <p className='empty-text'>Sin coincidencias.</p>
-        </section>
-      )}
+      {/* LISTADO RESULTADOS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {results.length > 0 ? results.map(tool => (
+          <Link key={tool.slug} to={tool.path} className="floating-card p-6 rounded-3xl group block border-none">
+            <div className="flex justify-between items-start mb-4">
+              <span className="px-3 py-1 bg-[#f4f7f5] text-[#557c55] rounded-full text-xs font-bold uppercase tracking-wider">{tool.specialty}</span>
+              <tool.icon size={20} className="text-slate-400 group-hover:text-[#557c55] transition-colors" />
+            </div>
+            <h3 className="font-bold text-lg text-slate-800 mb-1">{tool.name}</h3>
+            <p className="text-sm text-slate-500 leading-relaxed">{tool.blurb}</p>
+          </Link>
+        )) : <p className="text-slate-500 p-4">No se encontraron herramientas que coincidan.</p>}
+      </div>
     </div>
   )
 }
