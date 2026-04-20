@@ -38,31 +38,39 @@ export default function Tools() {
 
   return (
     <div className='tools-page'>
-      <section className='surface surface--compact tools-toolbar'>
-        <label className='searchbar'>
+      <section className='surface surface--compact surface--hero tools-hero'>
+        <div className='tools-hero-head'>
+          <div className='tools-hero-copy'>
+            <span className='section-label'>Catálogo clínico</span>
+            <h2>Herramientas</h2>
+          </div>
+
+          <div className='summary-row'>
+            <span className='summary-pill'>{availableTools.length} activas</span>
+            {plannedTools.length > 0 ? (
+              <span className='summary-pill summary-pill--muted'>
+                {plannedTools.length} pendientes
+              </span>
+            ) : null}
+            <span className='tools-count'>
+              {normalized ? `${resultCount} resultados` : 'Catálogo completo'}
+            </span>
+          </div>
+        </div>
+
+        <label className='searchbar searchbar--large tools-searchbar'>
           <Search size={18} />
           <input
             type='search'
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder='Buscar por nombre o especialidad...'
+            placeholder='Buscar por nombre, síntoma o especialidad...'
           />
         </label>
-        <div className='summary-row'>
-          <span className='summary-pill'>{availableTools.length} activas</span>
-          {plannedTools.length > 0 ? (
-            <span className='summary-pill summary-pill--muted'>
-              {plannedTools.length} pendientes
-            </span>
-          ) : null}
-          <span className='tools-count'>
-            {normalized ? `${resultCount} resultados` : 'Catálogo completo'}
-          </span>
-        </div>
       </section>
 
       {filteredSpecialties.length > 0 ? (
-        <section className='tools-groups'>
+        <section className='tools-directory'>
           {filteredSpecialties.map((specialty) => {
             const Icon = specialty.icon
             const activeTools = specialty.tools.filter(({ status }) => status === TOOL_STATUS.READY)
@@ -73,7 +81,7 @@ export default function Tools() {
               <section key={specialty.id} className='surface surface--compact tool-group'>
                 <div className='tool-group-head'>
                   <div
-                    className='specialty-icon'
+                    className='specialty-icon floating-icon floating-icon--large'
                     style={{ backgroundColor: specialty.soft, color: specialty.accent }}
                   >
                     <Icon size={18} />

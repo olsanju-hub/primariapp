@@ -34,50 +34,146 @@ export default function Home() {
 
   return (
     <div className='home-page'>
-      <div className='home-top-grid'>
-        <section className='surface surface--search home-search-panel'>
-          <div className='home-search-head'>
-            <div>
-              <span className='section-label'>Buscador</span>
-              <h2>Buscar herramienta</h2>
-            </div>
+      <section className='surface surface--search surface--hero home-hero'>
+        <div className='home-hero-head'>
+          <div className='home-search-copy'>
+            <span className='section-label'>Espacio clínico</span>
+            <h2>Buscar herramienta</h2>
+            <p className='home-subtle-copy'>
+              Acceso directo a escalas operativas para consulta, planta y urgencias.
+            </p>
+          </div>
 
+          <div className='home-hero-side'>
             <div className='summary-row'>
               <span className='summary-pill'>{catalogStats.activeTools} activas</span>
               <span className='summary-pill summary-pill--muted'>
                 {catalogStats.activeSpecialties} áreas
               </span>
             </div>
+
+            <Link to='/herramientas' className='hero-action'>
+              Ver catálogo
+              <ArrowRight size={16} />
+            </Link>
           </div>
+        </div>
 
-          <label className='searchbar searchbar--large home-searchbar'>
-            <Search size={18} />
-            <input
-              type='search'
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder='Buscar Barthel, NEWS2, TEP...'
-            />
-          </label>
+        <label className='searchbar searchbar--large home-searchbar home-searchbar--hero'>
+          <Search size={18} />
+          <input
+            type='search'
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder='Buscar Barthel, NEWS2, TEP, neumonía...'
+          />
+        </label>
 
-          {results.length > 0 ? (
-            <div className='search-results search-results--featured'>
-              {results.slice(0, 6).map((tool) => (
+        {results.length > 0 ? (
+          <div className='search-results search-results--featured'>
+            {results.slice(0, 6).map((tool) => {
+              const ToolIcon = tool.icon
+
+              return (
                 <Link key={tool.slug} to={tool.path} className='search-result-card'>
-                  <div>
-                    <span className='search-result-tag'>{tool.specialty}</span>
-                    <strong className='search-result-name'>{tool.name}</strong>
+                  <div className='search-result-main'>
+                    <span
+                      className='floating-icon floating-icon--search'
+                      style={{ backgroundColor: tool.soft, color: tool.accent }}
+                    >
+                      <ToolIcon size={16} />
+                    </span>
+
+                    <div>
+                      <span className='search-result-tag'>{tool.specialty}</span>
+                      <strong className='search-result-name'>{tool.name}</strong>
+                    </div>
                   </div>
                   <ArrowRight size={16} />
                 </Link>
-              ))}
+              )
+            })}
+          </div>
+        ) : deferredQuery.trim() ? (
+          <p className='empty-text'>Sin coincidencias.</p>
+        ) : null}
+      </section>
+
+      <div className='home-main-grid'>
+        <section className='surface surface--compact home-specialty-shell'>
+          <div className='home-panel-head'>
+            <span className='section-label'>Especialidades</span>
+            <Link to='/herramientas' className='inline-action'>
+              Todas las herramientas
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className='specialty-tabs' role='tablist' aria-label='Especialidades'>
+            {activeSpecialties.map((specialty) => {
+              const Icon = specialty.icon
+              const isActive = specialty.id === activeSpecialty.id
+
+              return (
+                <button
+                  key={specialty.id}
+                  type='button'
+                  className={isActive ? 'specialty-tab specialty-tab--active' : 'specialty-tab'}
+                  onClick={() => setSpecialtyId(specialty.id)}
+                >
+                  <span
+                    className='specialty-tab-icon'
+                    style={{ backgroundColor: specialty.soft, color: specialty.accent }}
+                  >
+                    <Icon size={16} />
+                  </span>
+                  <span>{specialty.name}</span>
+                  <small>{specialty.tools.length}</small>
+                </button>
+              )
+            })}
+          </div>
+
+          <div className='specialty-spotlight'>
+            <div className='specialty-spotlight-head'>
+              <div
+                className='specialty-focus-icon floating-icon floating-icon--large'
+                style={{ backgroundColor: activeSpecialty.soft, color: activeSpecialty.accent }}
+              >
+                <ActiveSpecialtyIcon size={18} />
+              </div>
+
+              <div className='specialty-spotlight-copy'>
+                <h3>{activeSpecialty.name}</h3>
+                <p>{activeSpecialty.tools.length} herramientas operativas</p>
+              </div>
             </div>
-          ) : deferredQuery.trim() ? (
-            <p className='empty-text'>Sin coincidencias.</p>
-          ) : null}
+
+            <div className='home-specialty-tools'>
+              {specialtyTools.map((tool) => {
+                const ToolIcon = tool.icon
+
+                return (
+                  <Link key={tool.slug} to={tool.path} className='tool-pill tool-pill--detail'>
+                    <span
+                      className='floating-icon floating-icon--mini'
+                      style={{ backgroundColor: tool.soft, color: tool.accent }}
+                    >
+                      <ToolIcon size={14} />
+                    </span>
+                    <div className='tool-pill-copy'>
+                      <strong>{tool.name}</strong>
+                      <span>{tool.blurb}</span>
+                    </div>
+                    <ArrowRight size={15} />
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
         </section>
 
-        <aside className='surface surface--compact home-frequent'>
+        <aside className='surface surface--compact home-frequent-sheet'>
           <div className='home-panel-head'>
             <span className='section-label'>Frecuentes</span>
             <Link to='/herramientas' className='inline-action'>
@@ -87,79 +183,31 @@ export default function Home() {
           </div>
 
           <div className='home-frequent-list'>
-            {featuredTools.map((tool) => (
-              <Link key={tool.slug} to={tool.path} className='frequent-card'>
-                <div>
-                  <span className='search-result-tag'>{tool.specialty}</span>
-                  <strong>{tool.name}</strong>
-                  <p>{tool.blurb}</p>
-                </div>
-                <ArrowRight size={16} />
-              </Link>
-            ))}
+            {featuredTools.map((tool) => {
+              const ToolIcon = tool.icon
+
+              return (
+                <Link key={tool.slug} to={tool.path} className='frequent-card'>
+                  <div className='frequent-card-main'>
+                    <span
+                      className='floating-icon'
+                      style={{ backgroundColor: tool.soft, color: tool.accent }}
+                    >
+                      <ToolIcon size={16} />
+                    </span>
+                    <div>
+                      <span className='search-result-tag'>{tool.specialty}</span>
+                      <strong>{tool.name}</strong>
+                      <p>{tool.blurb}</p>
+                    </div>
+                  </div>
+                  <ArrowRight size={16} />
+                </Link>
+              )
+            })}
           </div>
         </aside>
       </div>
-
-      <section className='surface surface--compact home-specialties'>
-        <div className='home-panel-head'>
-          <span className='section-label'>Especialidades</span>
-          <Link to='/herramientas' className='inline-action'>
-            Todas las herramientas
-            <ArrowRight size={16} />
-          </Link>
-        </div>
-
-        <div className='specialty-tabs' role='tablist' aria-label='Especialidades'>
-          {activeSpecialties.map((specialty) => {
-            const Icon = specialty.icon
-            const isActive = specialty.id === activeSpecialty.id
-
-            return (
-              <button
-                key={specialty.id}
-                type='button'
-                className={isActive ? 'specialty-tab specialty-tab--active' : 'specialty-tab'}
-                onClick={() => setSpecialtyId(specialty.id)}
-              >
-                <span
-                  className='specialty-tab-icon'
-                  style={{ backgroundColor: specialty.soft, color: specialty.accent }}
-                >
-                  <Icon size={16} />
-                </span>
-                <span>{specialty.name}</span>
-                <small>{specialty.tools.length}</small>
-              </button>
-            )
-          })}
-        </div>
-
-        <div className='specialty-focus'>
-          <div className='specialty-focus-head'>
-            <div
-              className='specialty-focus-icon'
-              style={{ backgroundColor: activeSpecialty.soft, color: activeSpecialty.accent }}
-            >
-              <ActiveSpecialtyIcon size={18} />
-            </div>
-
-            <div>
-              <h3>{activeSpecialty.name}</h3>
-              <p>{activeSpecialty.tools.length} herramientas operativas</p>
-            </div>
-          </div>
-
-          <div className='home-specialty-tools'>
-            {specialtyTools.map((tool) => (
-              <Link key={tool.slug} to={tool.path} className='tool-pill tool-pill--detail'>
-                <strong>{tool.name}</strong>
-                <span>{tool.blurb}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

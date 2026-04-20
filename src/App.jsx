@@ -2,12 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
-import { mobileNav, primaryNav } from './appData'
+import { mobileNav, primaryNav, toolCatalog } from './appData'
 import { appIconUrl } from './appIcon'
 
 export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const location = useLocation()
+
+  const currentLabel = (() => {
+    if (location.pathname === '/') return 'Inicio'
+    if (location.pathname === '/herramientas') return 'Catálogo'
+
+    const activeTool = toolCatalog.find(({ path }) => path === location.pathname)
+    return activeTool?.name ?? 'Escala'
+  })()
 
   useEffect(() => {
     setDrawerOpen(false)
@@ -28,20 +36,13 @@ export default function App() {
 
       <div className='app-frame'>
         <header className='topbar'>
-          <div className='topbar-leading'>
-            <button
-              type='button'
-              className='icon-button topbar-menu'
-              onClick={() => setDrawerOpen((open) => !open)}
-              aria-label={drawerOpen ? 'Cerrar menú' : 'Abrir menú'}
-            >
-              {drawerOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-
+          <div className='topbar-brand-wrap'>
             <Link to='/' className='topbar-brand'>
               <img className='topbar-brand-mark' src={appIconUrl} alt='Icono PrimariAPP' />
               <span>PrimariAPP</span>
             </Link>
+
+            <span className='topbar-context'>{currentLabel}</span>
           </div>
 
           <nav className='topbar-nav' aria-label='Navegación principal'>
@@ -59,6 +60,17 @@ export default function App() {
               </NavLink>
             ))}
           </nav>
+
+          <div className='topbar-actions'>
+            <button
+              type='button'
+              className='icon-button topbar-menu'
+              onClick={() => setDrawerOpen((open) => !open)}
+              aria-label={drawerOpen ? 'Cerrar menú' : 'Abrir menú'}
+            >
+              {drawerOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </header>
 
         <main className='app-workspace'>

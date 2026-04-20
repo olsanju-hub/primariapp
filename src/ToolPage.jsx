@@ -23,36 +23,42 @@ export default function ToolPage({
 }) {
   return (
     <article className='tool-page'>
-      <header className='surface surface--compact tool-header'>
-        <div className='tool-header-main'>
-          <div className='tool-header-tags'>
-            <span className='tool-header-tag'>{specialty}</span>
-            {status ? <span className='status-pill'>{status}</span> : null}
+      <header className='surface surface--compact surface--hero tool-header'>
+        <div className='tool-hero-head'>
+          <div className='tool-header-main'>
+            <div className='tool-header-tags'>
+              <span className='tool-header-tag'>{specialty}</span>
+              {status ? <span className='status-pill'>{status}</span> : null}
+            </div>
+            <h2>{title}</h2>
+            <p className='tool-header-copy'>{description}</p>
           </div>
-          <h2>{title}</h2>
-          <p className='tool-header-copy'>{description}</p>
-        </div>
 
-        <dl className='tool-meta-list'>
-          <div className='tool-meta-item'>
-            <dt className='tool-meta-label'>
-              <ClipboardList size={16} />
-              <span>Utilidad</span>
-            </dt>
-            <dd>{clinicalUse}</dd>
-          </div>
-          <div className='tool-meta-item'>
-            <dt className='tool-meta-label'>
-              <Stethoscope size={16} />
-              <span>Uso</span>
-            </dt>
-            <dd>{whenToUse}</dd>
-          </div>
-        </dl>
+          <dl className='tool-meta-list'>
+            <div className='tool-meta-item'>
+              <dt className='tool-meta-label'>
+                <span className='meta-icon-chip'>
+                  <ClipboardList size={15} />
+                </span>
+                <span>Utilidad</span>
+              </dt>
+              <dd>{clinicalUse}</dd>
+            </div>
+            <div className='tool-meta-item'>
+              <dt className='tool-meta-label'>
+                <span className='meta-icon-chip'>
+                  <Stethoscope size={15} />
+                </span>
+                <span>Uso</span>
+              </dt>
+              <dd>{whenToUse}</dd>
+            </div>
+          </dl>
+        </div>
       </header>
 
       <div className='tool-layout'>
-        <section className='surface surface--form'>
+        <section className='surface surface--form tool-form-shell'>
           {children}
         </section>
 
@@ -65,7 +71,9 @@ export default function ToolPage({
 
           <section className='surface surface--compact'>
             <div className='surface-inline-title'>
-              <ShieldCheck size={18} />
+              <span className='meta-icon-chip meta-icon-chip--soft'>
+                <ShieldCheck size={16} />
+              </span>
               <h3>Conducta</h3>
             </div>
             <p>{conduct}</p>
@@ -74,7 +82,9 @@ export default function ToolPage({
           {note ? (
             <section className='surface surface--compact surface--alert'>
               <div className='surface-inline-title'>
-                <AlertTriangle size={18} />
+                <span className='meta-icon-chip meta-icon-chip--soft'>
+                  <AlertTriangle size={16} />
+                </span>
                 <h3>Nota</h3>
               </div>
               <p>{note}</p>
