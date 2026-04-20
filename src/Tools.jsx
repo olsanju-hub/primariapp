@@ -1,40 +1,184 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Search } from 'lucide-react'
-import { availableTools } from './appData'
+import React, { useMemo, useState } from 'react'
+import { ArrowLeft, ArrowRight, Search } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { activeSpecialties, availableTools } from './appData'
 
 export default function Tools() {
+  const [searchParams] = useSearchParams()
+  const selectedSpecialtyId = searchParams.get('specialty')
   const [query, setQuery] = useState('')
-  const normalized = query.trim().toLowerCase()
-  const results = normalized ? availableTools.filter(t => t.searchText.includes(normalized)) : availableTools
+
+  const selectedSpecialty =
+    activeSpecialties.find((specialty) => specialty.id === selectedSpecialtyId) ?? null
+
+  const normalizedQuery = query.trim().toLowerCase()
+
+  const results = useMemo(() => {
+    if (!normalizedQuery) {
+      return availableTools
+    }
+
+    return availableTools.filter((tool) => tool.searchText.includes(normalizedQuery))
+  }, [normalizedQuery])
+
+  if (selectedSpecialty) {
+    const Icon = selectedSpecialty.icon
+    const urgent = selectedSpecialty.id === 'urgencias'
+
+    return (
+      <section className='page-stage page-stage--narrow'>
+        <Link
+          to='/'
+          className={urgent ? 'page-back-link page-back-link--urgent' : 'page-back-link'}
+        >
+          <ArrowLeft size={18} />
+          Volver al panel
+        </Link>
+
+        <div
+          className={
+            urgent
+              ? 'floating-card-no-hover specialty-stage specialty-stage--urgent'
+              : 'floating-card-no-hover specialty-stage'
+          }
+        >
+          <div className='specialty-stage-head'>
+            <span
+              className={
+                urgent
+                  ? 'specialty-card-icon specialty-card-icon--urgent'
+                  : 'specialty-card-icon'
+              }
+            >
+              <Icon size={24} />
+            </span>
+
+            <div>
+              <h2>Área de {selectedSpecialty.name}</h2>
+              <p>{selectedSpecialty.description}</p>
+            </div>
+          </div>
+
+          <div className='specialty-tool-list'>
+            {selectedSpecialty.tools.map((tool) => (
+              <Link
+                key={tool.slug}
+                to={tool.path}
+                className={urgent ? 'specialty-tool-link specialty-tool-link--urgent' : 'specialty-tool-link'}
+              >
+                <span>
+                  <strong>{tool.name}</strong>
+                  <small>{tool.blurb}</small>
+                </span>
+                <ArrowRight size={18} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
-    <div className="max-w-6xl mx-auto page-section active space-y-8">
-      {/* CABECERA BUSCADOR */}
-      <div className="floating-card p-8 md:p-10 rounded-3xl">
-        <h2 className="text-3xl font-bold text-slate-800 mb-2">Catálogo de Herramientas</h2>
-        <p className="text-slate-500 mb-8">Todas las calculadoras, escalas y criterios activos.</p>
+    <section className='page-stage'>
+      <div className='home-grid'>
+        <section className='floating-card search-stage-card'>
+          <h2>
+            Explorar todas las <br />
+            <span>Herramientas</span>
+          </h2>
 
-        <div className="relative">
-          <input type="text" placeholder="Buscar por nombre o especialidad..." value={query} onChange={e => setQuery(e.target.value)}
-            className="w-full p-4 pl-12 rounded-2xl bg-[#f4f7f5] border border-transparent focus:bg-white focus:border-slate-200 focus:ring-2 focus:ring-[#557c55] outline-none transition-all" />
-          <Search className="absolute left-4 top-4 text-slate-400" size={24} />
-        </div>
-      </div>
+          <label className='search-field search-field--hero'>
+            <Search size={24} />
+            <input
+              type='search'
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder='Buscar escala, guía o criterio...'
+            />
+          </label>
+        </section>
 
-      {/* LISTADO RESULTADOS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {results.length > 0 ? results.map(tool => (
-          <Link key={tool.slug} to={tool.path} className="floating-card p-6 rounded-3xl group block border-none">
-            <div className="flex justify-between items-start mb-4">
-              <span className="px-3 py-1 bg-[#f4f7f5] text-[#557c55] rounded-full text-xs font-bold uppercase tracking-wider">{tool.specialty}</span>
-              <tool.icon size={20} className="text-slate-400 group-hover:text-[#557c55] transition-colors" />
+        <aside className='info-stage-card'>
+          <div>
+            <span className='info-stage-label'>Navegación</span>
+            <p>Acceso por especialidad o búsqueda directa a la herramienta clínica.</p>
+          </div>
+
+          <div className='info-stage-footer'>
+            <div className='info-stage-bars' aria-hidden='true'>
+              <span />
+              <span />
             </div>
-            <h3 className="font-bold text-lg text-slate-800 mb-1">{tool.name}</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">{tool.blurb}</p>
-          </Link>
-        )) : <p className="text-slate-500 p-4">No se encontraron herramientas que coincidan.</p>}
+            <small>{activeSpecialties.length} áreas clínicas</small>
+          </div>
+        </aside>
+
+        {normalizedQuery ? (
+          results.length > 0 ? (
+            results.map((tool) => {
+              const Icon = tool.icon
+
+              return (
+                <Link key={tool.slug} to={tool.path} className='floating-card specialty-card'>
+                  <span
+                    className='specialty-card-icon'
+                    style={{ backgroundColor: tool.soft, color: tool.accent }}
+                  >
+                    <Icon size={24} />
+                  </span>
+
+                  <div className='specialty-card-copy'>
+                    <strong>{tool.name}</strong>
+                    <p>{tool.blurb}</p>
+                  </div>
+
+                  <span className='specialty-card-inline'>
+                    {tool.specialty}
+                    <ArrowRight size={16} />
+                  </span>
+                </Link>
+              )
+            })
+          ) : (
+            <div className='floating-card empty-card'>
+              <strong>Sin resultados</strong>
+              <p>No hay coincidencias para “{query.trim()}”.</p>
+            </div>
+          )
+        ) : (
+          activeSpecialties.map((specialty) => {
+            const Icon = specialty.icon
+            const urgent = specialty.id === 'urgencias'
+
+            return (
+              <Link
+                key={specialty.id}
+                to={`/herramientas?specialty=${specialty.id}`}
+                className={
+                  urgent
+                    ? 'floating-card specialty-card specialty-card--urgent'
+                    : 'floating-card specialty-card'
+                }
+              >
+                <span
+                  className={
+                    urgent
+                      ? 'specialty-card-icon specialty-card-icon--urgent'
+                      : 'specialty-card-icon'
+                  }
+                >
+                  <Icon size={24} />
+                </span>
+                <div className='specialty-card-copy'>
+                  <strong>{specialty.name}</strong>
+                  <p>{specialty.description}</p>
+                </div>
+              </Link>
+            )
+          })
+        )}
       </div>
-    </div>
+    </section>
   )
 }
