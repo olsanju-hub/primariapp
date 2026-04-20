@@ -56,7 +56,7 @@ export default function Home() {
               type='search'
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder='Buscar Barthel, NEWS2, depresión, anticoagulación...'
+              placeholder='Buscar Barthel, NEWS2, TEP...'
             />
           </label>
 

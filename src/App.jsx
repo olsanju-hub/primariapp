@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
-import { mobileNav } from './appData'
+import { mobileNav, primaryNav } from './appData'
 import { appIconUrl } from './appIcon'
 
 export default function App() {
@@ -16,10 +16,6 @@ export default function App() {
 
   return (
     <div className='app-shell'>
-      <aside className='app-shell-sidebar'>
-        <Sidebar />
-      </aside>
-
       <button
         type='button'
         aria-label='Cerrar menú'
@@ -32,19 +28,37 @@ export default function App() {
 
       <div className='app-frame'>
         <header className='topbar'>
-          <button
-            type='button'
-            className='icon-button topbar-menu'
-            onClick={() => setDrawerOpen((open) => !open)}
-            aria-label={drawerOpen ? 'Cerrar menú' : 'Abrir menú'}
-          >
-            {drawerOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className='topbar-leading'>
+            <button
+              type='button'
+              className='icon-button topbar-menu'
+              onClick={() => setDrawerOpen((open) => !open)}
+              aria-label={drawerOpen ? 'Cerrar menú' : 'Abrir menú'}
+            >
+              {drawerOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
 
-          <Link to='/' className='topbar-brand'>
-            <img className='topbar-brand-mark' src={appIconUrl} alt='Icono PrimariAPP' />
-            <span>PrimariAPP</span>
-          </Link>
+            <Link to='/' className='topbar-brand'>
+              <img className='topbar-brand-mark' src={appIconUrl} alt='Icono PrimariAPP' />
+              <span>PrimariAPP</span>
+            </Link>
+          </div>
+
+          <nav className='topbar-nav' aria-label='Navegación principal'>
+            {primaryNav.map(({ name, path, icon: Icon }) => (
+              <NavLink
+                key={path}
+                to={path}
+                end={path === '/'}
+                className={({ isActive }) =>
+                  isActive ? 'topbar-link topbar-link--active' : 'topbar-link'
+                }
+              >
+                <Icon size={16} />
+                <span>{name}</span>
+              </NavLink>
+            ))}
+          </nav>
         </header>
 
         <main className='app-workspace'>
