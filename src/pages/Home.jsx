@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const [activePage, setActivePage] = useState('home');
@@ -112,6 +113,17 @@ export default function Home() {
                 <p className="text-sm text-slate-500">Apendicitis (Alvarado), Gastritis, IBD.</p>
               </div>
 
+              {/* SALUD MENTAL */}
+              <div onClick={() => setActivePage('salud-mental')} className={`p-6 rounded-3xl group cursor-pointer ${floatingCardClass}`}>
+                <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#557c55] group-hover:text-white transition-all">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-lg text-slate-800">Salud Mental</h3>
+                <p className="text-sm text-slate-500">Depresión (PHQ-9), Ansiedad (GAD-7).</p>
+              </div>
+
               {/* URGENCIAS */}
               <div onClick={() => setActivePage('urgencias')} className={`p-6 rounded-3xl group cursor-pointer border-red-100 bg-[#fff5f5]/50 ${floatingCardClass}`}>
                 <div className="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#991b1b] group-hover:text-white transition-all">
@@ -138,7 +150,12 @@ export default function Home() {
               </button>
               <div className={`p-10 rounded-3xl ${floatingCardClass}`}>
                 <h2 className="text-2xl font-bold text-slate-800 mb-4">Área de Neumología</h2>
-                <p className="text-slate-500">Selecciona el protocolo o escala requerida para valoración respiratoria.</p>
+                <p className="text-slate-500 mb-6">Selecciona el protocolo o escala requerida para valoración respiratoria.</p>
+                <div className="grid grid-cols-1 gap-4">
+                  <Link to="/curb65" className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors text-slate-700 block">
+                    Escala CURB-65
+                  </Link>
+                </div>
               </div>
             </div>
           </section>
@@ -156,7 +173,12 @@ export default function Home() {
               </button>
               <div className={`p-10 rounded-3xl ${floatingCardClass}`}>
                 <h2 className="text-2xl font-bold text-slate-800 mb-4">Área de Cardiología</h2>
-                <p className="text-slate-500">Selecciona el protocolo o escala requerida (ej. CHA₂DS₂-VASc, HAS-BLED).</p>
+                <p className="text-slate-500 mb-6">Selecciona el protocolo o escala requerida para valoración cardiovascular.</p>
+                <div className="grid grid-cols-1 gap-4">
+                  <Link to="/score2" className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors text-slate-700 block">Riesgo SCORE2</Link>
+                  <Link to="/cha2ds2vasc" className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors text-slate-700 block">Riesgo ictus (CHA₂DS₂-VASc)</Link>
+                  <Link to="/hasbled" className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors text-slate-700 block">Riesgo sangrado (HAS-BLED)</Link>
+                </div>
               </div>
             </div>
           </section>
@@ -174,7 +196,33 @@ export default function Home() {
               </button>
               <div className={`p-10 rounded-3xl ${floatingCardClass}`}>
                 <h2 className="text-2xl font-bold text-slate-800 mb-4">Área de Digestivo</h2>
-                <p className="text-slate-500">Protocolos para valoración y triaje en patologías digestivas.</p>
+                <p className="text-slate-500 mb-6">Protocolos para valoración y triaje en patologías digestivas.</p>
+                <div className="grid grid-cols-1 gap-4">
+                  <Link to="/alvarado" className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors text-slate-700 block">Escala de Alvarado (Apendicitis)</Link>
+                  <Link to="/rockall" className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors text-slate-700 block">Escala Rockall (HDA)</Link>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* SECCIÓN SALUD MENTAL */}
+        {activePage === 'salud-mental' && (
+          <section id="salud-mental" className={pageSectionClass}>
+            <div className="max-w-2xl mx-auto py-10">
+              <button onClick={() => setActivePage('home')} className="text-[#557c55] flex items-center gap-2 mb-6 font-semibold hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                </svg>
+                Volver al panel
+              </button>
+              <div className={`p-10 rounded-3xl ${floatingCardClass}`}>
+                <h2 className="text-2xl font-bold text-slate-800 mb-4">Área de Salud Mental</h2>
+                <p className="text-slate-500 mb-6">Herramientas de cribado y seguimiento para trastornos del estado de ánimo.</p>
+                <div className="grid grid-cols-1 gap-4">
+                  <Link to="/phq9" className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors text-slate-700 block">Depresión (PHQ-9)</Link>
+                  <Link to="/gad7" className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors text-slate-700 block">Ansiedad (GAD-7)</Link>
+                </div>
               </div>
             </div>
           </section>
@@ -193,9 +241,8 @@ export default function Home() {
               <div className={`p-10 rounded-3xl border-red-50 bg-[#fff5f5] ${floatingCardClass}`}>
                 <h2 className="text-2xl font-bold text-[#991b1b] mb-4">Protocolos de Urgencia</h2>
                 <div className="grid grid-cols-1 gap-4 mt-6">
-                  <div className="p-4 bg-white rounded-xl border border-red-100 shadow-sm cursor-pointer hover:bg-red-50 transition-colors text-slate-700">Escala Glasgow (GCS)</div>
-                  <div className="p-4 bg-white rounded-xl border border-red-100 shadow-sm cursor-pointer hover:bg-red-50 transition-colors text-slate-700">Triage Rápido</div>
-                  <div className="p-4 bg-white rounded-xl border border-red-100 shadow-sm cursor-pointer hover:bg-red-50 transition-colors text-slate-700">Código Ictus / IAM</div>
+                  <Link to="/news2" className="p-4 bg-white rounded-xl border border-red-100 shadow-sm hover:bg-red-50 transition-colors text-slate-700 block">NEWS2 (Deterioro Clínico)</Link>
+                  <Link to="/wells-tvp" className="p-4 bg-white rounded-xl border border-red-100 shadow-sm hover:bg-red-50 transition-colors text-slate-700 block">Escala Wells (TVP)</Link>
                 </div>
               </div>
             </div>
