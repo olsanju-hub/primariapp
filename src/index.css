@@ -368,6 +368,7 @@ a {
   margin-top: auto;
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.35rem;
   color: var(--medical-green-primary);
   font-size: 0.8rem;
@@ -442,6 +443,39 @@ a {
 .specialty-tool-list {
   display: grid;
   gap: 0.8rem;
+}
+
+.specialty-section-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.specialty-section-block {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.specialty-section-headline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.specialty-section-headline strong {
+  color: #1f2937;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.specialty-section-headline small {
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  line-height: 1.4;
 }
 
 .specialty-tool-link {
@@ -567,6 +601,11 @@ a {
 .tool-chip--muted {
   background: #f1f5f9;
   color: #64748b;
+}
+
+.tool-chip--subsection {
+  background: rgba(85, 124, 85, 0.12);
+  color: var(--medical-green-dark);
 }
 
 .tool-stage-copy h2 {

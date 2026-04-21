@@ -24,6 +24,9 @@ export default function Tools() {
   if (selectedSpecialty) {
     const Icon = selectedSpecialty.icon
     const urgent = selectedSpecialty.id === 'urgencias'
+    const metaLine = selectedSpecialty.sections.length
+      ? `${selectedSpecialty.sections.length} bloques clínicos`
+      : `${selectedSpecialty.tools.length} herramientas`
 
     return (
       <section className='page-stage page-stage--narrow'>
@@ -47,25 +50,91 @@ export default function Tools() {
 
             <div>
               <h2>Área de {selectedSpecialty.name}</h2>
-              <p>{selectedSpecialty.description}</p>
+              <p>
+                {selectedSpecialty.description} {metaLine}.
+              </p>
             </div>
           </div>
 
-          <div className='specialty-tool-list'>
-            {selectedSpecialty.tools.map((tool) => (
-              <Link
-                key={tool.slug}
-                to={tool.path}
-                className={urgent ? 'specialty-tool-link specialty-tool-link--urgent' : 'specialty-tool-link'}
-              >
-                <span>
-                  <strong>{tool.name}</strong>
-                  <small>{tool.blurb}</small>
-                </span>
-                <ArrowRight size={18} />
-              </Link>
-            ))}
-          </div>
+          {selectedSpecialty.sections.length > 0 ? (
+            <div className='specialty-section-stack'>
+              {selectedSpecialty.sections.map((section) => (
+                <section key={section.id} className='specialty-section-block'>
+                  <div className='specialty-section-headline'>
+                    <strong>{section.name}</strong>
+                    <small>{section.tools.length} herramientas</small>
+                  </div>
+
+                  <div className='specialty-tool-list'>
+                    {section.tools.map((tool) => (
+                      <Link
+                        key={tool.slug}
+                        to={tool.path}
+                        className={
+                          urgent
+                            ? 'specialty-tool-link specialty-tool-link--urgent'
+                            : 'specialty-tool-link'
+                        }
+                      >
+                        <span>
+                          <strong>{tool.name}</strong>
+                          <small>{tool.blurb}</small>
+                        </span>
+                        <ArrowRight size={18} />
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              ))}
+
+              {selectedSpecialty.unsectionedTools.length > 0 ? (
+                <section className='specialty-section-block'>
+                  <div className='specialty-section-headline'>
+                    <strong>Otras herramientas</strong>
+                    <small>{selectedSpecialty.unsectionedTools.length} herramientas</small>
+                  </div>
+
+                  <div className='specialty-tool-list'>
+                    {selectedSpecialty.unsectionedTools.map((tool) => (
+                      <Link
+                        key={tool.slug}
+                        to={tool.path}
+                        className={
+                          urgent
+                            ? 'specialty-tool-link specialty-tool-link--urgent'
+                            : 'specialty-tool-link'
+                        }
+                      >
+                        <span>
+                          <strong>{tool.name}</strong>
+                          <small>{tool.blurb}</small>
+                        </span>
+                        <ArrowRight size={18} />
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
+            </div>
+          ) : (
+            <div className='specialty-tool-list'>
+              {selectedSpecialty.tools.map((tool) => (
+                <Link
+                  key={tool.slug}
+                  to={tool.path}
+                  className={
+                    urgent ? 'specialty-tool-link specialty-tool-link--urgent' : 'specialty-tool-link'
+                  }
+                >
+                  <span>
+                    <strong>{tool.name}</strong>
+                    <small>{tool.blurb}</small>
+                  </span>
+                  <ArrowRight size={18} />
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     )
@@ -126,7 +195,7 @@ export default function Tools() {
                   </div>
 
                   <span className='specialty-card-inline'>
-                    {tool.specialty}
+                    {tool.section ? `${tool.specialty} · ${tool.section}` : tool.specialty}
                     <ArrowRight size={16} />
                   </span>
                 </Link>

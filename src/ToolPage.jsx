@@ -9,6 +9,7 @@ import { specialties } from './appData'
 
 export default function ToolPage({
   specialty,
+  subsection,
   status,
   title,
   description,
@@ -50,6 +51,7 @@ export default function ToolPage({
               <span className={urgent ? 'tool-chip tool-chip--urgent' : 'tool-chip'}>
                 {specialty}
               </span>
+              {subsection ? <span className='tool-chip tool-chip--subsection'>{subsection}</span> : null}
               {status ? <span className='tool-chip tool-chip--muted'>{status}</span> : null}
             </div>
 

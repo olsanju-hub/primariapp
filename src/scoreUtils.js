@@ -303,6 +303,168 @@ export function getHasBledAssessment(total) {
   }
 }
 
+export function getBarthelAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa la valoración',
+      conduct: 'Selecciona los 10 ítems antes de interpretar el nivel de dependencia.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total === 100) {
+    return {
+      interpretation: 'Independencia funcional',
+      conduct: 'Mantén seguimiento funcional habitual y revisa si aparecen caídas o cambios del entorno.',
+      tone: 'positive',
+    }
+  }
+
+  if (total >= 91) {
+    return {
+      interpretation: 'Dependencia ligera',
+      conduct: 'Suele beneficiarse de apoyo puntual y prevención activa de deterioro funcional.',
+      tone: 'positive',
+    }
+  }
+
+  if (total >= 61) {
+    return {
+      interpretation: 'Dependencia moderada',
+      conduct: 'Valora apoyo domiciliario, fisioterapia y ajuste de recursos para mantener autonomía.',
+      tone: 'warning',
+    }
+  }
+
+  if (total >= 21) {
+    return {
+      interpretation: 'Dependencia severa',
+      conduct: 'Conviene planificar cuidados más intensivos, soporte cuidador y revisión geriátrica integral.',
+      tone: 'critical',
+    }
+  }
+
+  return {
+    interpretation: 'Dependencia total',
+    conduct: 'Prioriza planificación de cuidados continuos, movilización segura y protección frente a complicaciones de inmovilidad.',
+    tone: 'critical',
+  }
+}
+
+export function getLawtonAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa la valoración',
+      conduct: 'Selecciona los 8 dominios para interpretar la autonomía instrumental.',
+      tone: 'neutral',
+    }
+  }
+
+  const dependentActivities = 8 - total
+
+  if (dependentActivities === 0) {
+    return {
+      interpretation: 'Autonomía instrumental conservada',
+      conduct: 'Mantén vigilancia funcional y revisa si aparecen dificultades en manejo doméstico, medicación o finanzas.',
+      tone: 'positive',
+    }
+  }
+
+  if (dependentActivities <= 2) {
+    return {
+      interpretation: `Dependencia en ${dependentActivities} AIVD`,
+      conduct: 'Detecta qué tareas concretas necesitan apoyo y revisa seguridad en domicilio y adherencia terapéutica.',
+      tone: 'warning',
+    }
+  }
+
+  if (dependentActivities <= 5) {
+    return {
+      interpretation: `Dependencia en ${dependentActivities} AIVD`,
+      conduct: 'La limitación instrumental es relevante y suele justificar apoyo estructurado o supervisión funcional.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: `Dependencia en ${dependentActivities} AIVD`,
+    conduct: 'La autonomía instrumental está muy comprometida; revisa soporte social, cuidador principal y necesidad de recursos adicionales.',
+    tone: 'critical',
+  }
+}
+
+export function getPfeifferAssessment(adjustedErrors, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa la valoración',
+      conduct: 'Responde las 10 preguntas para clasificar el cribado cognitivo.',
+      tone: 'neutral',
+    }
+  }
+
+  if (adjustedErrors <= 2) {
+    return {
+      interpretation: 'Función cognitiva dentro de rango',
+      conduct: 'Si persiste sospecha clínica, contrasta con informador y otras pruebas cognitivas o funcionales.',
+      tone: 'positive',
+    }
+  }
+
+  if (adjustedErrors <= 4) {
+    return {
+      interpretation: 'Deterioro cognitivo leve',
+      conduct: 'Conviene ampliar estudio, revisar causas reversibles y contrastar con funcionalidad e informador.',
+      tone: 'warning',
+    }
+  }
+
+  if (adjustedErrors <= 7) {
+    return {
+      interpretation: 'Deterioro cognitivo moderado',
+      conduct: 'Requiere valoración cognitiva y funcional más completa, además de revisar seguridad y soporte.',
+      tone: 'critical',
+    }
+  }
+
+  return {
+    interpretation: 'Deterioro cognitivo grave',
+    conduct: 'La carga de errores es alta; revisa delirium, funcionalidad, capacidad de autocuidado y necesidad de apoyo intenso.',
+    tone: 'critical',
+  }
+}
+
+export function getFrailAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa la valoración',
+      conduct: 'Selecciona los 5 criterios antes de interpretar fragilidad.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total === 0) {
+    return {
+      interpretation: 'Robusto',
+      conduct: 'Mantén actividad física, nutrición adecuada y seguimiento evolutivo según contexto clínico.',
+      tone: 'positive',
+    }
+  }
+
+  if (total <= 2) {
+    return {
+      interpretation: 'Prefragilidad',
+      conduct: 'Es buen momento para intervenir sobre fuerza, movilidad, nutrición y comorbilidad antes de mayor deterioro.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Fragilidad',
+    conduct: 'Sugiere vulnerabilidad clínica relevante y justifica valoración geriátrica más amplia y plan de intervención.',
+    tone: 'critical',
+  }
+}
+
 export function getNews2Assessment(total, hasSingleCritical) {
   if (total >= 7) {
     return {

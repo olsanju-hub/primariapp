@@ -72,7 +72,7 @@ export default function Home() {
                   </div>
 
                   <span className='specialty-card-inline'>
-                    {tool.specialty}
+                    {tool.section ? `${tool.specialty} · ${tool.section}` : tool.specialty}
                     <ArrowRight size={16} />
                   </span>
                 </Link>

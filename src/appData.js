@@ -50,7 +50,7 @@ const specialtyMeta = [
     icon: Users,
     accent: '#557c55',
     soft: '#f4f7f5',
-    description: 'Funcionalidad, dependencia y situación basal.',
+    description: 'Funcionalidad, cognición y fragilidad.',
   },
   {
     id: 'neumologia',
@@ -72,11 +72,29 @@ const specialtyMeta = [
 
 const specialtyMap = new Map(specialtyMeta.map((specialty) => [specialty.id, specialty]))
 
+const specialtySections = {
+  urgencias: [
+    { id: 'deterioro-agudo', name: 'Deterioro agudo' },
+    { id: 'tromboembolia', name: 'Tromboembolia' },
+  ],
+  cardiologia: [
+    { id: 'fibrilacion-auricular', name: 'Fibrilación auricular' },
+    { id: 'riesgo-cardiovascular', name: 'Riesgo cardiovascular' },
+  ],
+  geriatria: [
+    { id: 'funcionalidad', name: 'Funcionalidad' },
+    { id: 'cognicion', name: 'Cognición' },
+    { id: 'fragilidad', name: 'Fragilidad' },
+  ],
+  neumologia: [{ id: 'neumonia', name: 'Neumonía' }],
+}
+
 const rawToolCatalog = [
   {
     slug: 'qsofa',
     name: 'qSOFA',
     specialtyId: 'urgencias',
+    sectionId: 'deterioro-agudo',
     blurb: 'Cribado rápido de sepsis.',
     status: TOOL_STATUS.READY,
     featured: true,
@@ -86,6 +104,7 @@ const rawToolCatalog = [
     slug: 'news2',
     name: 'NEWS2',
     specialtyId: 'urgencias',
+    sectionId: 'deterioro-agudo',
     blurb: 'Detección de deterioro agudo.',
     status: TOOL_STATUS.READY,
     featured: true,
@@ -95,6 +114,7 @@ const rawToolCatalog = [
     slug: 'wells-tep',
     name: 'Wells TEP',
     specialtyId: 'urgencias',
+    sectionId: 'tromboembolia',
     blurb: 'Probabilidad clínica de TEP.',
     status: TOOL_STATUS.READY,
     featured: true,
@@ -104,6 +124,7 @@ const rawToolCatalog = [
     slug: 'years',
     name: 'YEARS',
     specialtyId: 'urgencias',
+    sectionId: 'tromboembolia',
     blurb: 'Algoritmo TEP con dímero-D.',
     status: TOOL_STATUS.READY,
     searchTerms: ['tep', 'dímero-d', 'algoritmo', 'disnea', 'embolismo pulmonar'],
@@ -112,6 +133,7 @@ const rawToolCatalog = [
     slug: 'ginebra-simplificada',
     name: 'Ginebra simplificada',
     specialtyId: 'urgencias',
+    sectionId: 'tromboembolia',
     blurb: 'Probabilidad objetiva de TEP.',
     status: TOOL_STATUS.READY,
     searchTerms: ['tep', 'geneva', 'ginebra', 'embolismo pulmonar', 'probabilidad'],
@@ -120,6 +142,7 @@ const rawToolCatalog = [
     slug: 'wells-tvp',
     name: 'Wells TVP',
     specialtyId: 'urgencias',
+    sectionId: 'tromboembolia',
     blurb: 'Probabilidad clínica de TVP.',
     status: TOOL_STATUS.READY,
     featured: true,
@@ -129,6 +152,7 @@ const rawToolCatalog = [
     slug: 'perc',
     name: 'PERC',
     specialtyId: 'urgencias',
+    sectionId: 'tromboembolia',
     blurb: 'Descarte clínico rápido de TEP.',
     status: TOOL_STATUS.READY,
     featured: true,
@@ -155,6 +179,7 @@ const rawToolCatalog = [
     slug: 'cha2ds2vasc',
     name: 'CHA₂DS₂-VASc',
     specialtyId: 'cardiologia',
+    sectionId: 'fibrilacion-auricular',
     blurb: 'Riesgo tromboembólico en FA.',
     status: TOOL_STATUS.READY,
     featured: true,
@@ -164,6 +189,7 @@ const rawToolCatalog = [
     slug: 'hasbled',
     name: 'HAS-BLED',
     specialtyId: 'cardiologia',
+    sectionId: 'fibrilacion-auricular',
     blurb: 'Riesgo hemorrágico.',
     status: TOOL_STATUS.READY,
     searchTerms: ['sangrado', 'hemorragia', 'anticoagulación'],
@@ -172,6 +198,7 @@ const rawToolCatalog = [
     slug: 'score2',
     name: 'SCORE2',
     specialtyId: 'cardiologia',
+    sectionId: 'riesgo-cardiovascular',
     blurb: 'Riesgo cardiovascular preventivo.',
     status: TOOL_STATUS.READY,
     searchTerms: ['prevención', 'lípidos', 'colesterol', 'cardiovascular', 'riesgo aterosclerótico'],
@@ -180,6 +207,7 @@ const rawToolCatalog = [
     slug: 'score2-op',
     name: 'SCORE2-OP',
     specialtyId: 'cardiologia',
+    sectionId: 'riesgo-cardiovascular',
     blurb: 'Riesgo cardiovascular en mayores.',
     status: TOOL_STATUS.READY,
     searchTerms: ['prevención', 'mayores', 'colesterol', 'cardiovascular', 'riesgo aterosclerótico'],
@@ -188,14 +216,43 @@ const rawToolCatalog = [
     slug: 'barthel',
     name: 'Índice de Barthel',
     specialtyId: 'geriatria',
+    sectionId: 'funcionalidad',
     blurb: 'Dependencia en ABVD.',
     status: TOOL_STATUS.READY,
     searchTerms: ['funcionalidad', 'dependencia', 'geriatría', 'abvd'],
   },
   {
+    slug: 'lawton-brody',
+    name: 'Lawton-Brody',
+    specialtyId: 'geriatria',
+    sectionId: 'funcionalidad',
+    blurb: 'Autonomía en AIVD.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['funcionalidad', 'aivd', 'instrumentales', 'autonomía', 'geriatría'],
+  },
+  {
+    slug: 'pfeiffer',
+    name: 'Pfeiffer',
+    specialtyId: 'geriatria',
+    sectionId: 'cognicion',
+    blurb: 'Cribado cognitivo breve.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['cognición', 'spmsq', 'deterioro cognitivo', 'memoria', 'geriatría'],
+  },
+  {
+    slug: 'frail',
+    name: 'FRAIL',
+    specialtyId: 'geriatria',
+    sectionId: 'fragilidad',
+    blurb: 'Cribado rápido de fragilidad.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['fragilidad', 'prefrailidad', 'geriatría', 'frail'],
+  },
+  {
     slug: 'crb65',
     name: 'CRB-65',
     specialtyId: 'neumologia',
+    sectionId: 'neumonia',
     blurb: 'Gravedad rápida de NAC sin analítica.',
     status: TOOL_STATUS.READY,
     featured: true,
@@ -205,6 +262,7 @@ const rawToolCatalog = [
     slug: 'curb65',
     name: 'CURB-65',
     specialtyId: 'neumologia',
+    sectionId: 'neumonia',
     blurb: 'Gravedad de NAC con urea.',
     status: TOOL_STATUS.READY,
     searchTerms: ['neumonía', 'pac', 'gravedad', 'nac', 'urea', 'ingreso'],
@@ -229,6 +287,8 @@ const rawToolCatalog = [
 
 export const toolCatalog = rawToolCatalog.map((tool) => {
   const specialty = specialtyMap.get(tool.specialtyId)
+  const section =
+    specialtySections[tool.specialtyId]?.find((entry) => entry.id === tool.sectionId) ?? null
 
   return {
     ...tool,
@@ -237,11 +297,13 @@ export const toolCatalog = rawToolCatalog.map((tool) => {
     icon: specialty.icon,
     accent: specialty.accent,
     soft: specialty.soft,
+    section: section?.name ?? null,
     statusLabel: TOOL_STATUS_LABELS[tool.status],
     searchText: [
       tool.name,
       tool.blurb,
       specialty.name,
+      section?.name ?? '',
       ...(tool.searchTerms ?? []),
     ]
       .join(' ')
@@ -249,10 +311,22 @@ export const toolCatalog = rawToolCatalog.map((tool) => {
   }
 })
 
-export const specialties = specialtyMeta.map((specialty) => ({
-  ...specialty,
-  tools: toolCatalog.filter((tool) => tool.specialtyId === specialty.id),
-}))
+export const specialties = specialtyMeta.map((specialty) => {
+  const tools = toolCatalog.filter((tool) => tool.specialtyId === specialty.id)
+  const sections = (specialtySections[specialty.id] ?? [])
+    .map((section) => ({
+      ...section,
+      tools: tools.filter((tool) => tool.sectionId === section.id),
+    }))
+    .filter((section) => section.tools.length > 0)
+
+  return {
+    ...specialty,
+    tools,
+    sections,
+    unsectionedTools: tools.filter((tool) => !tool.sectionId),
+  }
+})
 
 export const availableTools = toolCatalog.filter(({ status }) => status === TOOL_STATUS.READY)
 export const plannedTools = toolCatalog.filter(({ status }) => status === TOOL_STATUS.PLANNED)
@@ -261,6 +335,15 @@ export const activeSpecialties = specialties
   .map((specialty) => ({
     ...specialty,
     tools: specialty.tools.filter(({ status }) => status === TOOL_STATUS.READY),
+    sections: specialty.sections
+      .map((section) => ({
+        ...section,
+        tools: section.tools.filter(({ status }) => status === TOOL_STATUS.READY),
+      }))
+      .filter((section) => section.tools.length > 0),
+    unsectionedTools: specialty.unsectionedTools.filter(
+      ({ status }) => status === TOOL_STATUS.READY
+    ),
   }))
   .filter((specialty) => specialty.tools.length > 0)
 
