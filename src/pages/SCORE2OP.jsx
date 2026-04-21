@@ -1,14 +1,14 @@
 import React, { useMemo, useState } from 'react'
 import { ChoiceField, NumberField } from '../components/CardioFieldCards'
 import {
-  calculateScore2Risk,
+  calculateScore2OpRisk,
   formatNumericScore,
   getScore2Assessment,
 } from '../scoreUtils'
 import ToolPage from '../ToolPage'
 
 const scopeOptions = [
-  { value: 'eligible', label: 'Población válida para SCORE2', meta: 'Apta' },
+  { value: 'eligible', label: 'Población válida para SCORE2-OP', meta: 'Apta' },
   { value: 'outside', label: 'ASCVD, diabetes, ERC o trastorno lipídico/BP raro', meta: 'Excluir' },
 ]
 
@@ -33,14 +33,14 @@ function mgDlToMmol(value) {
   return value / 38.67
 }
 
-export default function SCORE2() {
+export default function SCORE2OP() {
   const [scope, setScope] = useState('eligible')
   const [sex, setSex] = useState('male')
   const [smoking, setSmoking] = useState('no')
   const [region, setRegion] = useState('low')
-  const [ageInput, setAgeInput] = useState('55')
-  const [sbpInput, setSbpInput] = useState('130')
-  const [totalCholInput, setTotalCholInput] = useState('200')
+  const [ageInput, setAgeInput] = useState('75')
+  const [sbpInput, setSbpInput] = useState('140')
+  const [totalCholInput, setTotalCholInput] = useState('190')
   const [hdlInput, setHdlInput] = useState('50')
 
   const age = Number.parseFloat(ageInput)
@@ -52,14 +52,14 @@ export default function SCORE2() {
   const nonHdlMg = Number.isFinite(totalCholMg) && Number.isFinite(hdlMg) ? totalCholMg - hdlMg : NaN
 
   const outsideValidatedPopulation = scope === 'outside'
-  const ageInRange = Number.isFinite(age) && age >= 40 && age <= 69
+  const ageInRange = Number.isFinite(age) && age >= 70 && age <= 89
 
   const riskPercent = useMemo(() => {
     if (outsideValidatedPopulation || !ageInRange) {
       return null
     }
 
-    return calculateScore2Risk({
+    return calculateScore2OpRisk({
       sex,
       age,
       smoker: smoking === 'yes',
@@ -77,10 +77,10 @@ export default function SCORE2() {
   )
 
   const valueMeaning = outsideValidatedPopulation
-    ? 'Expresa riesgo cardiovascular a 10 años solo en prevención primaria; si el paciente está fuera del ámbito, no debe interpretarse.'
+    ? 'Expresa riesgo cardiovascular a 10 años solo en prevención primaria y no debe usarse fuera de la población validada.'
     : Number.isFinite(riskPercent)
-      ? `${formatNumericScore(riskPercent)}% a 10 años corresponde a riesgo ${category.toLowerCase()} para este tramo de edad.`
-      : 'Expresa el riesgo de primer evento aterosclerótico fatal o no fatal a 10 años en personas de 40 a 69 años.'
+      ? `${formatNumericScore(riskPercent)}% a 10 años corresponde a riesgo ${category.toLowerCase()} en la población mayor.`
+      : 'Expresa el riesgo de primer evento aterosclerótico fatal o no fatal a 10 años en personas de 70 a 89 años.'
 
   const scoreValue = outsideValidatedPopulation
     ? 'Fuera de ámbito'
@@ -89,21 +89,21 @@ export default function SCORE2() {
       : 'Pendiente'
 
   const dynamicNote = !ageInRange && scope !== 'outside'
-    ? 'SCORE2 está validado entre 40 y 69 años. Para 70 años o más usa SCORE2-OP.'
-    : 'La fórmula oficial usa colesterol total y HDL en mmol/L; aquí puedes introducirlos en mg/dL y se convierten internamente. España pertenece a la región de bajo riesgo.'
+    ? 'SCORE2-OP está pensado para 70 a 89 años. Por debajo de 70 años usa SCORE2.'
+    : 'Usa la versión para personas mayores. España pertenece a la región de bajo riesgo y la introducción de colesterol se hace en mg/dL con conversión interna.'
 
   return (
     <ToolPage
       specialty='Cardiología'
       status='Operativa'
-      title='SCORE2'
-      description='Estimación de riesgo cardiovascular a 10 años para prevención primaria en adultos de 40 a 69 años.'
-      clinicalUse='Ayuda a situar el nivel de riesgo aterosclerótico y orientar la intensidad de la prevención.'
-      whenToUse='Personas aparentemente sanas sin ASCVD, diabetes, ERC moderada-grave ni trastornos lipídicos o tensionales raros.'
-      whatIs='Algoritmo europeo de riesgo cardiovascular fatal y no fatal a 10 años.'
-      whatFor='Sirve para graduar la prevención en personas sin enfermedad cardiovascular conocida.'
+      title='SCORE2-OP'
+      description='Estimación de riesgo cardiovascular a 10 años para prevención primaria en personas de 70 a 89 años.'
+      clinicalUse='Permite graduar el riesgo aterosclerótico en personas mayores sin enfermedad cardiovascular establecida.'
+      whenToUse='Pacientes de 70 a 89 años aparentemente sanos, sin ASCVD, diabetes, ERC moderada-grave ni trastornos raros de lípidos o presión arterial.'
+      whatIs='Versión de SCORE2 adaptada a personas mayores.'
+      whatFor='Sirve para ajustar la prevención cardiovascular en edades avanzadas.'
       valueMeaning={valueMeaning}
-      scoreLabel='Riesgo SCORE2'
+      scoreLabel='Riesgo SCORE2-OP'
       scoreValue={scoreValue}
       interpretation={interpretation}
       conduct={conduct}
@@ -118,17 +118,17 @@ export default function SCORE2() {
           options={scopeOptions}
           value={scope}
           onChange={setScope}
-          name='score2-scope'
+          name='score2op-scope'
           wide
         />
 
         <NumberField
           index={2}
           label='Edad'
-          helper='SCORE2 se usa de 40 a 69 años.'
+          helper='SCORE2-OP se usa de 70 a 89 años.'
           value={ageInput}
           onChange={setAgeInput}
-          placeholder='55'
+          placeholder='75'
           unit='años'
         />
 
@@ -138,17 +138,17 @@ export default function SCORE2() {
           options={sexOptions}
           value={sex}
           onChange={setSex}
-          name='score2-sex'
+          name='score2op-sex'
         />
 
         <ChoiceField
           index={4}
-          label='Región SCORE2'
+          label='Región SCORE2-OP'
           helper='España pertenece a la región de bajo riesgo.'
           options={regionOptions}
           value={region}
           onChange={setRegion}
-          name='score2-region'
+          name='score2op-region'
           wide
         />
 
@@ -158,7 +158,7 @@ export default function SCORE2() {
           options={smokingOptions}
           value={smoking}
           onChange={setSmoking}
-          name='score2-smoking'
+          name='score2op-smoking'
         />
 
         <NumberField
@@ -166,7 +166,7 @@ export default function SCORE2() {
           label='Presión arterial sistólica'
           value={sbpInput}
           onChange={setSbpInput}
-          placeholder='130'
+          placeholder='140'
           unit='mmHg'
         />
 
@@ -176,7 +176,7 @@ export default function SCORE2() {
           helper='Introduce el valor en mg/dL.'
           value={totalCholInput}
           onChange={setTotalCholInput}
-          placeholder='200'
+          placeholder='190'
           unit='mg/dL'
         />
 

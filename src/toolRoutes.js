@@ -10,6 +10,7 @@ import NEWS2 from './pages/NEWS2'
 import PERC from './pages/PERC'
 import PHQ9 from './pages/PHQ9'
 import SCORE2 from './pages/SCORE2'
+import SCORE2OP from './pages/SCORE2OP'
 import SimplifiedGeneva from './pages/SimplifiedGeneva'
 import WellsTVP from './pages/WellsTVP'
 import WellsTEP from './pages/WellsTEP'
@@ -34,4 +35,5 @@ export const toolRoutes = [
   { slug: 'centor-mcisaac', Component: CentorMcIsaac },
   { slug: 'findrisc', Component: FINDRISC },
   { slug: 'score2', Component: SCORE2 },
+  { slug: 'score2-op', Component: SCORE2OP },
 ]

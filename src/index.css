@@ -831,6 +831,12 @@ a {
   font-weight: 600;
 }
 
+.metric-input input::-webkit-outer-spin-button,
+.metric-input input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
 .metric-input input::placeholder {
   color: #94a3b8;
 }

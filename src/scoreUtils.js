@@ -24,6 +24,285 @@ export function formatNumericScore(value) {
   return rounded.toFixed(1)
 }
 
+const SCORE2_REGION_SCALES = {
+  low: {
+    score2: {
+      male: { scale1: -0.5699, scale2: 0.7476 },
+      female: { scale1: -0.738, scale2: 0.7019 },
+    },
+    score2op: {
+      male: { scale1: -0.34, scale2: 1.19 },
+      female: { scale1: -0.52, scale2: 1.01 },
+    },
+  },
+  moderate: {
+    score2: {
+      male: { scale1: -0.1565, scale2: 0.8009 },
+      female: { scale1: -0.3143, scale2: 0.7701 },
+    },
+    score2op: {
+      male: { scale1: 0.01, scale2: 1.25 },
+      female: { scale1: -0.1, scale2: 1.1 },
+    },
+  },
+  high: {
+    score2: {
+      male: { scale1: 0.3207, scale2: 0.936 },
+      female: { scale1: 0.571, scale2: 0.9369 },
+    },
+    score2op: {
+      male: { scale1: 0.08, scale2: 1.15 },
+      female: { scale1: 0.38, scale2: 1.09 },
+    },
+  },
+  veryHigh: {
+    score2: {
+      male: { scale1: 0.5836, scale2: 0.8294 },
+      female: { scale1: 0.9412, scale2: 0.8329 },
+    },
+    score2op: {
+      male: { scale1: 0.05, scale2: 0.7 },
+      female: { scale1: 0.38, scale2: 0.69 },
+    },
+  },
+}
+
+function clampProbability(value) {
+  return Math.min(Math.max(value, 1e-12), 1 - 1e-12)
+}
+
+function getScore2Thresholds(age) {
+  if (age < 50) {
+    return { high: 2.5, veryHigh: 7.5 }
+  }
+
+  if (age < 70) {
+    return { high: 5, veryHigh: 10 }
+  }
+
+  return { high: 7.5, veryHigh: 15 }
+}
+
+export function calculateScore2Risk({
+  sex,
+  age,
+  smoker,
+  systolicBp,
+  totalCholesterol,
+  hdlCholesterol,
+  region,
+}) {
+  if (
+    !Number.isFinite(age) ||
+    !Number.isFinite(systolicBp) ||
+    !Number.isFinite(totalCholesterol) ||
+    !Number.isFinite(hdlCholesterol)
+  ) {
+    return null
+  }
+
+  const scales = SCORE2_REGION_SCALES[region]?.score2?.[sex]
+
+  if (!scales) {
+    return null
+  }
+
+  const ageTerm = (age - 60) / 5
+  const sbpTerm = (systolicBp - 120) / 20
+  const totalTerm = totalCholesterol - 6
+  const hdlTerm = (hdlCholesterol - 1.3) / 0.5
+  const smokingTerm = smoker ? 1 : 0
+
+  const linearPredictor =
+    (sex === 'male' ? 0.3742 : 0.4648) * ageTerm +
+    (sex === 'male' ? 0.6012 : 0.7744) * smokingTerm +
+    (sex === 'male' ? 0.2777 : 0.3131) * sbpTerm +
+    (sex === 'male' ? 0.1458 : 0.1002) * totalTerm +
+    (sex === 'male' ? -0.2698 : -0.2606) * hdlTerm +
+    (sex === 'male' ? -0.0755 : -0.1088) * ageTerm * smokingTerm +
+    (sex === 'male' ? -0.0255 : -0.0277) * ageTerm * sbpTerm +
+    (sex === 'male' ? -0.0281 : -0.0226) * ageTerm * totalTerm +
+    (sex === 'male' ? 0.0426 : 0.0613) * ageTerm * hdlTerm
+
+  const baselineSurvival = sex === 'male' ? 0.9605 : 0.9776
+  const uncalibratedRisk = clampProbability(1 - baselineSurvival ** Math.exp(linearPredictor))
+  const calibratedRisk = clampProbability(
+    1 -
+      Math.exp(
+        -Math.exp(scales.scale1 + scales.scale2 * Math.log(-Math.log(1 - uncalibratedRisk)))
+      )
+  )
+
+  return calibratedRisk * 100
+}
+
+export function calculateScore2OpRisk({
+  sex,
+  age,
+  smoker,
+  systolicBp,
+  totalCholesterol,
+  hdlCholesterol,
+  region,
+}) {
+  if (
+    !Number.isFinite(age) ||
+    !Number.isFinite(systolicBp) ||
+    !Number.isFinite(totalCholesterol) ||
+    !Number.isFinite(hdlCholesterol)
+  ) {
+    return null
+  }
+
+  const scales = SCORE2_REGION_SCALES[region]?.score2op?.[sex]
+
+  if (!scales) {
+    return null
+  }
+
+  const ageTerm = age - 73
+  const sbpTerm = systolicBp - 150
+  const totalTerm = totalCholesterol - 6
+  const hdlTerm = hdlCholesterol - 1.4
+  const smokingTerm = smoker ? 1 : 0
+
+  const linearPredictor =
+    (sex === 'male' ? 0.0634 : 0.0789) * ageTerm +
+    (sex === 'male' ? 0.3524 : 0.4921) * smokingTerm +
+    (sex === 'male' ? 0.0094 : 0.0102) * sbpTerm +
+    (sex === 'male' ? 0.085 : 0.0605) * totalTerm +
+    (sex === 'male' ? -0.3564 : -0.304) * hdlTerm +
+    (sex === 'male' ? -0.0247 : -0.0255) * ageTerm * smokingTerm +
+    (sex === 'male' ? -0.0005 : -0.0004) * ageTerm * sbpTerm +
+    (sex === 'male' ? 0.0073 : -0.0009) * ageTerm * totalTerm +
+    (sex === 'male' ? 0.0091 : 0.0154) * ageTerm * hdlTerm
+
+  const uncalibratedRisk = clampProbability(
+    sex === 'male'
+      ? 1 - 0.7576 ** Math.exp(linearPredictor - 0.0929)
+      : 1 - 0.8082 ** Math.exp(linearPredictor - 0.229)
+  )
+
+  const calibratedRisk = clampProbability(
+    1 -
+      Math.exp(
+        -Math.exp(scales.scale1 + scales.scale2 * Math.log(-Math.log(1 - uncalibratedRisk)))
+      )
+  )
+
+  return calibratedRisk * 100
+}
+
+export function getScore2Assessment(age, riskPercent, outsideValidatedPopulation = false) {
+  if (outsideValidatedPopulation) {
+    return {
+      interpretation: 'Fuera del ámbito validado',
+      conduct:
+        'SCORE2 y SCORE2-OP no están validados para ASCVD establecida, diabetes, ERC moderada-grave o trastornos lipídicos/hipertensivos raros.',
+      tone: 'neutral',
+      category: 'Fuera de ámbito',
+    }
+  }
+
+  if (!Number.isFinite(riskPercent)) {
+    return {
+      interpretation: 'Pendiente de completar',
+      conduct:
+        'Introduce edad, sexo, tabaquismo, presión arterial y perfil lipídico para estimar el riesgo a 10 años.',
+      tone: 'neutral',
+      category: 'Pendiente',
+    }
+  }
+
+  const { high, veryHigh } = getScore2Thresholds(age)
+
+  if (riskPercent < high) {
+    return {
+      interpretation: 'Riesgo bajo-moderado',
+      conduct:
+        'Prioriza hábitos, control tensional y lipídico, y reevalúa el riesgo si cambian los factores o la edad.',
+      tone: 'positive',
+      category: 'Bajo-moderado',
+    }
+  }
+
+  if (riskPercent < veryHigh) {
+    return {
+      interpretation: 'Riesgo alto',
+      conduct:
+        'Intensifica el control de factores de riesgo y valora tratamiento preventivo con decisión compartida.',
+      tone: 'warning',
+      category: 'Alto',
+    }
+  }
+
+  return {
+    interpretation: 'Riesgo muy alto',
+    conduct:
+      'La carga de riesgo justifica intervención preventiva intensiva y revisión completa del perfil cardiovascular.',
+    tone: 'critical',
+    category: 'Muy alto',
+  }
+}
+
+export function getCha2ds2VascAssessment(total, femaleSexSelected) {
+  const lowRisk = total === 0 || (femaleSexSelected && total === 1)
+  const considerOac =
+    (!femaleSexSelected && total === 1) || (femaleSexSelected && total === 2)
+
+  if (lowRisk) {
+    return {
+      interpretation: femaleSexSelected && total === 1 ? 'Sexo femenino aislado' : 'Riesgo tromboembólico bajo',
+      conduct:
+        'No suele indicar anticoagulación basándose solo en la escala. Reevalúa si aparecen nuevos factores de riesgo.',
+      tone: 'positive',
+    }
+  }
+
+  if (considerOac) {
+    return {
+      interpretation: 'Valorar anticoagulación',
+      conduct:
+        'Existe un factor no sexual añadido. Considera anticoagulación con decisión compartida y revisa HAS-BLED.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Anticoagulación generalmente indicada',
+    conduct:
+      'El riesgo tromboembólico es alto por escala. Revisa contraindicaciones, función renal y riesgo hemorrágico.',
+    tone: 'critical',
+  }
+}
+
+export function getHasBledAssessment(total) {
+  if (total <= 1) {
+    return {
+      interpretation: 'Riesgo hemorrágico bajo',
+      conduct:
+        'Mantén revisión periódica y corrige factores reversibles si aparecen durante el seguimiento.',
+      tone: 'positive',
+    }
+  }
+
+  if (total === 2) {
+    return {
+      interpretation: 'Riesgo hemorrágico relevante',
+      conduct:
+        'Conviene optimizar presión arterial, interacciones y seguimiento antes y durante la anticoagulación.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Riesgo hemorrágico alto',
+    conduct:
+      'Una puntuación ≥ 3 obliga a vigilancia estrecha y corrección activa de factores modificables; no contraindica por sí sola anticoagular.',
+    tone: 'critical',
+  }
+}
+
 export function getNews2Assessment(total, hasSingleCritical) {
   if (total >= 7) {
     return {

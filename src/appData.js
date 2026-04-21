@@ -173,8 +173,16 @@ const rawToolCatalog = [
     name: 'SCORE2',
     specialtyId: 'cardiologia',
     blurb: 'Riesgo cardiovascular preventivo.',
-    status: TOOL_STATUS.PLANNED,
-    searchTerms: ['prevención', 'lípidos', 'colesterol', 'cardiovascular'],
+    status: TOOL_STATUS.READY,
+    searchTerms: ['prevención', 'lípidos', 'colesterol', 'cardiovascular', 'riesgo aterosclerótico'],
+  },
+  {
+    slug: 'score2-op',
+    name: 'SCORE2-OP',
+    specialtyId: 'cardiologia',
+    blurb: 'Riesgo cardiovascular en mayores.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['prevención', 'mayores', 'colesterol', 'cardiovascular', 'riesgo aterosclerótico'],
   },
   {
     slug: 'barthel',
