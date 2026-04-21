@@ -24,6 +24,11 @@ export default function PERC() {
 
   const total = useMemo(() => sumScore(answers), [answers])
   const { interpretation, conduct, tone } = getPercAssessment(total, lowPretestProbability)
+  const valueMeaning = !lowPretestProbability
+    ? 'Sin probabilidad clínica basal baja, PERC no sirve para excluir TEP aunque no marques criterios.'
+    : total === 0
+      ? 'Con sospecha basal baja y 0 criterios positivos, PERC permite descartar TEP sin ampliar estudio.'
+      : 'Cualquier criterio positivo invalida la regla y obliga a continuar el algoritmo diagnóstico.'
 
   const handleToggle = (criterion, checked) => {
     setAnswers((current) => ({
@@ -35,10 +40,14 @@ export default function PERC() {
   return (
     <ToolPage
       specialty='Urgencias'
+      status='Operativa'
       title='PERC'
       description='Regla de exclusión clínica de TEP solo para pacientes con probabilidad previa baja.'
       clinicalUse='Ayuda a evitar pruebas innecesarias cuando la sospecha clínica basal es baja.'
       whenToUse='Sospecha de TEP con baja probabilidad clínica antes de pedir dímero-D o imagen.'
+      whatIs='Regla de exclusión clínica para tromboembolismo pulmonar en pacientes de muy bajo riesgo.'
+      whatFor='Permite evitar dímero-D o imagen cuando la sospecha clínica basal ya es baja.'
+      valueMeaning={valueMeaning}
       scoreLabel='Criterios positivos'
       scoreValue={`${total} / 8`}
       interpretation={interpretation}

@@ -10,6 +10,20 @@ export function formatScoreDelta(value) {
   return `${value}`
 }
 
+export function formatNumericScore(value) {
+  if (Number.isNaN(value)) {
+    return '--'
+  }
+
+  const rounded = Math.round(value * 10) / 10
+
+  if (Number.isInteger(rounded)) {
+    return `${rounded}`
+  }
+
+  return rounded.toFixed(1)
+}
+
 export function getNews2Assessment(total, hasSingleCritical) {
   if (total >= 7) {
     return {
@@ -128,6 +142,89 @@ export function getPercAssessment(total, lowPretestProbability) {
     interpretation: 'PERC positivo',
     conduct:
       'No descarta TEP. Continuar la estrategia diagnóstica según probabilidad clínica, dímero-D e imagen si procede.',
+    tone: 'warning',
+  }
+}
+
+export function getWellsTvpAssessment(total) {
+  if (total >= 2) {
+    return {
+      interpretation: 'TVP probable',
+      conduct:
+        'Solicitar ecografía venosa proximal y seguir el circuito diagnóstico/terapéutico si la demora o el riesgo clínico lo justifican.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'TVP improbable',
+    conduct:
+      'Si el contexto lo permite, completar con dímero-D. Si es positivo o la sospecha persiste, continuar con ecografía.',
+    tone: 'positive',
+  }
+}
+
+export function getWellsTepAssessment(total) {
+  if (total > 4) {
+    return {
+      interpretation: 'TEP probable',
+      conduct:
+        'Solicitar imagen diagnóstica de forma prioritaria. Si se retrasa y la sospecha es relevante, seguir el protocolo terapéutico local.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'TEP no probable',
+    conduct:
+      'Continuar el algoritmo con dímero-D si el contexto clínico lo permite. Si es positivo, pasar a imagen.',
+    tone: 'positive',
+  }
+}
+
+export function getSimplifiedGenevaAssessment(total) {
+  if (total >= 3) {
+    return {
+      interpretation: 'TEP probable',
+      conduct:
+        'La probabilidad pretest es alta para la versión dicotómica. Continuar con imagen y manejo según el circuito local.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'TEP no probable',
+    conduct:
+      'La puntuación permite un paso intermedio con dímero-D si el escenario clínico es adecuado. No excluye TEP por sí sola.',
+    tone: 'positive',
+  }
+}
+
+export function getYearsAssessment(criteriaCount, dDimer) {
+  if (dDimer == null) {
+    return {
+      interpretation: 'Pendiente de completar',
+      conduct:
+        'Introduce el dímero-D para cerrar el algoritmo YEARS y decidir si puede evitarse la imagen.',
+      tone: 'neutral',
+    }
+  }
+
+  const threshold = criteriaCount === 0 ? 1000 : 500
+
+  if (dDimer < threshold) {
+    return {
+      interpretation: 'TEP descartado por YEARS',
+      conduct:
+        'Con este número de ítems YEARS y este dímero-D, el algoritmo evita imagen si no hay otros motivos clínicos para ampliar estudio.',
+      tone: 'positive',
+    }
+  }
+
+  return {
+    interpretation: 'Requiere imagen',
+    conduct:
+      'El dímero-D supera el corte aplicable del algoritmo. Continuar el estudio con imagen según disponibilidad y contexto.',
     tone: 'warning',
   }
 }

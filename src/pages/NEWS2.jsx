@@ -164,6 +164,14 @@ export default function NEWS2() {
   ].some((value) => value === 3)
 
   const { interpretation, conduct, tone } = getNews2Assessment(total, hasSingleCritical)
+  const valueMeaning =
+    total >= 7
+      ? 'Una puntuación alta refleja deterioro fisiológico importante y exige respuesta urgente.'
+      : total >= 5
+        ? 'Puntuaciones de 5 o más sugieren riesgo relevante de deterioro y necesidad de reevaluación estrecha.'
+        : hasSingleCritical
+          ? 'Un único parámetro con 3 puntos ya implica revisión clínica urgente aunque la suma sea menor.'
+          : 'Puntuaciones bajas indican menor riesgo fisiológico inmediato, no ausencia de enfermedad.'
 
   const handleSaturationScaleChange = (nextScale) => {
     setSaturationScale(nextScale)
@@ -182,10 +190,14 @@ export default function NEWS2() {
   return (
     <ToolPage
       specialty='Urgencias'
+      status='Operativa'
       title='NEWS2'
       description='Valoración rápida de gravedad fisiológica y detección de deterioro agudo.'
       clinicalUse='Prioriza monitorización, frecuencia de reevaluación y escalada asistencial.'
       whenToUse='Valoración inicial o seriada en urgencias, observación y pacientes agudos.'
+      whatIs='Escala de alerta temprana basada en constantes y estado mental.'
+      whatFor='Sirve para detectar deterioro agudo y priorizar respuesta asistencial.'
+      valueMeaning={valueMeaning}
       scoreLabel='Puntuación NEWS2'
       scoreValue={`${total}`}
       interpretation={interpretation}

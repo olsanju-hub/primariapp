@@ -1,82 +1,73 @@
 import React, { useMemo, useState } from 'react'
+import BinaryCriteriaGrid from '../components/BinaryCriteriaGrid'
+import {
+  formatNumericScore,
+  getWellsTvpAssessment,
+  sumScore,
+} from '../scoreUtils'
 import ToolPage from '../ToolPage'
 
+const factors = [
+  { key: 'activeCancer', label: 'Cáncer activo (tratamiento en curso, < 6 meses o paliativo)', value: 1 },
+  {
+    key: 'paralysis',
+    label: 'Parálisis, paresia o inmovilización con yeso reciente en extremidad inferior',
+    value: 1,
+  },
+  {
+    key: 'bedrest',
+    label: 'Encamamiento reciente > 3 días o cirugía mayor < 12 semanas con anestesia',
+    value: 1,
+  },
+  { key: 'tenderness', label: 'Dolor localizado a lo largo del sistema venoso profundo', value: 1 },
+  { key: 'entireLeg', label: 'Tumefacción de toda la pierna', value: 1 },
+  { key: 'calfDifference', label: 'Pantorrilla ≥ 3 cm mayor que la contralateral', value: 1 },
+  { key: 'pittingEdema', label: 'Edema con fóvea limitado a la pierna sintomática', value: 1 },
+  { key: 'collateralVeins', label: 'Venas superficiales colaterales no varicosas', value: 1 },
+  { key: 'previousDvt', label: 'TVP previamente documentada', value: 1 },
+  {
+    key: 'alternativeDiagnosis',
+    label: 'Hay un diagnóstico alternativo al menos tan probable como TVP',
+    value: -2,
+    selectionLabel: 'Diagnóstico alternativo presente',
+  },
+]
+
 export default function WellsTVP() {
-  const factors = [
-    { key: 'cancer', label: 'Cáncer activo', value: 1 },
-    { key: 'paralysis', label: 'Parálisis, paresia o yeso reciente en EEII', value: 1 },
-    { key: 'bedrest', label: 'Encamamiento > 3 días o cirugía mayor reciente', value: 1 },
-    { key: 'tenderness', label: 'Dolor a lo largo del trayecto venoso profundo', value: 1 },
-    { key: 'entireLeg', label: 'Tumefacción de toda la pierna', value: 1 },
-    { key: 'calf', label: 'Pantorrilla > 3 cm respecto a la contralateral', value: 1 },
-    { key: 'edema', label: 'Edema con fóvea en la pierna sintomática', value: 1 },
-    { key: 'collateral', label: 'Circulación colateral superficial', value: 1 },
-    { key: 'alternative', label: 'Diagnóstico alternativo al menos tan probable', value: -2 },
-  ]
-
   const [answers, setAnswers] = useState({})
-  const total = useMemo(
-    () => Object.values(answers).reduce((sum, value) => sum + value, 0),
-    [answers]
-  )
+  const total = useMemo(() => sumScore(answers), [answers])
+  const { interpretation, conduct, tone } = getWellsTvpAssessment(total)
+  const valueMeaning =
+    total >= 2
+      ? 'Una puntuación de 2 o más hace probable la TVP en la versión dicotómica y suele llevar a ecografía.'
+      : 'Una puntuación de 1 o menos hace menos probable la TVP, pero no la excluye sin completar el algoritmo.'
 
-  const interpretation = () => {
-    if (total >= 2) return 'TVP probable'
-    return 'TVP improbable'
+  const handleToggle = (criterion, checked) => {
+    setAnswers((current) => ({
+      ...current,
+      [criterion.key]: checked ? criterion.value : 0,
+    }))
   }
-
-  const conduct = () => {
-    if (total >= 2) {
-      return 'Solicitar ecografía venosa y completar estudio según disponibilidad y riesgo clínico.'
-    }
-    return 'Si la sospecha persiste, combinar con dímero-D y reevaluación clínica.'
-  }
-
-  const tone = total >= 2 ? 'warning' : 'positive'
 
   return (
     <ToolPage
       specialty='Urgencias'
+      status='Operativa'
       title='Wells TVP'
-      description='Predice la probabilidad clínica de trombosis venosa profunda.'
+      description='Estimación rápida de probabilidad clínica pretest de trombosis venosa profunda.'
       clinicalUse='Ayuda a decidir pruebas complementarias y priorización diagnóstica.'
       whenToUse='Dolor, edema o asimetría de extremidad inferior con sospecha de TVP.'
+      whatIs='Regla clínica para estimar la probabilidad pretest de trombosis venosa profunda.'
+      whatFor='Sirve para decidir cuándo pedir dímero-D y cuándo pasar directamente a ecografía.'
+      valueMeaning={valueMeaning}
       scoreLabel='Puntuación Wells'
-      scoreValue={`${total}`}
-      interpretation={interpretation()}
-      conduct={conduct()}
+      scoreValue={formatNumericScore(total)}
+      interpretation={interpretation}
+      conduct={conduct}
       note='Debe integrarse con dímero-D, ecografía y probabilidad clínica global.'
       tone={tone}
     >
-      <div className='question-grid'>
-        {factors.map((factor, index) => {
-          const checked = Boolean(answers[factor.key])
-
-          return (
-            <section key={factor.key} className='question-card'>
-              <div className='question-card-head'>
-                <span className='question-index'>{String(index + 1).padStart(2, '0')}</span>
-                <h4>{factor.label}</h4>
-              </div>
-
-              <label className={checked ? 'choice-card choice-card--selected' : 'choice-card'}>
-                <input
-                  type='checkbox'
-                  checked={checked}
-                  onChange={(event) =>
-                    setAnswers((current) => ({
-                      ...current,
-                      [factor.key]: event.target.checked ? factor.value : 0,
-                    }))
-                  }
-                />
-                <span>{factor.value < 0 ? 'Diagnóstico alternativo presente' : 'Criterio presente'}</span>
-                <strong>{factor.value > 0 ? `+${factor.value}` : factor.value}</strong>
-              </label>
-            </section>
-          )
-        })}
-      </div>
+      <BinaryCriteriaGrid answers={answers} criteria={factors} onToggle={handleToggle} />
     </ToolPage>
   )
 }

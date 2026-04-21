@@ -10,7 +10,10 @@ import NEWS2 from './pages/NEWS2'
 import PERC from './pages/PERC'
 import PHQ9 from './pages/PHQ9'
 import SCORE2 from './pages/SCORE2'
+import SimplifiedGeneva from './pages/SimplifiedGeneva'
 import WellsTVP from './pages/WellsTVP'
+import WellsTEP from './pages/WellsTEP'
+import YEARS from './pages/YEARS'
 import QSOFA from './pages/qSOFA'
 
 export const toolRoutes = [
@@ -24,7 +27,10 @@ export const toolRoutes = [
   { slug: 'crb65', Component: CRB65 },
   { slug: 'curb65', Component: CURB65 },
   { slug: 'perc', Component: PERC },
+  { slug: 'wells-tep', Component: WellsTEP },
   { slug: 'wells-tvp', Component: WellsTVP },
+  { slug: 'ginebra-simplificada', Component: SimplifiedGeneva },
+  { slug: 'years', Component: YEARS },
   { slug: 'centor-mcisaac', Component: CentorMcIsaac },
   { slug: 'findrisc', Component: FINDRISC },
   { slug: 'score2', Component: SCORE2 },

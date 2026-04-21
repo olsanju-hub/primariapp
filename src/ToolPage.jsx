@@ -14,6 +14,9 @@ export default function ToolPage({
   description,
   clinicalUse,
   whenToUse,
+  whatIs,
+  whatFor,
+  valueMeaning,
   scoreLabel,
   scoreValue,
   interpretation,
@@ -72,6 +75,25 @@ export default function ToolPage({
             </section>
           </div>
         </div>
+
+        {whatIs || whatFor || valueMeaning ? (
+          <div className='tool-brief-grid'>
+            <section className='tool-brief-card'>
+              <strong>Qué es</strong>
+              <p>{whatIs}</p>
+            </section>
+
+            <section className='tool-brief-card'>
+              <strong>Para qué sirve</strong>
+              <p>{whatFor}</p>
+            </section>
+
+            <section className='tool-brief-card'>
+              <strong>Qué significa</strong>
+              <p>{valueMeaning}</p>
+            </section>
+          </div>
+        ) : null}
 
         <div className='tool-layout'>
           <section className='floating-card-no-hover tool-form-card'>{children}</section>

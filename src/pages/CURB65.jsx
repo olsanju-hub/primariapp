@@ -16,6 +16,12 @@ export default function CURB65() {
 
   const total = useMemo(() => sumScore(answers), [answers])
   const { interpretation, conduct, tone } = getCurb65Assessment(total)
+  const valueMeaning =
+    total <= 1
+      ? 'Una puntuación de 0 a 1 sugiere menor gravedad, siempre que la oxigenación y el contexto sean favorables.'
+      : total === 2
+        ? 'Una puntuación de 2 indica riesgo intermedio y suele requerir observación o ingreso según el cuadro global.'
+        : 'Puntuaciones de 3 o más implican mayor gravedad y orientan a ingreso hospitalario.'
 
   const handleToggle = (criterion, checked) => {
     setAnswers((current) => ({
@@ -27,10 +33,14 @@ export default function CURB65() {
   return (
     <ToolPage
       specialty='Neumología'
+      status='Operativa'
       title='CURB-65'
       description='Estratificación rápida de gravedad en neumonía adquirida en la comunidad con dato analítico.'
       clinicalUse='Ayuda a decidir lugar de manejo, observación o ingreso.'
       whenToUse='Valoración inicial hospitalaria o cuando se dispone de urea.'
+      whatIs='Escala de gravedad para neumonía adquirida en la comunidad que añade el dato de urea.'
+      whatFor='Ayuda a estimar necesidad de observación, ingreso o soporte hospitalario.'
+      valueMeaning={valueMeaning}
       scoreLabel='Puntuación CURB-65'
       scoreValue={`${total} / 5`}
       interpretation={interpretation}

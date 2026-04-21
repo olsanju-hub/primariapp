@@ -92,12 +92,38 @@ const rawToolCatalog = [
     searchTerms: ['deterioro', 'alerta temprana', 'monitorización', 'gravedad', 'triaje'],
   },
   {
+    slug: 'wells-tep',
+    name: 'Wells TEP',
+    specialtyId: 'urgencias',
+    blurb: 'Probabilidad clínica de TEP.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['tep', 'tromboembolismo pulmonar', 'disnea', 'dímero-d', 'angio-tc'],
+  },
+  {
+    slug: 'years',
+    name: 'YEARS',
+    specialtyId: 'urgencias',
+    blurb: 'Algoritmo TEP con dímero-D.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['tep', 'dímero-d', 'algoritmo', 'disnea', 'embolismo pulmonar'],
+  },
+  {
+    slug: 'ginebra-simplificada',
+    name: 'Ginebra simplificada',
+    specialtyId: 'urgencias',
+    blurb: 'Probabilidad objetiva de TEP.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['tep', 'geneva', 'ginebra', 'embolismo pulmonar', 'probabilidad'],
+  },
+  {
     slug: 'wells-tvp',
     name: 'Wells TVP',
     specialtyId: 'urgencias',
     blurb: 'Probabilidad clínica de TVP.',
     status: TOOL_STATUS.READY,
-    searchTerms: ['trombosis', 'edema', 'pierna', 'dímero-d'],
+    featured: true,
+    searchTerms: ['trombosis', 'tvp', 'edema', 'pierna', 'dímero-d', 'ecografía venosa'],
   },
   {
     slug: 'perc',
@@ -249,6 +275,6 @@ export const primaryNav = [
 export const mobileNav = [
   { name: 'Inicio', path: '/', icon: Home },
   { name: 'Lista', path: '/herramientas', icon: LayoutGrid },
-  { name: 'qSOFA', path: '/qsofa', icon: ShieldAlert },
+  { name: 'Wells TEP', path: '/wells-tep', icon: ShieldAlert },
   { name: 'NEWS2', path: '/news2', icon: Heart },
 ]
