@@ -42,6 +42,7 @@ export default function CHA2DS2VASc() {
   return (
     <ToolPage
       specialty='Cardiología'
+      subsection='Fibrilación auricular'
       status='Operativa'
       title='CHA₂DS₂-VASc'
       description='Escala para estimar riesgo tromboembólico en fibrilación auricular no valvular.'

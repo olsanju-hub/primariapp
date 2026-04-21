@@ -95,6 +95,7 @@ export default function SCORE2OP() {
   return (
     <ToolPage
       specialty='Cardiología'
+      subsection='Riesgo cardiovascular'
       status='Operativa'
       title='SCORE2-OP'
       description='Estimación de riesgo cardiovascular a 10 años para prevención primaria en personas de 70 a 89 años.'

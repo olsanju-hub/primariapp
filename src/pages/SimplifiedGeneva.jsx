@@ -49,6 +49,7 @@ export default function SimplifiedGeneva() {
   return (
     <ToolPage
       specialty='Urgencias'
+      subsection='Tromboembolia'
       status='Operativa'
       title='Ginebra simplificada'
       description='Regla objetiva de probabilidad pretest de TEP sin el componente subjetivo de Wells.'

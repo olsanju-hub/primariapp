@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react'
-import { ArrowRight, Search } from 'lucide-react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { ArrowRight, ChevronDown, ChevronRight, Search } from 'lucide-react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { activeSpecialties, availableTools } from './appData'
 
@@ -7,6 +7,7 @@ export default function Tools() {
   const [searchParams] = useSearchParams()
   const selectedSpecialtyId = searchParams.get('specialty')
   const [query, setQuery] = useState('')
+  const [expandedSectionId, setExpandedSectionId] = useState(null)
 
   const selectedSpecialty =
     activeSpecialties.find((specialty) => specialty.id === selectedSpecialtyId) ?? null
@@ -20,6 +21,10 @@ export default function Tools() {
 
     return availableTools.filter((tool) => tool.searchText.includes(normalizedQuery))
   }, [normalizedQuery])
+
+  useEffect(() => {
+    setExpandedSectionId(selectedSpecialty?.sections?.[0]?.id ?? null)
+  }, [selectedSpecialtyId, selectedSpecialty])
 
   if (selectedSpecialty) {
     const Icon = selectedSpecialty.icon
@@ -59,31 +64,57 @@ export default function Tools() {
           {selectedSpecialty.sections.length > 0 ? (
             <div className='specialty-section-stack'>
               {selectedSpecialty.sections.map((section) => (
-                <section key={section.id} className='specialty-section-block'>
-                  <div className='specialty-section-headline'>
-                    <strong>{section.name}</strong>
-                    <small>{section.tools.length} herramientas</small>
-                  </div>
+                <section
+                  key={section.id}
+                  className={
+                    expandedSectionId === section.id
+                      ? 'specialty-section-block specialty-section-block--open'
+                      : 'specialty-section-block'
+                  }
+                >
+                  <button
+                    type='button'
+                    className='specialty-section-toggle'
+                    aria-expanded={expandedSectionId === section.id}
+                    onClick={() =>
+                      setExpandedSectionId((current) => (current === section.id ? null : section.id))
+                    }
+                  >
+                    <span className='specialty-section-headline'>
+                      <strong>{section.name}</strong>
+                      <small>{section.tools.length} herramientas</small>
+                    </span>
 
-                  <div className='specialty-tool-list'>
-                    {section.tools.map((tool) => (
-                      <Link
-                        key={tool.slug}
-                        to={tool.path}
-                        className={
-                          urgent
-                            ? 'specialty-tool-link specialty-tool-link--urgent'
-                            : 'specialty-tool-link'
-                        }
-                      >
-                        <span>
-                          <strong>{tool.name}</strong>
-                          <small>{tool.blurb}</small>
-                        </span>
-                        <ArrowRight size={18} />
-                      </Link>
-                    ))}
-                  </div>
+                    <span className='specialty-section-chevron' aria-hidden='true'>
+                      {expandedSectionId === section.id ? (
+                        <ChevronDown size={18} />
+                      ) : (
+                        <ChevronRight size={18} />
+                      )}
+                    </span>
+                  </button>
+
+                  {expandedSectionId === section.id ? (
+                    <div className='specialty-tool-list specialty-tool-list--section'>
+                      {section.tools.map((tool) => (
+                        <Link
+                          key={tool.slug}
+                          to={tool.path}
+                          className={
+                            urgent
+                              ? 'specialty-tool-link specialty-tool-link--urgent'
+                              : 'specialty-tool-link'
+                          }
+                        >
+                          <span>
+                            <strong>{tool.name}</strong>
+                            <small>{tool.blurb}</small>
+                          </span>
+                          <ArrowRight size={18} />
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
                 </section>
               ))}
 

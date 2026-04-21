@@ -1,4 +1,5 @@
 import Barthel from './pages/Barthel'
+import CAT from './pages/CAT'
 import CHA2DS2VASc from './pages/CHA2DS2VASc'
 import CRB65 from './pages/CRB65'
 import CURB65 from './pages/CURB65'
@@ -10,9 +11,11 @@ import NEWS2 from './pages/NEWS2'
 import PERC from './pages/PERC'
 import PHQ9 from './pages/PHQ9'
 import Pfeiffer from './pages/Pfeiffer'
+import MMRC from './pages/MMRC'
 import SCORE2 from './pages/SCORE2'
 import SCORE2OP from './pages/SCORE2OP'
 import SimplifiedGeneva from './pages/SimplifiedGeneva'
+import STOPBang from './pages/STOPBang'
 import WellsTVP from './pages/WellsTVP'
 import WellsTEP from './pages/WellsTEP'
 import YEARS from './pages/YEARS'
@@ -22,6 +25,9 @@ import LawtonBrody from './pages/LawtonBrody'
 
 export const toolRoutes = [
   { slug: 'barthel', Component: Barthel },
+  { slug: 'mmrc', Component: MMRC },
+  { slug: 'cat', Component: CAT },
+  { slug: 'stop-bang', Component: STOPBang },
   { slug: 'lawton-brody', Component: LawtonBrody },
   { slug: 'pfeiffer', Component: Pfeiffer },
   { slug: 'frail', Component: FRAIL },

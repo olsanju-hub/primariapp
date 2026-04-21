@@ -33,6 +33,7 @@ export default function CURB65() {
   return (
     <ToolPage
       specialty='Neumología'
+      subsection='Neumonía'
       status='Operativa'
       title='CURB-65'
       description='Estratificación rápida de gravedad en neumonía adquirida en la comunidad con dato analítico.'

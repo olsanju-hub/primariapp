@@ -16,6 +16,7 @@ export default function QSOFA() {
   return (
     <ToolPage
       specialty='Urgencias'
+      subsection='Deterioro agudo'
       title='qSOFA'
       description='Herramienta de cribado rápido para identificar pacientes con posible sepsis y peor pronóstico.'
       clinicalUse='Apoya la priorización clínica en pacientes con sospecha de infección.'

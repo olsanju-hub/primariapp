@@ -190,6 +190,7 @@ export default function NEWS2() {
   return (
     <ToolPage
       specialty='Urgencias'
+      subsection='Deterioro agudo'
       status='Operativa'
       title='NEWS2'
       description='Valoración rápida de gravedad fisiológica y detección de deterioro agudo.'

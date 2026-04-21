@@ -34,7 +34,7 @@ const specialtyMeta = [
     icon: Stethoscope,
     accent: '#557c55',
     soft: '#f4f7f5',
-    description: 'Cribado y decisión rápida en consulta diaria.',
+    description: 'Cribado, consulta infecciosa y riesgo metabólico.',
   },
   {
     id: 'cardiologia',
@@ -58,7 +58,7 @@ const specialtyMeta = [
     icon: Thermometer,
     accent: '#557c55',
     soft: '#f4f7f5',
-    description: 'Disnea, neumonía y reglas respiratorias útiles.',
+    description: 'Disnea, neumonía, síntomas y cribado del sueño.',
   },
   {
     id: 'salud-mental',
@@ -77,6 +77,10 @@ const specialtySections = {
     { id: 'deterioro-agudo', name: 'Deterioro agudo' },
     { id: 'tromboembolia', name: 'Tromboembolia' },
   ],
+  'atencion-primaria': [
+    { id: 'riesgo-metabolico', name: 'Riesgo metabólico' },
+    { id: 'infeccioso-orl', name: 'Infeccioso ORL' },
+  ],
   cardiologia: [
     { id: 'fibrilacion-auricular', name: 'Fibrilación auricular' },
     { id: 'riesgo-cardiovascular', name: 'Riesgo cardiovascular' },
@@ -86,7 +90,11 @@ const specialtySections = {
     { id: 'cognicion', name: 'Cognición' },
     { id: 'fragilidad', name: 'Fragilidad' },
   ],
-  neumologia: [{ id: 'neumonia', name: 'Neumonía' }],
+  neumologia: [
+    { id: 'disnea-sintomas', name: 'Disnea y síntomas' },
+    { id: 'neumonia', name: 'Neumonía' },
+    { id: 'sueno-apnea', name: 'Sueño y apnea' },
+  ],
 }
 
 const rawToolCatalog = [
@@ -162,6 +170,7 @@ const rawToolCatalog = [
     slug: 'centor-mcisaac',
     name: 'Centor/McIsaac',
     specialtyId: 'atencion-primaria',
+    sectionId: 'infeccioso-orl',
     blurb: 'Faringoamigdalitis aguda.',
     status: TOOL_STATUS.READY,
     featured: true,
@@ -171,9 +180,10 @@ const rawToolCatalog = [
     slug: 'findrisc',
     name: 'FINDRISC',
     specialtyId: 'atencion-primaria',
+    sectionId: 'riesgo-metabolico',
     blurb: 'Riesgo de diabetes tipo 2.',
     status: TOOL_STATUS.READY,
-    searchTerms: ['diabetes', 'metabólico', 'cribado', 'glucemia'],
+    searchTerms: ['diabetes', 'metabólico', 'cribado', 'glucemia', 'prediabetes'],
   },
   {
     slug: 'cha2ds2vasc',
@@ -249,6 +259,25 @@ const rawToolCatalog = [
     searchTerms: ['fragilidad', 'prefrailidad', 'geriatría', 'frail'],
   },
   {
+    slug: 'mmrc',
+    name: 'mMRC',
+    specialtyId: 'neumologia',
+    sectionId: 'disnea-sintomas',
+    blurb: 'Grado funcional de disnea.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['disnea', 'epoc', 'breathlessness', 'mrc', 'síntomas respiratorios'],
+  },
+  {
+    slug: 'cat',
+    name: 'CAT',
+    specialtyId: 'neumologia',
+    sectionId: 'disnea-sintomas',
+    blurb: 'Impacto sintomático respiratorio.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['epoc', 'cat', 'síntomas', 'impacto', 'copd assessment test'],
+  },
+  {
     slug: 'crb65',
     name: 'CRB-65',
     specialtyId: 'neumologia',
@@ -266,6 +295,15 @@ const rawToolCatalog = [
     blurb: 'Gravedad de NAC con urea.',
     status: TOOL_STATUS.READY,
     searchTerms: ['neumonía', 'pac', 'gravedad', 'nac', 'urea', 'ingreso'],
+  },
+  {
+    slug: 'stop-bang',
+    name: 'STOP-BANG',
+    specialtyId: 'neumologia',
+    sectionId: 'sueno-apnea',
+    blurb: 'Cribado de apnea obstructiva.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['apnea', 'sueño', 'saos', 'ronquido', 'stop bang'],
   },
   {
     slug: 'phq9',

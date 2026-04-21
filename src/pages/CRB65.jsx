@@ -31,6 +31,7 @@ export default function CRB65() {
   return (
     <ToolPage
       specialty='Neumología'
+      subsection='Neumonía'
       status='Operativa'
       title='CRB-65'
       description='Estratificación ultrarrápida de gravedad en neumonía adquirida en la comunidad sin analítica.'

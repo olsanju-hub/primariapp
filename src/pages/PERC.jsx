@@ -40,6 +40,7 @@ export default function PERC() {
   return (
     <ToolPage
       specialty='Urgencias'
+      subsection='Tromboembolia'
       status='Operativa'
       title='PERC'
       description='Regla de exclusión clínica de TEP solo para pacientes con probabilidad previa baja.'

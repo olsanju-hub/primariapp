@@ -43,6 +43,7 @@ export default function YEARS() {
   return (
     <ToolPage
       specialty='Urgencias'
+      subsection='Tromboembolia'
       status='Operativa'
       title='YEARS'
       description='Algoritmo simplificado para sospecha de TEP que combina 3 criterios clínicos y dímero-D.'

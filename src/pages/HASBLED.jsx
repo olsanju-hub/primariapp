@@ -44,6 +44,7 @@ export default function HASBLED() {
   return (
     <ToolPage
       specialty='Cardiología'
+      subsection='Fibrilación auricular'
       status='Operativa'
       title='HAS-BLED'
       description='Estratifica el riesgo hemorrágico en pacientes candidatos a anticoagulación.'

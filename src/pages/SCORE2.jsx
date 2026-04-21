@@ -95,6 +95,7 @@ export default function SCORE2() {
   return (
     <ToolPage
       specialty='Cardiología'
+      subsection='Riesgo cardiovascular'
       status='Operativa'
       title='SCORE2'
       description='Estimación de riesgo cardiovascular a 10 años para prevención primaria en adultos de 40 a 69 años.'

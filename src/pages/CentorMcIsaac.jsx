@@ -42,6 +42,7 @@ export default function CentorMcIsaac() {
   return (
     <ToolPage
       specialty='Atención Primaria'
+      subsection='Infeccioso ORL'
       title='Centor/McIsaac'
       description='Escala clínica para estimar probabilidad de faringoamigdalitis estreptocócica.'
       clinicalUse='Orienta la indicación de test rápido y tratamiento antibiótico.'

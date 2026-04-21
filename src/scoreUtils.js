@@ -465,6 +465,174 @@ export function getFrailAssessment(total, complete = true) {
   }
 }
 
+export function getMMRCAssessment(grade, complete = true) {
+  if (!complete || !Number.isFinite(grade)) {
+    return {
+      interpretation: 'Pendiente de seleccionar',
+      conduct: 'Elige el escenario funcional que mejor describa la disnea habitual.',
+      tone: 'neutral',
+    }
+  }
+
+  if (grade === 0) {
+    return {
+      interpretation: 'Disnea mínima',
+      conduct: 'Sugiere poca limitación funcional por disnea en actividad habitual.',
+      tone: 'positive',
+    }
+  }
+
+  if (grade === 1) {
+    return {
+      interpretation: 'Disnea ligera',
+      conduct: 'Existe disnea con esfuerzo algo mayor, útil como línea basal de seguimiento.',
+      tone: 'positive',
+    }
+  }
+
+  if (grade === 2) {
+    return {
+      interpretation: 'Disnea moderada',
+      conduct: 'La limitación ya es clínicamente relevante y conviene integrarla con saturación, exacerbaciones y tratamiento.',
+      tone: 'warning',
+    }
+  }
+
+  if (grade === 3) {
+    return {
+      interpretation: 'Disnea importante',
+      conduct: 'La limitación funcional es alta y justifica revisión clínica más estrecha.',
+      tone: 'critical',
+    }
+  }
+
+  return {
+    interpretation: 'Disnea muy intensa',
+    conduct: 'Existe limitación severa para actividades básicas; revisa gravedad, causa y necesidad de intervención adicional.',
+    tone: 'critical',
+  }
+}
+
+export function getCatAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa el cuestionario',
+      conduct: 'Responde los 8 dominios para estimar el impacto sintomático respiratorio.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total <= 10) {
+    return {
+      interpretation: 'Impacto bajo',
+      conduct: 'La carga sintomática global es menor, aunque debe integrarse con exacerbaciones y función pulmonar.',
+      tone: 'positive',
+    }
+  }
+
+  if (total <= 20) {
+    return {
+      interpretation: 'Impacto medio',
+      conduct: 'Hay repercusión sintomática apreciable y conviene revisar control clínico y tratamiento.',
+      tone: 'warning',
+    }
+  }
+
+  if (total <= 30) {
+    return {
+      interpretation: 'Impacto alto',
+      conduct: 'La carga sintomática es importante y suele justificar reevaluación terapéutica y funcional.',
+      tone: 'critical',
+    }
+  }
+
+  return {
+    interpretation: 'Impacto muy alto',
+    conduct: 'La afectación global es muy alta; revisa limitación, técnica inhalatoria, exacerbaciones y comorbilidad.',
+    tone: 'critical',
+  }
+}
+
+export function getStopBangAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa el cuestionario',
+      conduct: 'Responde los 8 ítems antes de clasificar el riesgo de SAOS.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total <= 2) {
+    return {
+      interpretation: 'Riesgo bajo',
+      conduct: 'El cribado sugiere menor probabilidad de SAOS, aunque no excluye completamente el trastorno.',
+      tone: 'positive',
+    }
+  }
+
+  if (total <= 4) {
+    return {
+      interpretation: 'Riesgo intermedio',
+      conduct: 'El riesgo es relevante y suele justificar ampliar la valoración según síntomas y contexto clínico.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Riesgo alto',
+    conduct: 'La puntuación es compatible con alto riesgo de SAOS y suele apoyar derivación o estudio específico.',
+    tone: 'critical',
+  }
+}
+
+export function getFindriscAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa el cuestionario',
+      conduct: 'Selecciona todas las variables para estimar el riesgo metabólico a 10 años.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total < 7) {
+    return {
+      interpretation: 'Riesgo bajo',
+      conduct: 'Reforzar hábitos saludables y reevaluar según evolución clínica y factores añadidos.',
+      tone: 'positive',
+    }
+  }
+
+  if (total < 12) {
+    return {
+      interpretation: 'Riesgo ligeramente elevado',
+      conduct: 'Conviene insistir en estilo de vida y revisar peso, presión arterial y glucemia si procede.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total < 15) {
+    return {
+      interpretation: 'Riesgo moderado',
+      conduct: 'Valora cribado glucémico y seguimiento estructurado del riesgo cardiometabólico.',
+      tone: 'warning',
+    }
+  }
+
+  if (total < 21) {
+    return {
+      interpretation: 'Riesgo alto',
+      conduct: 'Prioriza intervención intensiva sobre peso, ejercicio y cribado analítico de diabetes.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Riesgo muy alto',
+    conduct: 'El riesgo estimado es muy alto y justifica estudio metabólico y plan preventivo activo.',
+    tone: 'critical',
+  }
+}
+
 export function getNews2Assessment(total, hasSingleCritical) {
   if (total >= 7) {
     return {

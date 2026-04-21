@@ -53,6 +53,7 @@ export default function WellsTEP() {
   return (
     <ToolPage
       specialty='Urgencias'
+      subsection='Tromboembolia'
       status='Operativa'
       title='Wells TEP'
       description='Estimación clínica pretest de tromboembolismo pulmonar con la versión dicotómica de Wells.'

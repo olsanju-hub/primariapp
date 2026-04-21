@@ -52,6 +52,7 @@ export default function WellsTVP() {
   return (
     <ToolPage
       specialty='Urgencias'
+      subsection='Tromboembolia'
       status='Operativa'
       title='Wells TVP'
       description='Estimación rápida de probabilidad clínica pretest de trombosis venosa profunda.'
