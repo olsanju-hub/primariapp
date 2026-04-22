@@ -13,12 +13,17 @@ export default function PHQ9() {
     'Moverse o hablar muy despacio, o lo contrario: inquietud notable.',
     'Pensamientos de que estaría mejor muerto o de hacerse daño.',
   ]
-  const [scores, setScores] = useState(Array(9).fill(0))
-  const total = useMemo(() => scores.reduce((sum, value) => sum + value, 0), [scores])
+  const [scores, setScores] = useState(Array(9).fill(null))
+  const total = useMemo(
+    () => scores.reduce((sum, value) => sum + (Number.isFinite(value) ? value : 0), 0),
+    [scores]
+  )
+  const complete = scores.every((value) => value !== null)
   const labels = ['Nada', 'Varios días', 'Más de la mitad de los días', 'Casi cada día']
   const itemNine = scores[8]
 
   const interpret = () => {
+    if (!complete) return 'Completa el cuestionario'
     if (total <= 4) return 'Mínimo'
     if (total <= 9) return 'Leve'
     if (total <= 14) return 'Moderado'
@@ -27,6 +32,9 @@ export default function PHQ9() {
   }
 
   const conduct = () => {
+    if (!complete) {
+      return 'Responde los 9 ítems antes de interpretar la intensidad de los síntomas depresivos.'
+    }
     if (itemNine > 0) {
       return 'Explorar riesgo autolítico de inmediato, valorar seguridad y priorizar derivación o soporte urgente según contexto.'
     }
@@ -36,15 +44,26 @@ export default function PHQ9() {
     return 'Plantear abordaje intensivo, evaluación diagnóstica completa y coordinación con salud mental.'
   }
 
-  const tone = itemNine > 0 || total >= 15 ? 'critical' : total >= 5 ? 'warning' : 'positive'
+  const tone = !complete
+    ? 'neutral'
+    : itemNine > 0 || total >= 15
+      ? 'critical'
+      : total >= 5
+        ? 'warning'
+        : 'positive'
 
   return (
     <ToolPage
       specialty='Salud Mental'
+      subsection='Depresión'
+      status='Operativa'
       title='PHQ-9'
       description='Cuestionario breve de depresión útil para cribado, cuantificación de severidad y seguimiento evolutivo.'
       clinicalUse='Apoya la conversación clínica y el seguimiento estructurado de síntomas depresivos.'
       whenToUse='Consulta de atención primaria, revisión de tratamiento y control evolutivo.'
+      whatIs='Cuestionario de 9 ítems para síntomas depresivos.'
+      whatFor='Sirve para ampliar el cribado, graduar severidad y seguir la evolución clínica.'
+      valueMeaning='Cuanto mayor es la puntuación, mayor es la carga sintomática depresiva; el ítem 9 nunca debe interpretarse de forma aislada ni automática.'
       scoreLabel='Puntuación PHQ-9'
       scoreValue={`${total} / 27`}
       interpretation={interpret()}

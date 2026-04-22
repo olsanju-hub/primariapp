@@ -75,7 +75,7 @@ const specialtyMeta = [
     icon: Brain,
     accent: '#557c55',
     soft: '#f4f7f5',
-    description: 'Cribado breve de depresión y ansiedad.',
+    description: 'Depresión, ansiedad y cribado breve de alcohol.',
   },
 ]
 
@@ -108,6 +108,11 @@ const specialtySections = {
     { id: 'disnea-sintomas', name: 'Disnea y síntomas' },
     { id: 'neumonia', name: 'Neumonía' },
     { id: 'sueno-apnea', name: 'Sueño y apnea' },
+  ],
+  'salud-mental': [
+    { id: 'depresion', name: 'Depresión' },
+    { id: 'ansiedad', name: 'Ansiedad' },
+    { id: 'alcohol', name: 'Alcohol' },
   ],
 }
 
@@ -358,20 +363,60 @@ const rawToolCatalog = [
     searchTerms: ['apnea', 'sueño', 'saos', 'ronquido', 'stop bang'],
   },
   {
+    slug: 'phq2',
+    name: 'PHQ-2',
+    specialtyId: 'salud-mental',
+    sectionId: 'depresion',
+    blurb: 'Cribado depresivo ultrabreve.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['depresión', 'ánimo', 'cribado breve', 'anhedonia'],
+  },
+  {
     slug: 'phq9',
     name: 'PHQ-9',
     specialtyId: 'salud-mental',
+    sectionId: 'depresion',
     blurb: 'Síntomas depresivos.',
     status: TOOL_STATUS.READY,
     searchTerms: ['depresión', 'ánimo', 'cribado'],
   },
   {
+    slug: 'gad2',
+    name: 'GAD-2',
+    specialtyId: 'salud-mental',
+    sectionId: 'ansiedad',
+    blurb: 'Cribado ansioso ultrabreve.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['ansiedad', 'preocupación', 'cribado breve', 'nerviosismo'],
+  },
+  {
     slug: 'gad7',
     name: 'GAD-7',
     specialtyId: 'salud-mental',
+    sectionId: 'ansiedad',
     blurb: 'Ansiedad generalizada.',
     status: TOOL_STATUS.READY,
     searchTerms: ['ansiedad', 'preocupación', 'salud mental'],
+  },
+  {
+    slug: 'audit-c',
+    name: 'AUDIT-C',
+    specialtyId: 'salud-mental',
+    sectionId: 'alcohol',
+    blurb: 'Cribado breve de alcohol.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['alcohol', 'consumo', 'bebida', 'cribado', 'audit c'],
+  },
+  {
+    slug: 'cage',
+    name: 'CAGE',
+    specialtyId: 'salud-mental',
+    sectionId: 'alcohol',
+    blurb: 'Sospecha de consumo problemático.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['alcohol', 'cut down', 'guilty', 'eye opener', 'consumo problemático'],
   },
 ]
 

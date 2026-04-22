@@ -11,11 +11,16 @@ export default function GAD7() {
     'Irritarse o enfadarse con facilidad.',
     'Sentir miedo como si algo terrible pudiera ocurrir.',
   ]
-  const [scores, setScores] = useState(Array(7).fill(0))
-  const total = useMemo(() => scores.reduce((sum, value) => sum + value, 0), [scores])
+  const [scores, setScores] = useState(Array(7).fill(null))
+  const total = useMemo(
+    () => scores.reduce((sum, value) => sum + (Number.isFinite(value) ? value : 0), 0),
+    [scores]
+  )
+  const complete = scores.every((value) => value !== null)
   const labels = ['Nada', 'Varios días', 'Más de la mitad de los días', 'Casi cada día']
 
   const interpret = () => {
+    if (!complete) return 'Completa el cuestionario'
     if (total <= 4) return 'Mínimo'
     if (total <= 9) return 'Leve'
     if (total <= 14) return 'Moderado'
@@ -23,21 +28,29 @@ export default function GAD7() {
   }
 
   const conduct = () => {
+    if (!complete) {
+      return 'Responde los 7 ítems antes de interpretar la intensidad de los síntomas ansiosos.'
+    }
     if (total <= 4) return 'Mantener observación clínica y reforzar medidas de autocuidado si hay malestar incipiente.'
     if (total <= 9) return 'Revisar impacto funcional, sueño, consumo y planificar reevaluación clínica.'
     if (total <= 14) return 'Valorar intervención psicológica estructurada y seguimiento con objetivos concretos.'
     return 'Priorizar evaluación clínica completa, funcionalidad y coordinación con salud mental si existe deterioro relevante.'
   }
 
-  const tone = total >= 15 ? 'critical' : total >= 5 ? 'warning' : 'positive'
+  const tone = !complete ? 'neutral' : total >= 15 ? 'critical' : total >= 5 ? 'warning' : 'positive'
 
   return (
     <ToolPage
       specialty='Salud Mental'
+      subsection='Ansiedad'
+      status='Operativa'
       title='GAD-7'
       description='Escala breve para cuantificar ansiedad generalizada y monitorizar respuesta clínica.'
       clinicalUse='Cribado estructurado de síntomas ansiosos e impacto subjetivo.'
       whenToUse='Consulta inicial, control evolutivo y apoyo en decisiones de seguimiento.'
+      whatIs='Cuestionario de 7 ítems para síntomas ansiosos.'
+      whatFor='Sirve para ampliar el cribado, graduar severidad y seguir la evolución de la ansiedad.'
+      valueMeaning='Cuanto mayor es la puntuación, mayor es la carga sintomática ansiosa y su probabilidad de impacto funcional.'
       scoreLabel='Puntuación GAD-7'
       scoreValue={`${total} / 21`}
       interpretation={interpret()}

@@ -1,17 +1,21 @@
 import Alvarado from './pages/Alvarado'
+import AUDITC from './pages/AUDITC'
 import Barthel from './pages/Barthel'
 import CAT from './pages/CAT'
+import CAGE from './pages/CAGE'
 import CHA2DS2VASc from './pages/CHA2DS2VASc'
 import ChildPugh from './pages/ChildPugh'
 import CRB65 from './pages/CRB65'
 import CURB65 from './pages/CURB65'
 import CentorMcIsaac from './pages/CentorMcIsaac'
 import FINDRISC from './pages/FINDRISC'
+import GAD2 from './pages/GAD2'
 import GAD7 from './pages/GAD7'
 import GlasgowBlatchford from './pages/GlasgowBlatchford'
 import HASBLED from './pages/HASBLED'
 import NEWS2 from './pages/NEWS2'
 import PERC from './pages/PERC'
+import PHQ2 from './pages/PHQ2'
 import PHQ9 from './pages/PHQ9'
 import Pfeiffer from './pages/Pfeiffer'
 import MMRC from './pages/MMRC'
@@ -29,8 +33,11 @@ import LawtonBrody from './pages/LawtonBrody'
 
 export const toolRoutes = [
   { slug: 'alvarado', Component: Alvarado },
+  { slug: 'audit-c', Component: AUDITC },
   { slug: 'barthel', Component: Barthel },
+  { slug: 'cage', Component: CAGE },
   { slug: 'child-pugh', Component: ChildPugh },
+  { slug: 'gad2', Component: GAD2 },
   { slug: 'mmrc', Component: MMRC },
   { slug: 'cat', Component: CAT },
   { slug: 'glasgow-blatchford', Component: GlasgowBlatchford },
@@ -39,6 +46,7 @@ export const toolRoutes = [
   { slug: 'lawton-brody', Component: LawtonBrody },
   { slug: 'pfeiffer', Component: Pfeiffer },
   { slug: 'frail', Component: FRAIL },
+  { slug: 'phq2', Component: PHQ2 },
   { slug: 'phq9', Component: PHQ9 },
   { slug: 'gad7', Component: GAD7 },
   { slug: 'cha2ds2vasc', Component: CHA2DS2VASc },

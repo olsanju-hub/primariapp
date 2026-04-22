@@ -633,6 +633,165 @@ export function getFindriscAssessment(total, complete = true) {
   }
 }
 
+export function getPhq2Assessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa el cribado',
+      conduct: 'Responde los 2 ítems para estimar si el cribado depresivo es positivo.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total <= 1) {
+    return {
+      interpretation: 'Cribado no positivo',
+      conduct:
+        'El cribado es negativo en esta visita. Si la sospecha clínica persiste, reevalúa o amplía la valoración.',
+      tone: 'positive',
+    }
+  }
+
+  if (total === 2) {
+    return {
+      interpretation: 'Síntomas presentes',
+      conduct:
+        'Hay carga sintomática inicial, aunque queda por debajo del punto de corte habitual. Amplía si el contexto clínico lo sugiere.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Cribado positivo',
+    conduct:
+      'Una puntuación de 3 o más suele justificar ampliar la evaluación con PHQ-9 y entrevista clínica.',
+    tone: 'critical',
+  }
+}
+
+export function getGad2Assessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa el cribado',
+      conduct: 'Responde los 2 ítems para estimar si el cribado ansioso es positivo.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total <= 1) {
+    return {
+      interpretation: 'Cribado no positivo',
+      conduct:
+        'El cribado es negativo en esta visita. Si la sospecha clínica persiste, reevalúa o amplía la valoración.',
+      tone: 'positive',
+    }
+  }
+
+  if (total === 2) {
+    return {
+      interpretation: 'Síntomas presentes',
+      conduct:
+        'Hay síntomas ansiosos, aunque por debajo del punto de corte habitual. Valora ampliar si existe impacto funcional o preocupación clínica.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Cribado positivo',
+    conduct:
+      'Una puntuación de 3 o más suele justificar ampliar la evaluación con GAD-7 y entrevista clínica.',
+    tone: 'critical',
+  }
+}
+
+export function getAuditCAssessment(total, sex, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa el cribado',
+      conduct: 'Responde los 3 ítems y selecciona el sexo para clasificar el riesgo por AUDIT-C.',
+      tone: 'neutral',
+    }
+  }
+
+  const positiveCutoff = sex === 'female' ? 3 : 4
+
+  if (total === 0) {
+    return {
+      interpretation: 'Sin consumo referido',
+      conduct: 'No se registra consumo en el cuestionario actual. Confirma el contexto y reevalúa si cambia la situación clínica.',
+      tone: 'positive',
+    }
+  }
+
+  if (total < positiveCutoff) {
+    return {
+      interpretation: 'Cribado no positivo',
+      conduct:
+        'La puntuación queda por debajo del punto de corte habitual. Mantén consejo breve y reevalúa si aparecen riesgos o cambios de consumo.',
+      tone: 'positive',
+    }
+  }
+
+  if (total <= 7) {
+    return {
+      interpretation: 'Cribado positivo',
+      conduct:
+        'La puntuación sugiere consumo no saludable. Conviene ampliar cantidad real, patrón de riesgo y motivación para el cambio.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Cribado claramente positivo',
+    conduct:
+      'La puntuación es alta y aumenta la probabilidad de consumo problemático. Valora entrevista más completa, AUDIT total y riesgos asociados.',
+    tone: 'critical',
+  }
+}
+
+export function getCageAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa el cribado',
+      conduct: 'Responde los 4 ítems para estimar si el cribado por CAGE es significativo.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total === 0) {
+    return {
+      interpretation: 'Cribado no positivo',
+      conduct:
+        'No aparecen respuestas positivas en CAGE. Si existe sospecha clínica, contrasta con patrón de consumo y contexto.',
+      tone: 'positive',
+    }
+  }
+
+  if (total === 1) {
+    return {
+      interpretation: 'Señal de alerta inicial',
+      conduct:
+        'Una sola respuesta positiva no confirma problema, pero justifica explorar con más detalle el consumo y su impacto.',
+      tone: 'warning',
+    }
+  }
+
+  if (total === 2) {
+    return {
+      interpretation: 'Cribado clínicamente significativo',
+      conduct:
+        'Dos respuestas positivas hacen razonable ampliar la valoración de consumo, consecuencias y motivación al cambio.',
+      tone: 'warning',
+    }
+  }
+
+  return {
+    interpretation: 'Alta sospecha de consumo problemático',
+    conduct:
+      'Tres o más respuestas positivas refuerzan la sospecha clínica y justifican una evaluación más completa y plan de intervención.',
+    tone: 'critical',
+  }
+}
+
 export function getAlvaradoAssessment(total, complete = true) {
   if (!complete) {
     return {
