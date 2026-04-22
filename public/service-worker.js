@@ -1,11 +1,11 @@
-const CACHE_NAME = 'primariapp-shell-v2'
+const CACHE_NAME = 'primariapp-shell-v3'
 const CORE_ASSETS = [
   './',
   './manifest.webmanifest',
-  './primariapp-icon.svg',
-  './pwa-192.png',
-  './pwa-512.png',
-  './apple-touch-icon.png',
+  './primariapp-icon-brand.svg',
+  './pwa-192-brand.png',
+  './pwa-512-brand.png',
+  './apple-touch-icon-brand.png',
 ]
 
 self.addEventListener('install', (event) => {
