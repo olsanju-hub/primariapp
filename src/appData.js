@@ -1,5 +1,6 @@
 import {
   Brain,
+  FlaskConical,
   Heart,
   Home,
   LayoutGrid,
@@ -45,6 +46,14 @@ const specialtyMeta = [
     description: 'FA, anticoagulación y valoración de riesgo vascular.',
   },
   {
+    id: 'digestivo',
+    name: 'Digestivo',
+    icon: FlaskConical,
+    accent: '#557c55',
+    soft: '#f4f7f5',
+    description: 'Abdomen agudo, hemorragia digestiva y hepatopatía.',
+  },
+  {
     id: 'geriatria',
     name: 'Geriatría',
     icon: Users,
@@ -84,6 +93,11 @@ const specialtySections = {
   cardiologia: [
     { id: 'fibrilacion-auricular', name: 'Fibrilación auricular' },
     { id: 'riesgo-cardiovascular', name: 'Riesgo cardiovascular' },
+  ],
+  digestivo: [
+    { id: 'abdomen-agudo', name: 'Abdomen agudo' },
+    { id: 'hemorragia-digestiva', name: 'Hemorragia digestiva' },
+    { id: 'hepatopatia', name: 'Hepatopatía' },
   ],
   geriatria: [
     { id: 'funcionalidad', name: 'Funcionalidad' },
@@ -221,6 +235,44 @@ const rawToolCatalog = [
     blurb: 'Riesgo cardiovascular en mayores.',
     status: TOOL_STATUS.READY,
     searchTerms: ['prevención', 'mayores', 'colesterol', 'cardiovascular', 'riesgo aterosclerótico'],
+  },
+  {
+    slug: 'alvarado',
+    name: 'Alvarado',
+    specialtyId: 'digestivo',
+    sectionId: 'abdomen-agudo',
+    blurb: 'Probabilidad de apendicitis aguda.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['apendicitis', 'abdomen agudo', 'fosa ilíaca derecha', 'MANTRELS'],
+  },
+  {
+    slug: 'glasgow-blatchford',
+    name: 'Glasgow-Blatchford',
+    specialtyId: 'digestivo',
+    sectionId: 'hemorragia-digestiva',
+    blurb: 'Estratificación inicial en HDA.',
+    status: TOOL_STATUS.READY,
+    featured: true,
+    searchTerms: ['hemorragia digestiva alta', 'HDA', 'sangrado digestivo', 'blatchford', 'melena'],
+  },
+  {
+    slug: 'rockall-preendoscopico',
+    name: 'Rockall preendoscópico',
+    specialtyId: 'digestivo',
+    sectionId: 'hemorragia-digestiva',
+    blurb: 'Riesgo clínico antes de endoscopia.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['hemorragia digestiva alta', 'HDA', 'rockall', 'sangrado digestivo', 'shock'],
+  },
+  {
+    slug: 'child-pugh',
+    name: 'Child-Pugh',
+    specialtyId: 'digestivo',
+    sectionId: 'hepatopatia',
+    blurb: 'Estratificación de cirrosis.',
+    status: TOOL_STATUS.READY,
+    searchTerms: ['cirrosis', 'hepatopatía', 'ascitis', 'encefalopatía', 'pronóstico hepático'],
   },
   {
     slug: 'barthel',

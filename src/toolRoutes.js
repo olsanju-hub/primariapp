@@ -1,17 +1,21 @@
+import Alvarado from './pages/Alvarado'
 import Barthel from './pages/Barthel'
 import CAT from './pages/CAT'
 import CHA2DS2VASc from './pages/CHA2DS2VASc'
+import ChildPugh from './pages/ChildPugh'
 import CRB65 from './pages/CRB65'
 import CURB65 from './pages/CURB65'
 import CentorMcIsaac from './pages/CentorMcIsaac'
 import FINDRISC from './pages/FINDRISC'
 import GAD7 from './pages/GAD7'
+import GlasgowBlatchford from './pages/GlasgowBlatchford'
 import HASBLED from './pages/HASBLED'
 import NEWS2 from './pages/NEWS2'
 import PERC from './pages/PERC'
 import PHQ9 from './pages/PHQ9'
 import Pfeiffer from './pages/Pfeiffer'
 import MMRC from './pages/MMRC'
+import RockallPreendoscopico from './pages/RockallPreendoscopico'
 import SCORE2 from './pages/SCORE2'
 import SCORE2OP from './pages/SCORE2OP'
 import SimplifiedGeneva from './pages/SimplifiedGeneva'
@@ -24,9 +28,13 @@ import FRAIL from './pages/FRAIL'
 import LawtonBrody from './pages/LawtonBrody'
 
 export const toolRoutes = [
+  { slug: 'alvarado', Component: Alvarado },
   { slug: 'barthel', Component: Barthel },
+  { slug: 'child-pugh', Component: ChildPugh },
   { slug: 'mmrc', Component: MMRC },
   { slug: 'cat', Component: CAT },
+  { slug: 'glasgow-blatchford', Component: GlasgowBlatchford },
+  { slug: 'rockall-preendoscopico', Component: RockallPreendoscopico },
   { slug: 'stop-bang', Component: STOPBang },
   { slug: 'lawton-brody', Component: LawtonBrody },
   { slug: 'pfeiffer', Component: Pfeiffer },

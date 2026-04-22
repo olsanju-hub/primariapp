@@ -633,6 +633,180 @@ export function getFindriscAssessment(total, complete = true) {
   }
 }
 
+export function getAlvaradoAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa la valoración',
+      conduct: 'Marca síntomas, signos y analítica antes de interpretar la probabilidad de apendicitis.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total <= 4) {
+    return {
+      interpretation: 'Probabilidad baja',
+      conduct:
+        'Hace menos probable la apendicitis, aunque si persiste la sospecha conviene reevaluar, observar o ampliar estudio.',
+      tone: 'positive',
+    }
+  }
+
+  if (total <= 6) {
+    return {
+      interpretation: 'Probabilidad intermedia',
+      conduct:
+        'Suele justificar observación clínica, repetición de exploración y apoyo con imagen según disponibilidad y contexto.',
+      tone: 'warning',
+    }
+  }
+
+  if (total <= 8) {
+    return {
+      interpretation: 'Probabilidad alta',
+      conduct:
+        'La sospecha de apendicitis es relevante y normalmente requiere valoración quirúrgica y/o confirmación por imagen.',
+      tone: 'critical',
+    }
+  }
+
+  return {
+    interpretation: 'Probabilidad muy alta',
+    conduct:
+      'La carga clínica es muy sugestiva de apendicitis. Prioriza circuito diagnóstico-terapéutico y decisión quirúrgica según protocolo local.',
+    tone: 'critical',
+  }
+}
+
+export function getGlasgowBlatchfordAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa la estratificación',
+      conduct:
+        'Selecciona todas las variables clínicas y analíticas para estimar el riesgo inicial en hemorragia digestiva alta.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total <= 1) {
+    return {
+      interpretation: 'Riesgo muy bajo',
+      conduct:
+        'GBS 0-1 puede identificar pacientes muy seleccionados para manejo ambulatorio si están estables y no hay otros motivos de ingreso.',
+      tone: 'positive',
+    }
+  }
+
+  if (total <= 5) {
+    return {
+      interpretation: 'Riesgo no bajo',
+      conduct:
+        'La puntuación ya no es de bajo riesgo y suele apoyar ingreso, resucitación inicial y valoración endoscópica.',
+      tone: 'warning',
+    }
+  }
+
+  if (total <= 11) {
+    return {
+      interpretation: 'Riesgo alto',
+      conduct:
+        'La probabilidad de requerir intervención hospitalaria es relevante; prioriza estabilización, transfusión si procede y endoscopia precoz.',
+      tone: 'critical',
+    }
+  }
+
+  return {
+    interpretation: 'Riesgo muy alto',
+    conduct:
+      'La carga de riesgo es muy alta y obliga a vigilancia estrecha, reanimación adecuada y coordinación rápida con Digestivo/Urgencias.',
+    tone: 'critical',
+  }
+}
+
+export function getRockallPreendoscopicAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa la estratificación',
+      conduct:
+        'Selecciona edad, estado hemodinámico y comorbilidad para clasificar el riesgo clínico previo a la endoscopia.',
+      tone: 'neutral',
+    }
+  }
+
+  if (total === 0) {
+    return {
+      interpretation: 'Riesgo clínico bajo',
+      conduct:
+        'El perfil clínico inicial es de bajo riesgo, aunque la evolución y la endoscopia siguen siendo determinantes.',
+      tone: 'positive',
+    }
+  }
+
+  if (total <= 2) {
+    return {
+      interpretation: 'Riesgo clínico relevante',
+      conduct:
+        'No es un perfil de bajo riesgo. Mantén vigilancia y completa la estratificación con la evolución y la endoscopia.',
+      tone: 'warning',
+    }
+  }
+
+  if (total <= 4) {
+    return {
+      interpretation: 'Riesgo clínico alto',
+      conduct:
+        'La situación inicial sugiere mayor probabilidad de complicaciones y suele justificar monitorización e ingreso.',
+      tone: 'critical',
+    }
+  }
+
+  return {
+    interpretation: 'Riesgo clínico muy alto',
+    conduct:
+      'La puntuación basal es muy elevada y obliga a manejo hospitalario intensivo y rápida definición diagnóstica.',
+    tone: 'critical',
+  }
+}
+
+export function getChildPughAssessment(total, complete = true) {
+  if (!complete) {
+    return {
+      interpretation: 'Completa la clasificación',
+      conduct:
+        'Selecciona los cinco dominios clínicos y analíticos antes de clasificar la gravedad hepática.',
+      tone: 'neutral',
+      childClass: null,
+    }
+  }
+
+  if (total <= 6) {
+    return {
+      interpretation: 'Clase A',
+      conduct:
+        'Sugiere hepatopatía menos avanzada dentro de la escala, aunque debe integrarse con causa, complicaciones y función global.',
+      tone: 'positive',
+      childClass: 'A',
+    }
+  }
+
+  if (total <= 9) {
+    return {
+      interpretation: 'Clase B',
+      conduct:
+        'Indica disfunción hepática clínicamente relevante y obliga a revisar descompensación, tratamiento y seguimiento estrecho.',
+      tone: 'warning',
+      childClass: 'B',
+    }
+  }
+
+  return {
+    interpretation: 'Clase C',
+    conduct:
+      'La afectación es avanzada en la escala y suele asociarse a peor pronóstico y mayor complejidad terapéutica.',
+    tone: 'critical',
+    childClass: 'C',
+  }
+}
+
 export function getNews2Assessment(total, hasSingleCritical) {
   if (total >= 7) {
     return {

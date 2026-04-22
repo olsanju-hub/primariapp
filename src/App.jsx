@@ -8,6 +8,7 @@ import {
   X,
 } from 'lucide-react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { appIconUrl } from './appIcon'
 import { activeSpecialties, catalogStats, toolCatalog } from './appData'
 
 export default function App() {
@@ -63,6 +64,7 @@ export default function App() {
     <div className='app-shell'>
       <header className='app-header'>
         <Link to='/' className='brand-lockup'>
+          <img src={appIconUrl} alt='' className='brand-mark' />
           <div className='brand-copy'>
             <h1>
               Primari<span>APP</span>
