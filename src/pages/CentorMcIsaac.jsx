@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import BinaryCriteriaGrid from '../components/BinaryCriteriaGrid'
 import ToolPage from '../ToolPage'
 
 export default function CentorMcIsaac() {
@@ -20,6 +21,13 @@ export default function CentorMcIsaac() {
     () => Object.values(answers).reduce((sum, value) => sum + value, 0) + ageScore,
     [ageScore, answers]
   )
+
+  const handleToggle = (criterion, checked) => {
+    setAnswers((current) => ({
+      ...current,
+      [criterion.key]: checked ? criterion.value : 0,
+    }))
+  }
 
   const interpretation = () => {
     if (total <= 1) return 'Probabilidad baja de estreptococo'
@@ -54,60 +62,41 @@ export default function CentorMcIsaac() {
       note='No sustituye criterios epidemiológicos, exploración completa ni juicio clínico.'
       tone={tone}
     >
-      <div className='question-grid'>
-        <section className='question-card'>
-          <div className='question-card-head'>
-            <span className='question-index'>01</span>
-            <h4>Edad</h4>
-          </div>
+      <>
+        <div className='question-grid'>
+          <section className='question-card'>
+            <div className='question-card-head'>
+              <span className='question-index'>01</span>
+              <h4>Edad</h4>
+            </div>
 
-          <div className='option-stack'>
-            {ageBands.map((band) => (
-              <label
-                key={band.label}
-                className={ageScore === band.value ? 'choice-card choice-card--selected' : 'choice-card'}
-              >
-                <input
-                  type='radio'
-                  name='centor-age'
-                  checked={ageScore === band.value}
-                  onChange={() => setAgeScore(band.value)}
-                />
-                <span>{band.label}</span>
-                <strong>{band.value > 0 ? `+${band.value}` : band.value}</strong>
-              </label>
-            ))}
-          </div>
-        </section>
+            <div className='option-stack'>
+              {ageBands.map((band) => (
+                <label
+                  key={band.label}
+                  className={ageScore === band.value ? 'choice-card choice-card--selected' : 'choice-card'}
+                >
+                  <input
+                    type='radio'
+                    name='centor-age'
+                    checked={ageScore === band.value}
+                    onChange={() => setAgeScore(band.value)}
+                  />
+                  <span>{band.label}</span>
+                  <strong>{band.value > 0 ? `+${band.value}` : band.value}</strong>
+                </label>
+              ))}
+            </div>
+          </section>
+        </div>
 
-        {factors.map((factor, index) => {
-          const checked = Boolean(answers[factor.key])
-
-          return (
-            <section key={factor.key} className='question-card'>
-              <div className='question-card-head'>
-                <span className='question-index'>{String(index + 2).padStart(2, '0')}</span>
-                <h4>{factor.label}</h4>
-              </div>
-
-              <label className={checked ? 'choice-card choice-card--selected' : 'choice-card'}>
-                <input
-                  type='checkbox'
-                  checked={checked}
-                  onChange={(event) =>
-                    setAnswers((current) => ({
-                      ...current,
-                      [factor.key]: event.target.checked ? factor.value : 0,
-                    }))
-                  }
-                />
-                <span>Criterio presente</span>
-                <strong>+1</strong>
-              </label>
-            </section>
-          )
-        })}
-      </div>
+        <BinaryCriteriaGrid
+          answers={answers}
+          criteria={factors}
+          onToggle={handleToggle}
+          startIndex={2}
+        />
+      </>
     </ToolPage>
   )
 }

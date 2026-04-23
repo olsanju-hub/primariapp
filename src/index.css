@@ -951,6 +951,41 @@ a {
   line-height: 1.4;
 }
 
+.choice-card--binary {
+  padding: 0.72rem 0.88rem;
+  min-height: 0;
+}
+
+.choice-card-binary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.choice-card-indicator {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+}
+
+.choice-card-indicator--selected {
+  border-color: var(--medical-green-primary);
+  background: var(--medical-green-primary);
+}
+
+.choice-card-inline-label {
+  min-width: 0;
+  color: #475569;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
 .choice-card strong {
   color: var(--medical-green-primary);
   font-size: 0.82rem;
@@ -966,6 +1001,18 @@ a {
 
 .choice-card--selected span {
   color: var(--medical-green-dark);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .metric-input {
@@ -1357,6 +1404,27 @@ a {
 
   .app-shell {
     padding-bottom: 7.8rem;
+  }
+
+  .question-card {
+    padding: 0.88rem;
+  }
+
+  .question-card-head {
+    gap: 0.6rem;
+    margin-bottom: 0.72rem;
+  }
+
+  .choice-card {
+    padding: 0.76rem 0.84rem;
+  }
+
+  .choice-card--binary {
+    padding: 0.62rem 0.76rem;
+  }
+
+  .choice-card-inline-label {
+    display: none;
   }
 
   .search-stage-card,
